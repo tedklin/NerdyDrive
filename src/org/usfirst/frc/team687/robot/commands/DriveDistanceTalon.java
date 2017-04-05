@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Drive a straight distance with motion profiling
+ * Drive a trajectory with built-in Talon motion profiling
  * 
  * @author tedfoodlin
  * 
  */
 
-public class DriveDistance extends Command {
+public class DriveDistanceTalon extends Command {
 	
 	private double m_distance;
 	private MotionProfileGenerator m_motionProfile;
@@ -28,7 +28,7 @@ public class DriveDistance extends Command {
 	}
 	Notifier m_notifer = new Notifier(new PeriodicRunnable());
 
-    public DriveDistance(double distance) {
+    public DriveDistanceTalon(double distance) {
     	m_distance = distance;
     	
     	// subsystem dependencies

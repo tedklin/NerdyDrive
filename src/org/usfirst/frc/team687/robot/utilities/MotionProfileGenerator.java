@@ -17,14 +17,16 @@ public class MotionProfileGenerator {
 	private double m_accel;
 	private double m_decel;
 	
-	private double m_clkInMs = 10;
-	private double m_clkInMinutes = m_clkInMs/60000;
+	private double m_clkInSeconds = 0.01;
+	private double m_clkInMinutes = m_clkInSeconds / 60;
 	private int m_totalPoints;
 	
 	private ArrayList<Double> m_timeProfile = new ArrayList<Double>();
 	private ArrayList<Double> m_velocityProfile = new ArrayList<Double>();
 	private ArrayList<Double> m_positionProfile = new ArrayList<Double>();
 	private ArrayList<Double> m_accelerationProfile = new ArrayList<Double>();
+	
+	private double m_time;
 	
 	/**
 	 * Motion Profile Generator
@@ -42,10 +44,9 @@ public class MotionProfileGenerator {
 	/**
 	 * Generate a trapezoidal motion profile using basic kinematic equations
 	 * 
-	 * @param distance desired in rotations
+	 * @param distance desired in ticks or rotations
 	 */
 	public void generateProfile(double distance) {
-		double time;
 		double x;
 		double v = 0;
 		
@@ -60,29 +61,36 @@ public class MotionProfileGenerator {
 		double totalTime = accelTime + cruiseTime + decelTime;
 		SmartDashboard.putNumber("Expected End Time", + totalTime);
 		
-		for (time = 0; time < accelTime; time += m_clkInMinutes){
-			x = (0.5 * m_accel * Math.pow(time, (double)2));
-			v = m_accel * time;
-			addData(time, v, x, m_accel);
+		for (m_time = 0; m_time < accelTime; m_time += m_clkInMinutes){
+			x = (0.5 * m_accel * Math.pow(m_time, (double)2));
+			v = m_accel * m_time;
+			addData(m_time, v, x, m_accel);
 			m_totalPoints++;
 		}
-		for (time = accelTime; time < accelAndCruiseTime; time += m_clkInMinutes){
-			x = (0.5 * (Math.pow(m_cruiseVelocity, 2) / m_accel)) + (m_cruiseVelocity * (time - (m_cruiseVelocity/m_accel)));
+		for (m_time = accelTime; m_time < accelAndCruiseTime; m_time += m_clkInMinutes){
+			x = (0.5 * (Math.pow(m_cruiseVelocity, 2) / m_accel)) + (m_cruiseVelocity * (m_time - (m_cruiseVelocity/m_accel)));
 			v = (m_cruiseVelocity);
-			addData(time, v, x, 0);
+			addData(m_time, v, x, 0);
 			m_totalPoints++;
 		}
-		for (time = accelAndCruiseTime; time <= totalTime; time += m_clkInMinutes){
-			x = (double)(distance + 0.5 * m_decel * Math.pow((time-totalTime), 2));
-			v = -m_accel * time + (m_cruiseVelocity + m_accel * accelAndCruiseTime);
-			addData(time, v, x, m_decel);
+		for (m_time = accelAndCruiseTime; m_time <= totalTime; m_time += m_clkInMinutes){
+			x = (double)(distance + 0.5 * m_decel * Math.pow((m_time-totalTime), 2));
+			v = -m_accel * m_time + (m_cruiseVelocity + m_accel * accelAndCruiseTime);
+			addData(m_time, v, x, m_decel);
 			m_totalPoints++;
 		}
-		SmartDashboard.putNumber("Calculated Acutal End Time", time);
+		SmartDashboard.putNumber("Calculated Acutal End Time", m_time);
 	}
 	
 	public int getTotalPoints() {
 		return m_totalPoints;
+	}
+	
+	/**
+	 * @return total time in seconds
+	 */
+	public double getTotalTime() {
+		return m_time * 60;
 	}
 	
 	/**

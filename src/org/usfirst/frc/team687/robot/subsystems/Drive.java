@@ -144,8 +144,20 @@ public class Drive extends Subsystem {
 		return m_rightMaster.getPosition();
 	}
 	
+	public int getLeftTicks() {
+		return m_leftMaster.getEncPosition();
+	}
+	
+	public int getRightTicks() {
+		return m_rightMaster.getEncPosition();
+	}
+	
 	public double getDrivetrainPosition() {
 		return (getLeftPosition() + getRightPosition());
+	}
+	
+	public int getDrivetrainTicks() {
+		return (int)(getLeftTicks() + getRightTicks()/2);
 	}
 	
 	public double getLeftSpeed() {
@@ -156,12 +168,23 @@ public class Drive extends Subsystem {
 		return m_rightMaster.getSpeed();
 	}
 	
+	public double getLeftTicksSpeed() {
+		return m_leftMaster.getEncVelocity();
+	}
+	
+	public double getRightTicksSpeed() {
+		return m_rightMaster.getEncVelocity();
+	}
+	
 	public void resetEncoders() {
 		m_leftMaster.reset();
 		m_rightMaster.reset();
 		
 		m_leftMaster.setPosition(0);
 		m_rightMaster.setPosition(0);
+		
+		m_leftMaster.setEncPosition(0);
+		m_rightMaster.setEncPosition(0);
 	}
 	
 	public void resetSensors() {
