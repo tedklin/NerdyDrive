@@ -23,22 +23,11 @@ public class DriveDistanceRio extends Command {
 	
 	private double m_startTime;
 	private double m_timeStamp;
-	private double m_dT = 0.01;
-	private double m_dTInMinutes = m_dT * 60;
-	
-	private double m_setpoint;
-	private double m_goalVelocity;
-	private double m_goalAccel;
-	private int m_index;
-	private double m_feedforward;
 	
 	private double m_leftError;
 	private double m_rightError;
 	private double m_lastLeftError;
 	private double m_lastRightError;
-	
-	private double m_leftPow;
-	private double m_rightPow;
 	
 	public DriveDistanceRio(double distance, boolean straight) {
 		m_distance = distance;
@@ -66,26 +55,26 @@ public class DriveDistanceRio extends Command {
 		m_lastLeftError = m_leftError;
 		m_lastRightError = m_rightError;
 		m_timeStamp = Timer.getFPGATimestamp() - m_startTime;
-		m_index = (int)(m_timeStamp/m_dTInMinutes);
-		m_setpoint = m_motionProfile.readPosition(m_index);
-		m_goalVelocity = m_motionProfile.readVelocity(m_index);
-		m_goalAccel = m_motionProfile.readAcceleration(m_index);
+		int index = (int)(m_timeStamp/Constants.kDt);
+		double setpoint = m_motionProfile.readPosition(index);
+		double goalVelocity = m_motionProfile.readVelocity(index);
+		double goalAccel = m_motionProfile.readAcceleration(index);
 		
-		m_feedforward = (Constants.kV * m_goalVelocity) + (Constants.kA * m_goalAccel);
+		double feedforward = (Constants.kV * goalVelocity) + (Constants.kA * goalAccel);
 		
-		m_leftError = m_setpoint - Robot.drive.getLeftPosition();
-		m_rightError = m_setpoint - Robot.drive.getRightPosition();
+		m_leftError = setpoint - Robot.drive.getLeftPosition();
+		m_rightError = setpoint - Robot.drive.getRightPosition();
 		
-		m_leftPow = (Constants.kDistP * m_leftError) + (Constants.kDistD * ((m_leftError - m_lastLeftError)/m_dT - m_goalVelocity)) + m_feedforward;
-		m_rightPow = (Constants.kDistP * m_rightError) + (Constants.kDistD * ((m_rightError - m_lastRightError)/m_dT - m_goalVelocity)) + m_feedforward;
+		double leftPow = (Constants.kDistP * m_leftError) + (Constants.kDistD * ((m_leftError - m_lastLeftError)/Constants.kDt - goalVelocity)) + feedforward;
+		double rightPow = (Constants.kDistP * m_rightError) + (Constants.kDistD * ((m_rightError - m_lastRightError)/Constants.kDt - goalVelocity)) + feedforward;
 		
 		if (m_isStraight) {
 			double angularPow = Constants.kRotP * Robot.drive.getYaw();
-			m_leftPow += angularPow;
-			m_rightPow -= angularPow;
+			leftPow += angularPow;
+			rightPow -= angularPow;
 		}
 		
-		double[] pow = {m_leftPow, m_rightPow};
+		double[] pow = {leftPow, rightPow};
 		NerdyMath.normalize(pow, false);
 		
 		Robot.drive.setPower(pow[0], pow[1]);

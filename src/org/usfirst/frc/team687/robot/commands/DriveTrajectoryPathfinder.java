@@ -20,7 +20,6 @@ import jaci.pathfinder.*;
 public class DriveTrajectoryPathfinder extends Command {
 	
 	private Waypoint[] m_path;
-	private double m_dT = 0.01;
 
 	private Trajectory m_trajectory;
 	private Trajectory m_leftTrajectory;
@@ -40,7 +39,7 @@ public class DriveTrajectoryPathfinder extends Command {
 	@Override
 	protected void initialize() {
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 
-        		m_dT, Constants.kMaxVelocity, Constants.kMaxAcceleration, Constants.kMaxJerk);
+        		Constants.kDt, Constants.kMaxVelocity, Constants.kMaxAcceleration, Constants.kMaxJerk);
         m_trajectory = Pathfinder.generate(m_path, config);
         TankModifier modifier = new TankModifier(m_trajectory).modify(Constants.kWheelbaseWidth);
         

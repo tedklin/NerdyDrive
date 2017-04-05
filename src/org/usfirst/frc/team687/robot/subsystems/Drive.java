@@ -199,12 +199,20 @@ public class Drive extends Subsystem {
 	
 	public void reportToSmartDashboard() {
 		SmartDashboard.putBoolean("High Gear", isHighGear());
+		
 		SmartDashboard.putNumber("Yaw", getYaw());
+		
 		SmartDashboard.putNumber("Left Position", getLeftPosition());
 		SmartDashboard.putNumber("Right Position", getRightPosition());
 		SmartDashboard.putNumber("Drivetrain Position", getDrivetrainPosition());
 		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
 		SmartDashboard.putNumber("Right Speed", getRightSpeed());
+		
+		SmartDashboard.putNumber("Left Position Ticks", getLeftTicks());
+		SmartDashboard.putNumber("Right Position Ticks", getRightTicks());
+		SmartDashboard.putNumber("Drivetrain Position Ticks", getDrivetrainTicks());
+		SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
+		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
 	}
 
 }

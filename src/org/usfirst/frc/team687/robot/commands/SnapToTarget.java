@@ -1,6 +1,7 @@
 package org.usfirst.frc.team687.robot.commands;
 
 import org.usfirst.frc.team687.robot.Robot;
+import org.usfirst.frc.team687.robot.utilities.NerdyPID;
 import org.usfirst.frc.team687.robot.Constants;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -18,12 +19,12 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 public class SnapToTarget extends Command {
 	
 	private NetworkTable m_table;
-	private double m_error;
 	private double m_angleToTurn;
-	private double m_robotAngle;
-	private int m_counter = 0;
+	private NerdyPID m_rotPID;
+	
 	private double m_startTime;
 	private double m_timeout = 3;
+	private int m_counter = 0;
 
 	public SnapToTarget() {
 		m_timeout = 3; // default timeout is 3 seconds
@@ -45,18 +46,20 @@ public class SnapToTarget extends Command {
 		m_table = NetworkTable.getTable("NerdyVision");
 		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
 		m_startTime = Timer.getFPGATimestamp();
+		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+		m_rotPID.setDesired(m_angleToTurn);
 	}
 
 	@Override
 	protected void execute() {
-		m_robotAngle = (360-Robot.drive.getYaw()) % 360;
-		m_error = m_angleToTurn - m_robotAngle;
-		m_error = (m_error > 180) ? m_error-360 : m_error;
-		m_error = (m_error < -180) ? m_error+360 : m_error;
-		double power = Constants.kRotP * m_error;
-		if (Math.abs(m_error) <= Constants.kDriveRotationTolerance) {
+		double robotAngle = (360-Robot.drive.getYaw()) % 360;
+		double error = m_angleToTurn - robotAngle;
+		error = (error > 180) ? error - 360 : error;
+		error = (error < -180) ? error + 360 : error;
+		double power = m_rotPID.calculate(Robot.drive.getYaw());
+		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;
-		}	else	{
+		} else {
 			m_counter = 0;
 		}
 		Robot.drive.setPower(power, -power);

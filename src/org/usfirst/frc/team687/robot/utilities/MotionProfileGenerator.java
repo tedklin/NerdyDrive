@@ -2,6 +2,8 @@ package org.usfirst.frc.team687.robot.utilities;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team687.robot.Constants;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -17,8 +19,8 @@ public class MotionProfileGenerator {
 	private double m_accel;
 	private double m_decel;
 	
-	private double m_clkInSeconds = 0.01;
-	private double m_clkInMinutes = m_clkInSeconds / 60;
+	private double m_clkInSeconds = Constants.kDt;
+	private double m_clkInMinutes = Constants.kDtInMinutes;
 	private int m_totalPoints;
 	
 	private ArrayList<Double> m_timeProfile = new ArrayList<Double>();

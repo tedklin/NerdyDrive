@@ -24,6 +24,8 @@ public class Constants {
 	public final static double kMaxJerk = 0;
 	public final static double kV = 0;
 	public final static double kA = 0;
+	public final static double kDt = 0.01;
+	public final static double kDtInMinutes = kDt/60;
 	
 	public final static double kWheelbaseWidth = 0;
 	public final static int kTicksPerRev = 0;

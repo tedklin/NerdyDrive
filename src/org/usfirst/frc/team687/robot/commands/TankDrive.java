@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 
 public class TankDrive extends Command{
-	
-	private double m_lPow, m_rPow;
 
     public TankDrive() {
     	// subsystem dependencies
@@ -24,9 +22,9 @@ public class TankDrive extends Command{
 
 	@Override
 	protected void execute() {
-		m_lPow = Robot.drive.squareInput(Robot.oi.getDriveJoyL());
-		m_rPow = Robot.drive.squareInput(Robot.oi.getDriveJoyR());
-		Robot.drive.setPower(m_lPow, m_rPow);
+		double leftPow = Robot.drive.squareInput(Robot.oi.getDriveJoyL());
+		double rightPow = Robot.drive.squareInput(Robot.oi.getDriveJoyR());
+		Robot.drive.setPower(leftPow, rightPow);
 	}
 
 	@Override
