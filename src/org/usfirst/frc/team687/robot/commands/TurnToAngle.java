@@ -1,6 +1,7 @@
 package org.usfirst.frc.team687.robot.commands;
 
 import org.usfirst.frc.team687.robot.Robot;
+import org.usfirst.frc.team687.robot.utilities.NerdyMath;
 import org.usfirst.frc.team687.robot.Constants;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -13,8 +14,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnToAngle extends Command {
 	
 	private double m_angleToTurn;
-	private double m_robotAngle;
-	private double m_error;
 	private int m_counter = 0;
 	private double m_startTime;
 	private double m_timeout;
@@ -42,12 +41,11 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected void execute() {
-		m_robotAngle = (360-Robot.drive.getYaw()) % 360;
-		m_error = m_angleToTurn - m_robotAngle;
-		m_error = (m_error > 180) ? m_error-360 : m_error;
-		m_error = (m_error < -180) ? m_error+360 : m_error;
-		double power = Constants.kRotP * m_error;
-		if (Math.abs(m_error) <= Constants.kDriveRotationTolerance) {
+		double robotAngle = (360-Robot.drive.getYaw()) % 360;
+		double error = m_angleToTurn - robotAngle;
+		error = NerdyMath.boundAngle(error);
+		double power = Constants.kRotP * error;
+		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;
 		}	else	{
 			m_counter = 0;

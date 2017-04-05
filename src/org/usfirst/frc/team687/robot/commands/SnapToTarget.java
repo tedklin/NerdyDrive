@@ -1,6 +1,7 @@
 package org.usfirst.frc.team687.robot.commands;
 
 import org.usfirst.frc.team687.robot.Robot;
+import org.usfirst.frc.team687.robot.utilities.NerdyMath;
 import org.usfirst.frc.team687.robot.utilities.NerdyPID;
 import org.usfirst.frc.team687.robot.Constants;
 
@@ -54,8 +55,7 @@ public class SnapToTarget extends Command {
 	protected void execute() {
 		double robotAngle = (360-Robot.drive.getYaw()) % 360;
 		double error = m_angleToTurn - robotAngle;
-		error = (error > 180) ? error - 360 : error;
-		error = (error < -180) ? error + 360 : error;
+		error = NerdyMath.boundAngle(error);
 		double power = m_rotPID.calculate(Robot.drive.getYaw());
 		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;

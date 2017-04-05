@@ -68,5 +68,14 @@ public class NerdyMath {
         
         return normalizedValues;
     }
+    
+    /**
+     * Bound an angle (in degrees) to -180 to 180 degrees.
+     */
+    public static double boundAngle(double angleDegrees) {
+    	angleDegrees = (angleDegrees > 180) ? angleDegrees - 360 : angleDegrees;
+    	angleDegrees = (angleDegrees < -180) ? angleDegrees + 360 : angleDegrees;
+        return angleDegrees;
+    }
 	
 }
