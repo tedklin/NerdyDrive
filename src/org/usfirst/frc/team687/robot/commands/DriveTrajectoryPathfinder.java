@@ -3,6 +3,7 @@ package org.usfirst.frc.team687.robot.commands;
 import org.usfirst.frc.team687.robot.Constants;
 import org.usfirst.frc.team687.robot.Robot;
 import org.usfirst.frc.team687.robot.utilities.NerdyMath;
+import org.usfirst.frc.team687.robot.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,6 +11,7 @@ import jaci.pathfinder.*;
 
 /**
  * Drive a trajectory from Pathfinder (https://github.com/JacisNonsense/Pathfinder)
+ * Includes heading correction on top of encoder algorithm
  *
  * @author tedfoodlin
  *
@@ -26,9 +28,7 @@ public class DriveTrajectoryPathfinder extends Command {
 	
 	private EncoderFollower m_leftFollower;
 	private EncoderFollower m_rightFollower;
-	
-	private double m_leftPow;
-	private double m_rightPow;
+	private NerdyPID m_headingCorrection;
 	
 	public DriveTrajectoryPathfinder(Waypoint[] path) {
 		m_path = path;
@@ -55,16 +55,24 @@ public class DriveTrajectoryPathfinder extends Command {
         
         m_leftFollower.configureEncoder(0, Constants.kTicksPerRev, Constants.kWheelDiameter);
         m_rightFollower.configureEncoder(0, Constants.kTicksPerRev, Constants.kWheelDiameter);
+        
+        m_headingCorrection = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+        
+        Robot.drive.stopDrive();
 	}
 	
 	@Override
 	protected void execute() {
-		m_leftPow = m_leftFollower.calculate(Robot.drive.getLeftTicks());
-		m_rightPow = m_rightFollower.calculate(Robot.drive.getRightTicks());
+		double leftPow = m_leftFollower.calculate(Robot.drive.getLeftTicks());
+		double rightPow = m_rightFollower.calculate(Robot.drive.getRightTicks());
 		
-		double[] pow = {m_leftPow, m_rightPow};
+		m_headingCorrection.setDesired(m_leftFollower.getHeading());
+		double angularPow = m_headingCorrection.calculate(Robot.drive.getYaw());
+		leftPow += angularPow;
+		rightPow -= angularPow;
+		
+		double[] pow = {leftPow, rightPow};
 		NerdyMath.normalize(pow, false);
-		
 		Robot.drive.setPower(pow[0], pow[1]);
 	}
 
@@ -76,6 +84,7 @@ public class DriveTrajectoryPathfinder extends Command {
 	@Override 
 	protected void end() {
 		reset();
+		Robot.drive.stopDrive();
 	}
 	
 	@Override
@@ -86,7 +95,6 @@ public class DriveTrajectoryPathfinder extends Command {
 	private void reset() {
 		m_leftFollower.reset();
 		m_rightFollower.reset();
-		Robot.drive.stopDrive();
 	}
 
 }
