@@ -65,7 +65,7 @@ public class Drive extends Subsystem {
 	
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new TankDrive());
+		setDefaultCommand(new TestMinRotPower());
 	}
 	
 	public void setPower(double lPow, double rPow) {
