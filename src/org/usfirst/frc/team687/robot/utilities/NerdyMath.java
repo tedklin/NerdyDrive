@@ -1,5 +1,7 @@
 package org.usfirst.frc.team687.robot.utilities;
 
+import org.usfirst.frc.team687.robot.Constants;
+
 /**
  * Useful math functions
  *
@@ -18,6 +20,10 @@ public class NerdyMath {
     	// Native algorithm
     	return rads * (2 * Math.PI) / 360;
     }
+    
+	public static int feetToTicks(double feet) {
+		return (int)(feet/(Math.PI * Math.pow(Constants.kWheelDiameter/2, 2)))*4096;
+	}
 
     /**
      * Thresholds the value between a upper and lower limit

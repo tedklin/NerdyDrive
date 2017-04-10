@@ -2,6 +2,7 @@ package org.usfirst.frc.team687.robot.commands;
 
 import org.usfirst.frc.team687.robot.Robot;
 import org.usfirst.frc.team687.robot.utilities.NerdyMath;
+import org.usfirst.frc.team687.robot.utilities.NerdyPID;
 import org.usfirst.frc.team687.robot.Constants;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -17,6 +18,8 @@ public class TurnToAngle extends Command {
 	private int m_counter = 0;
 	private double m_startTime;
 	private double m_timeout;
+	
+	private NerdyPID m_rotPID;
 	
 	public TurnToAngle(double angle) {
 		m_angleToTurn = angle;
@@ -37,6 +40,9 @@ public class TurnToAngle extends Command {
 	@Override
 	protected void initialize() {
 		m_startTime = Timer.getFPGATimestamp();
+		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		m_rotPID.setDesired(m_angleToTurn);
 	}
 
 	@Override
@@ -44,7 +50,7 @@ public class TurnToAngle extends Command {
 		double robotAngle = (360-Robot.drive.getYaw()) % 360;
 		double error = m_angleToTurn - robotAngle;
 		error = NerdyMath.boundAngle(error);
-		double power = Constants.kRotP * error;
+		double power = m_rotPID.calculate(Robot.drive.getYaw());
 		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;
 		}	else	{
@@ -55,7 +61,8 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
+//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
+		return Timer.getFPGATimestamp() - m_startTime > m_timeout;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import org.usfirst.frc.team687.robot.commands.ShiftUp;
 import org.usfirst.frc.team687.robot.commands.ShiftDown;
 import org.usfirst.frc.team687.robot.commands.SnapToTarget;
 import org.usfirst.frc.team687.robot.commands.TankDrive;
+import org.usfirst.frc.team687.robot.commands.TurnToAngle;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -29,8 +30,10 @@ public class OI {
 	public JoystickButton quickTurn_1;
 	
 	public JoystickButton snapToTarget_2;
-	public JoystickButton shiftUp_3;
+	public JoystickButton turnToAngle_5;
 	public JoystickButton shiftDown_4;
+	
+	public JoystickButton shiftUp_3;
 	
 	public OI() {
 		zeroGyro_9 = new JoystickButton(driveJoyRight, 9);
@@ -40,15 +43,21 @@ public class OI {
 		quickTurn_1 = new JoystickButton(driveJoyRight, 1);
 		
 		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
-		snapToTarget_2.whenPressed(new SnapToTarget());
-		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
-		shiftUp_3.whenPressed(new ShiftUp());
+		snapToTarget_2.whenPressed(new SnapToTarget(15));
+		turnToAngle_5 = new JoystickButton(driveJoyRight, 5);
+		turnToAngle_5.whenPressed(new TurnToAngle(90, 15));
 		shiftDown_4 = new JoystickButton(driveJoyRight, 4);
 		shiftDown_4.whenPressed(new ShiftDown());
 		
+		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
+		shiftUp_3.whenPressed(new ShiftUp());
+		
+		
 		// Smart Dashboard buttons
 		SmartDashboard.putData("Tank Drive", new TankDrive());
-		SmartDashboard.putData("Snap to Target", new SnapToTarget());
+		SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
+		SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
+		SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
 		SmartDashboard.putData("Zero Gyro", new ResetGyro());
@@ -67,6 +76,13 @@ public class OI {
 	 */
 	public double getDriveJoyR() {
 		return driveJoyRight.getY();
+	}
+	
+	/**
+	 * @return input throttle from right drive joystick (0 to +1.0)
+	 */
+	public double getThrottleR() {
+		return (driveJoyRight.getThrottle() + 1) / 2;
 	}
 	
 	/**

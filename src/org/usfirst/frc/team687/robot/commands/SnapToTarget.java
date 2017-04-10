@@ -48,6 +48,7 @@ public class SnapToTarget extends Command {
 		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 		m_rotPID.setDesired(m_angleToTurn);
 	}
 
@@ -67,7 +68,8 @@ public class SnapToTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
+//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
+		return Timer.getFPGATimestamp() - m_startTime > m_timeout;
 	}
 
 	@Override

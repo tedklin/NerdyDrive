@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static PowerDistributionPanel pdp;
 	public static Compressor compressor;
 	public static OI oi;
+	public static SmartDashboardInteractions SDI;
 
 	@Override
 	public void robotInit() {
@@ -44,11 +45,13 @@ public class Robot extends IterativeRobot {
 		
 		drive = Drive.getInstance();
 		drive.shiftDown();
-		drive.resetEncoders();
+//		drive.resetEncoders();
 		drive.resetGyro();
 		
 		oi = new OI();
 		
+		SDI = new SmartDashboardInteractions();
+		SDI.initialize();
         SmartDashboard.putData(drive);
 	}
 
@@ -71,6 +74,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
         drive.reportToSmartDashboard();
+		SDI.update();
         SmartDashboard.putData("PDP", pdp);
 	}
 
@@ -83,6 +87,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
         drive.reportToSmartDashboard();
+		SDI.update();
         SmartDashboard.putData("PDP", pdp);
 	}
 
@@ -90,6 +95,7 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
         drive.reportToSmartDashboard();
+		SDI.update();
         SmartDashboard.putData("PDP", pdp);
 	}
 }
