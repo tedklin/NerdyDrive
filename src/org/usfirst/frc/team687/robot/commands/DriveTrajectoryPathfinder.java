@@ -7,7 +7,11 @@
 //
 //import edu.wpi.first.wpilibj.command.Command;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-////import jaci.pathfinder.*;
+//import jaci.pathfinder.Pathfinder;
+//import jaci.pathfinder.Trajectory;
+//import jaci.pathfinder.Waypoint;
+//import jaci.pathfinder.followers.EncoderFollower;
+//import jaci.pathfinder.modifiers.TankModifier;
 //
 ///**
 // * Drive a trajectory from Pathfinder (https://github.com/JacisNonsense/Pathfinder)
