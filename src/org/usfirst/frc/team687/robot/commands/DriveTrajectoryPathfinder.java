@@ -7,7 +7,7 @@
 //
 //import edu.wpi.first.wpilibj.command.Command;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import jaci.pathfinder.*;
+////import jaci.pathfinder.*;
 //
 ///**
 // * Drive a trajectory from Pathfinder (https://github.com/JacisNonsense/Pathfinder)
