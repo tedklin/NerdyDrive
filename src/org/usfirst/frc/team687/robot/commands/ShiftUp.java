@@ -3,6 +3,7 @@ package org.usfirst.frc.team687.robot.commands;
 import org.usfirst.frc.team687.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Shift to high gear
@@ -17,6 +18,7 @@ public class ShiftUp extends Command {
 
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "ShiftUp");
 		Robot.drive.shiftUp();
 	}
 

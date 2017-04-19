@@ -22,13 +22,14 @@ public class TestMinRotPower extends Command {
 	
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "TestMinRotPower");
 		Robot.drive.stopDrive();
 	}
 	
 	@Override
 	protected void execute() {
-		Robot.drive.setPower(Robot.oi.getThrottleR(), -Robot.oi.getThrottleR());
 		SmartDashboard.putNumber("Current Turning Power", Robot.oi.getThrottleR());
+		Robot.drive.setPower(Robot.oi.getThrottleR(), -Robot.oi.getThrottleR());
 	}
 
 	@Override

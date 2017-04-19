@@ -5,6 +5,7 @@ import org.usfirst.frc.team687.robot.Constants;
 import org.usfirst.frc.team687.robot.utilities.NerdyMath;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An implementation of 254's CheesyDrive
@@ -21,6 +22,7 @@ public class CheesyDrive extends Command{
 	
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "CheesyDrive");
 		Robot.drive.stopDrive();
 	}
 

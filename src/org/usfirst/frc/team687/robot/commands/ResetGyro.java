@@ -3,6 +3,7 @@ package org.usfirst.frc.team687.robot.commands;
 import org.usfirst.frc.team687.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Reset gyro with a command so we do not have to enable/disable every time
@@ -17,6 +18,7 @@ public class ResetGyro extends Command {
 
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "ResetGyro");
 		Robot.drive.resetGyro();
 	}
 

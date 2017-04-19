@@ -8,6 +8,7 @@
 //
 //import edu.wpi.first.wpilibj.Notifier;
 //import edu.wpi.first.wpilibj.command.Command;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //
 ///**
 // * Drive a trajectory with built-in Talon motion profiling
@@ -37,6 +38,7 @@
 //
 //	@Override
 //	protected void initialize() {
+//		SmartDashboard.putString("Current Command", "DriveDistanceTalon");
 //		Robot.drive.setValueMotionProfileOutput(CANTalon.SetValueMotionProfile.Disable);
 //		Robot.drive.resetSensors();
 //		Robot.drive.shiftDown();

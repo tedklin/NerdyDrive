@@ -6,7 +6,7 @@
 //import org.usfirst.frc.team687.robot.utilities.NerdyPID;
 //
 //import edu.wpi.first.wpilibj.command.Command;
-//
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import jaci.pathfinder.*;
 //
 ///**
@@ -38,6 +38,7 @@
 //	
 //	@Override
 //	protected void initialize() {
+//		SmartDashboard.putString("Current Command", "DriveTrajectoryPathfinder");
 //        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 
 //        		Constants.kDt, Constants.kMaxVelocity, Constants.kMaxAcceleration, Constants.kMaxJerk);
 //        m_trajectory = Pathfinder.generate(m_path, config);

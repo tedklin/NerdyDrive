@@ -7,6 +7,7 @@ import org.usfirst.frc.team687.robot.Constants;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Turn to a specified angle (no vision)
@@ -39,6 +40,7 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "TurnToAngle");
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);

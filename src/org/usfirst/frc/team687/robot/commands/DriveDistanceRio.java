@@ -7,6 +7,7 @@
 //
 //import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.command.Command;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //
 ///**
 // * Drive a path with motion profiling with optional straight driving heading correction with a P-loop on NavX reading
@@ -39,6 +40,7 @@
 //	
 //	@Override
 //	protected void initialize() {
+//		SmartDashboard.putString("Current Command", "DriveDistanceRio");
 //		m_leftError = 0;
 //		m_rightError = 0;
 //		
@@ -47,6 +49,7 @@
 //		
 //		Robot.drive.resetSensors();
 //		Robot.drive.shiftDown();
+//		SmartDashboard.putNumber("Desired Distance", m_distance);
 //		m_startTime = Timer.getFPGATimestamp();
 //	}
 //	
@@ -64,6 +67,8 @@
 //		
 //		m_leftError = setpoint - Robot.drive.getLeftPosition();
 //		m_rightError = setpoint - Robot.drive.getRightPosition();
+//		SmartDashboard.putNumber("Left error from setpoint", m_leftError);
+//		SmartDashboard.putNumber("Right error from setpoint", m_rightError);
 //		
 //		double leftPow = (Constants.kDistP * m_leftError) + (Constants.kDistD * ((m_leftError - m_lastLeftError)/Constants.kDt - goalVelocity)) + feedforward;
 //		double rightPow = (Constants.kDistP * m_rightError) + (Constants.kDistD * ((m_rightError - m_lastRightError)/Constants.kDt - goalVelocity)) + feedforward;

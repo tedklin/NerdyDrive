@@ -8,6 +8,7 @@ import org.usfirst.frc.team687.robot.Constants;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Automatic alignment with a vision target
@@ -21,6 +22,7 @@ public class SnapToTarget extends Command {
 	
 	private NetworkTable m_table;
 	private double m_angleToTurn;
+	private boolean m_initAligned;
 	private NerdyPID m_rotPID;
 	
 	private double m_startTime;
@@ -44,8 +46,13 @@ public class SnapToTarget extends Command {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void initialize() {
+		SmartDashboard.putString("Current Command", "SnapToTarget");
 		m_table = NetworkTable.getTable("NerdyVision");
 		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
+		SmartDashboard.putNumber("Angle To Turn from NerdyVision", m_angleToTurn);
+		m_initAligned = m_table.getBoolean("IS_ALIGNED");
+		SmartDashboard.putBoolean("Aligned to vision target", m_initAligned);
+		
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
@@ -56,6 +63,7 @@ public class SnapToTarget extends Command {
 	protected void execute() {
 		double robotAngle = (360-Robot.drive.getYaw()) % 360;
 		double error = m_angleToTurn - robotAngle;
+		SmartDashboard.putNumber("Error from Target", error);
 		error = NerdyMath.boundAngle(error);
 		double power = m_rotPID.calculate(Robot.drive.getYaw());
 		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
@@ -68,8 +76,8 @@ public class SnapToTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
-		return Timer.getFPGATimestamp() - m_startTime > m_timeout;
+//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout || m_initAligned;
+		return Timer.getFPGATimestamp() - m_startTime > m_timeout || m_initAligned;
 	}
 
 	@Override
