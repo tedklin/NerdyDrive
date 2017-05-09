@@ -72,6 +72,7 @@ public class Constants {
 	// Tolerance for closed loop DriveTurnToAngle command in degrees
 	public final static double kDriveRotationTolerance = 1;
 	public final static double kDriveRotationOscillationCount = 5;
+	public final static int kDriveStationaryCount = 5;
 	
 	public final static double kMaxVelocity = 0;
 	public final static double kMaxAcceleration = 0;
@@ -92,6 +93,8 @@ public class Constants {
 	public final static double kDriveFeetToEncoderUnitsR = 4.388*3/(Math.PI);
 	public final static double kDriveFeetToEncoderUnitsL = 4.487*3/(Math.PI);
 	public final static double kDriveStraightP = 0.018;
+	
+	public final static double kDistancePerPulse = 0;
 	
 	public final static int kDriveCurrentLimit = 20;
 	public final static double kDriveAlpha = 0.125; 

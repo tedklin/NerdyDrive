@@ -1,5 +1,6 @@
 package org.usfirst.frc.team687.robot.subsystems;
 
+import org.usfirst.frc.team687.robot.Constants;
 import org.usfirst.frc.team687.robot.RobotMap;
 import org.usfirst.frc.team687.robot.commands.*;
 import org.usfirst.frc.team687.robot.utilities.NerdyMath;
@@ -9,6 +10,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +31,7 @@ public class Drive extends Subsystem {
 	
 	private final VictorSP m_leftMaster, m_leftSlave1, m_leftSlave2;
 	private final VictorSP m_rightMaster, m_rightSlave1, m_rightSlave2;
+	private final Encoder m_leftEncoder, m_rightEncoder;
 	
 	private final DoubleSolenoid m_shifter;
 	
@@ -50,6 +53,11 @@ public class Drive extends Subsystem {
 //    	m_rightMaster = new CANTalon(RobotMap.kRightMasterTalonID);
 //    	m_rightSlave1 = new CANTalon(RobotMap.kRightSlaveTalon1ID);
 //    	m_rightSlave2 = new CANTalon(RobotMap.kRightSlaveTalon2ID);
+//    	
+//    	m_leftMaster.reverseSensor(false);
+//    	m_leftMaster.reverseOutput(false);
+//    	m_rightMaster.reverseSensor(true);
+//    	m_rightMaster.reverseOutput(true);
     	
     	m_leftMaster = new VictorSP(RobotMap.kLeftMasterTalonID);
     	m_leftSlave1 = new VictorSP(RobotMap.kLeftSlaveTalon1ID);
@@ -58,69 +66,24 @@ public class Drive extends Subsystem {
     	m_rightSlave1 = new VictorSP(RobotMap.kRightSlaveTalon1ID);
     	m_rightSlave2 = new VictorSP(RobotMap.kRightSlaveTalon2ID);
     	
-    	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
+    	m_rightMaster.setInverted(true);
+    	m_rightSlave1.setInverted(true);
+    	m_rightSlave2.setInverted(true);
     	
+    	m_leftEncoder = new Encoder(RobotMap.kLeftEncoder1ID, RobotMap.kLeftEncoder2ID, false, Encoder.EncodingType.k4X);
+    	m_rightEncoder = new Encoder(RobotMap.kRightEncoder1ID, RobotMap.kRightEncoder2ID, false, Encoder.EncodingType.k4X);
+    	
+    	m_leftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+    	m_rightEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
+    	
+    	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
     	m_nav = new AHRS(RobotMap.navID);
-    }
+    } 
 	
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new TestMinRotPower());
 	}
-	
-	public void setPower(double lPow, double rPow) {
-		m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
-		m_leftSlave1.set(NerdyMath.limit(lPow, 1.0));
-		m_leftSlave2.set(NerdyMath.limit(lPow, 1.0));
-		
-		m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
-		m_rightSlave1.set(NerdyMath.limit(rPow, 1.0));
-		m_rightSlave2.set(NerdyMath.limit(rPow, 1.0));
-	}
-	
-//    /**
-//     * Set drivetrain motor power to value between -1.0 and +1.0
-//     * 
-//     * @param left power
-//     * @param right power
-//     */
-//    public void setPower(double lPow, double rPow) {
-//    	m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
-//    	m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
-//    	
-//    	m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
-//    	m_leftSlave1.set(m_leftMaster.getDeviceID());
-//    	m_leftSlave2.set(m_leftMaster.getDeviceID());
-//    	
-//    	m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
-//    	m_rightSlave1.set(m_rightMaster.getDeviceID());
-//    	m_rightSlave2.set(m_rightMaster.getDeviceID());
-//    }
-//    
-//    public void processMotionProfileBuffer() {
-//    	m_leftMaster.processMotionProfileBuffer();
-//    	m_rightMaster.processMotionProfileBuffer();
-//    }
-//    
-//    public void changeMotionControlFramePeriod(int time) {
-//		m_leftMaster.changeMotionControlFramePeriod(time);
-//		m_rightMaster.changeMotionControlFramePeriod(time);
-//    }
-//    
-//    public void pushTrajectoryPoint(CANTalon.TrajectoryPoint point) {
-//		m_leftMaster.pushMotionProfileTrajectory(point);
-//		m_rightMaster.pushMotionProfileTrajectory(point);
-//    }
-//    
-//    public void clearMotionProfileTrajectories() {
-//    	m_leftMaster.clearMotionProfileTrajectories();
-//    	m_rightMaster.clearMotionProfileTrajectories();
-//    }
-//    
-//    public void setValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
-//    	m_leftMaster.set(output.value);
-//    	m_rightMaster.set(output.value);
-//    }
     
 	public double squareInput(double input)	{
 		return Math.pow(input, 2) * (input / Math.abs(input));
@@ -157,6 +120,54 @@ public class Drive extends Subsystem {
 		m_nav.zeroYaw();
 	}
 	
+// ----
+// Cosmos
+// ----
+	
+//	/**
+//	 * Set drivetrain motor power to value between -1.0 and +1.0
+//	 * 
+//	 * @param lPow
+//	 * @param rPow
+//	 */
+//	public void setPower(double lPow, double rPow) {
+//		m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
+//		m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
+//	 	
+//	 	m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
+//	 	m_leftSlave1.set(m_leftMaster.getDeviceID());
+//	 	m_leftSlave2.set(m_leftMaster.getDeviceID());
+//	 	
+//	 	m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
+//	 	m_rightSlave1.set(m_rightMaster.getDeviceID());
+//	 	m_rightSlave2.set(m_rightMaster.getDeviceID());
+//	 }
+//	 
+//	public void processMotionProfileBuffer() {
+//	 	m_leftMaster.processMotionProfileBuffer();
+//	 	m_rightMaster.processMotionProfileBuffer();
+//	 }
+//	 
+//	public void changeMotionControlFramePeriod(int time) {
+//		m_leftMaster.changeMotionControlFramePeriod(time);
+//		m_rightMaster.changeMotionControlFramePeriod(time);
+//	}
+//	
+//	public void pushTrajectoryPoint(CANTalon.TrajectoryPoint point) {
+//		m_leftMaster.pushMotionProfileTrajectory(point);
+//		m_rightMaster.pushMotionProfileTrajectory(point);
+//	}
+//	 
+//	public void clearMotionProfileTrajectories() {
+//		m_leftMaster.clearMotionProfileTrajectories();
+//		m_rightMaster.clearMotionProfileTrajectories();
+//	}
+//	 
+//	public void setValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
+//		m_leftMaster.set(output.value);
+//		m_rightMaster.set(output.value);
+//	 }
+//
 //	public double getLeftPosition() {
 //		return m_leftMaster.getPosition();
 //	}
@@ -208,8 +219,65 @@ public class Drive extends Subsystem {
 //		m_rightMaster.setEncPosition(0);
 //	}
 	
+// ----
+// Mantis
+// ----
+
+	/**
+	 * Set drivetrain motor power to value between -1.0 and +1.0
+	 * 
+	 * @param lPow
+	 * @param rPow
+	 */
+	public void setPower(double lPow, double rPow) {
+		m_leftMaster.set(NerdyMath.limit(lPow, 0.5));
+		m_leftSlave1.set(NerdyMath.limit(lPow, 0.5));
+		m_leftSlave2.set(NerdyMath.limit(lPow, 0.5));
+		
+		m_rightMaster.set(NerdyMath.limit(rPow, 0.5));
+		m_rightSlave1.set(NerdyMath.limit(rPow, 0.5));
+		m_rightSlave2.set(NerdyMath.limit(rPow, 0.5));
+	}
+	
+	public double getLeftPosition() {
+		return m_leftEncoder.getDistance();
+	}
+	
+	public double getRightPosition() {
+		return m_rightEncoder.getDistance();
+	}
+	
+	public int getLeftTicks() {
+		return m_leftEncoder.getRaw();
+	}
+	
+	public int getRightTicks() {
+		return m_rightEncoder.getRaw();
+	}
+	
+	public double getDrivetrainPosition() {
+		return (getLeftPosition() + getRightPosition());
+	}
+	
+	public int getDrivetrainTicks() {
+		return (int)(getLeftTicks() + getRightTicks()/2);
+	}
+	
+	public double getLeftTicksSpeed() {
+		return m_leftEncoder.getRate();
+	}
+	
+	public double getRightTicksSpeed() {
+		return m_rightEncoder.getRate();
+	}
+	
+	public void resetEncoders() {
+		m_leftEncoder.reset();
+		m_rightEncoder.reset();
+	}
+	
 	public void resetSensors() {
-//		resetEncoders();
+		resetEncoders();
 		resetGyro();
 	}
 	
@@ -222,17 +290,17 @@ public class Drive extends Subsystem {
 		SmartDashboard.putBoolean("High Gear", isHighGear());
 		SmartDashboard.putNumber("Yaw", getYaw());
 		
-//		SmartDashboard.putNumber("Left Position", getLeftPosition());
-//		SmartDashboard.putNumber("Right Position", getRightPosition());
-//		SmartDashboard.putNumber("Drivetrain Position", getDrivetrainPosition());
+		SmartDashboard.putNumber("Left Position", getLeftPosition());
+		SmartDashboard.putNumber("Right Position", getRightPosition());
+		SmartDashboard.putNumber("Drivetrain Position", getDrivetrainPosition());
 //		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
 //		SmartDashboard.putNumber("Right Speed", getRightSpeed());
-//		
-//		SmartDashboard.putNumber("Left Position Ticks", getLeftTicks());
-//		SmartDashboard.putNumber("Right Position Ticks", getRightTicks());
-//		SmartDashboard.putNumber("Drivetrain Position Ticks", getDrivetrainTicks());
-//		SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
-//		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
+		
+		SmartDashboard.putNumber("Left Position Ticks", getLeftTicks());
+		SmartDashboard.putNumber("Right Position Ticks", getRightTicks());
+		SmartDashboard.putNumber("Drivetrain Position Ticks", getDrivetrainTicks());
+		SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
+		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
 	}
 
 }

@@ -63,8 +63,7 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected boolean isFinished() {
-//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
-		return Timer.getFPGATimestamp() - m_startTime > m_timeout;
+		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
 	}
 
 	@Override

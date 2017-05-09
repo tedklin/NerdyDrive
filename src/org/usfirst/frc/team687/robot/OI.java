@@ -45,7 +45,7 @@ public class OI {
 		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
 		snapToTarget_2.whenPressed(new SnapToTarget(15));
 		turnToAngle_5 = new JoystickButton(driveJoyRight, 5);
-		turnToAngle_5.whenPressed(new TurnToAngle(90, 15));
+		turnToAngle_5.whenPressed(new TurnToAngle(45, 15));
 		shiftDown_4 = new JoystickButton(driveJoyRight, 4);
 		shiftDown_4.whenPressed(new ShiftDown());
 		

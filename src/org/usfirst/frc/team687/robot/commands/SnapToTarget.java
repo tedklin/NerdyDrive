@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Automatic alignment with a vision target
+ * Single quick alignment with a vision target with a snapping action (only one frame of vision)
  * Used with NerdyVision
  * 
  * @author tedfoodlin
@@ -22,7 +22,7 @@ public class SnapToTarget extends Command {
 	
 	private NetworkTable m_table;
 	private double m_angleToTurn;
-	private boolean m_initAligned;
+	private boolean m_isAligned;
 	private NerdyPID m_rotPID;
 	
 	private double m_startTime;
@@ -50,8 +50,8 @@ public class SnapToTarget extends Command {
 		m_table = NetworkTable.getTable("NerdyVision");
 		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
 		SmartDashboard.putNumber("Angle To Turn from NerdyVision", m_angleToTurn);
-		m_initAligned = m_table.getBoolean("IS_ALIGNED");
-		SmartDashboard.putBoolean("Aligned to vision target", m_initAligned);
+		m_isAligned = m_table.getBoolean("IS_ALIGNED");
+		SmartDashboard.putBoolean("Aligned to vision target", m_isAligned);
 		
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
@@ -76,8 +76,8 @@ public class SnapToTarget extends Command {
 
 	@Override
 	protected boolean isFinished() {
-//		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout || m_initAligned;
-		return Timer.getFPGATimestamp() - m_startTime > m_timeout || m_initAligned;
+		return Timer.getFPGATimestamp() - m_startTime > m_timeout || m_isAligned;
+//				|| m_counter > Constants.kDriveRotationOscillationCount;
 	}
 
 	@Override
