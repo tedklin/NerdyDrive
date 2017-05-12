@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
 		
 		drive = Drive.getInstance();
 		drive.shiftDown();
-//		drive.resetEncoders();
+		drive.resetEncoders();
 		drive.resetGyro();
 		
 		oi = new OI();
