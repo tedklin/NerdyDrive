@@ -8,11 +8,15 @@ import org.usfirst.frc.team687.robot.utilities.NerdyMath;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.sf2.frc.navXSensor;
+import com.kauailabs.sf2.orientation.OrientationHistory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -36,6 +40,13 @@ public class Drive extends Subsystem {
 	private final DoubleSolenoid m_shifter;
 	
 	private final AHRS m_nav;
+	private final navXSensor m_navxsensor;
+	private final OrientationHistory m_orientationHistory;
+	
+	private NetworkTable m_table;
+	
+	private double m_initTime;
+	private double m_currentTime;
 	
     public static Drive getInstance() {
     	if (drive_instance == null) {
@@ -77,7 +88,13 @@ public class Drive extends Subsystem {
 //    	m_rightEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
     	
     	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
+    	
+		m_table = NetworkTable.getTable("NerdyVision");
+        m_initTime = Timer.getFPGATimestamp();
+        
     	m_nav = new AHRS(RobotMap.navID);
+        m_navxsensor = new navXSensor(m_nav, "Drivetrain Orientation");
+        m_orientationHistory = new OrientationHistory(m_navxsensor, m_nav.getRequestedUpdateRate() * 10);
     } 
 	
 	@Override
@@ -113,12 +130,28 @@ public class Drive extends Subsystem {
     	return (m_shifter.get() == DoubleSolenoid.Value.kForward);
     }
 	
-	public double getYaw() {
+	public double getCurrentYaw() {
 		return m_nav.getYaw();
+	}
+	
+	public double getNavTimestamp() {
+		return m_nav.getLastSensorTimestamp();
+	}
+	
+	public double getHistoricalYaw(long timestamp) {
+		return m_orientationHistory.getYawDegreesAtTime(timestamp);
 	}
 	
 	public void resetGyro() {
 		m_nav.zeroYaw();
+	}
+	
+	public double getInitTime() {
+		return m_initTime;
+	}
+	
+	public double getCurrentTime() {
+		return m_currentTime;
 	}
 	
 // ----
@@ -289,7 +322,7 @@ public class Drive extends Subsystem {
 	
 	public void reportToSmartDashboard() {
 		SmartDashboard.putBoolean("High Gear", isHighGear());
-		SmartDashboard.putNumber("Yaw", getYaw());
+		SmartDashboard.putNumber("Yaw", getCurrentYaw());
 		
 		SmartDashboard.putNumber("Left Position", getLeftPosition());
 		SmartDashboard.putNumber("Right Position", getRightPosition());
@@ -302,6 +335,10 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Drivetrain Position Ticks", getDrivetrainTicks());
 		SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
 		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
+		
+		m_currentTime = Timer.getFPGATimestamp() - m_initTime;
+        m_table.putNumber("Current Time", m_currentTime);
+        SmartDashboard.putNumber("Current Time", m_currentTime);
 	}
 
 }

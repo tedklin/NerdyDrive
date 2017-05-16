@@ -37,7 +37,6 @@ public class Robot extends IterativeRobot {
 	public static Compressor compressor;
 	public static OI oi;
 	public static SmartDashboardInteractions SDI;
-	public double m_initTime;
 
 	@Override
 	public void robotInit() {
@@ -55,23 +54,24 @@ public class Robot extends IterativeRobot {
 		SDI = new SmartDashboardInteractions();
 		SDI.initialize();
         SmartDashboard.putData(drive);
-        
-        m_initTime = Timer.getFPGATimestamp();
 	}
 
 	@Override
 	public void disabledInit() {
 		Scheduler.getInstance().removeAll();
+        drive.reportToSmartDashboard();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+        drive.reportToSmartDashboard();
 	}
 
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
+        drive.reportToSmartDashboard();
 	}
 
 	@Override
@@ -85,6 +85,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll();
+        drive.reportToSmartDashboard();
 	}
 
 	@Override

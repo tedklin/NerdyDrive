@@ -72,7 +72,7 @@ public class DriveTrajectoryPathfinder extends Command {
 		double rightPow = m_rightFollower.calculate(Robot.drive.getRightTicks());
 		
 		m_headingCorrection.setDesired(m_leftFollower.getHeading());
-		double angularPow = m_headingCorrection.calculate(Robot.drive.getYaw());
+		double angularPow = m_headingCorrection.calculate(Robot.drive.getCurrentYaw());
 		leftPow += angularPow;
 		rightPow -= angularPow;
 		

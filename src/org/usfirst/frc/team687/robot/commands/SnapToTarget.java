@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Single quick alignment with a vision target with a snapping action (only one frame of vision)
+ * Alignment based on vision and gyro
  * Used with NerdyVision
  * 
  * @author tedfoodlin
@@ -22,15 +22,17 @@ public class SnapToTarget extends Command {
 	
 	private NetworkTable m_table;
 	private double m_angleToTurn;
+	private double m_error;
 	private boolean m_isAligned;
 	private NerdyPID m_rotPID;
 	
 	private double m_startTime;
-	private double m_timeout = 3;
-	private int m_counter = 0;
+	
+	private double m_frameTimestamp;
+	private double m_timeout = 5;
 
 	public SnapToTarget() {
-		m_timeout = 3; // default timeout is 3 seconds
+		m_timeout = 5; // default timeout is 5 seconds
 		
 		// subsystem dependencies
 		requires(Robot.drive);
@@ -47,37 +49,25 @@ public class SnapToTarget extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "SnapToTarget");
-		m_table = NetworkTable.getTable("NerdyVision");
-		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
-		SmartDashboard.putNumber("Angle To Turn from NerdyVision", m_angleToTurn);
-		m_isAligned = m_table.getBoolean("IS_ALIGNED");
-		SmartDashboard.putBoolean("Aligned to vision target", m_isAligned);
 		
+		visionUpdate();
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-		m_rotPID.setDesired(m_angleToTurn);
+		m_rotPID.setDesired(m_error);
 	}
 
 	@Override
 	protected void execute() {
-		double robotAngle = (360-Robot.drive.getYaw()) % 360;
-		double error = m_angleToTurn - robotAngle;
-		SmartDashboard.putNumber("Error from Target", error);
-		error = NerdyMath.boundAngle(error);
-		double power = m_rotPID.calculate(Robot.drive.getYaw());
-		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
-			m_counter += 1;
-		} else {
-			m_counter = 0;
-		}
+		visionUpdate();
+		m_rotPID.setDesired(m_error);
+		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 		Robot.drive.setPower(power, -power);
 	}
 
 	@Override
 	protected boolean isFinished() {
 		return Timer.getFPGATimestamp() - m_startTime > m_timeout || m_isAligned;
-//				|| m_counter > Constants.kDriveRotationOscillationCount;
 	}
 
 	@Override
@@ -88,6 +78,20 @@ public class SnapToTarget extends Command {
 	@Override
 	protected void interrupted() {
 		end();
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void visionUpdate() {
+		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
+		SmartDashboard.putNumber("Angle To Turn from NerdyVision", m_angleToTurn);
+		m_frameTimestamp = m_table.getDouble("FRAME_TIME");
+		SmartDashboard.putNumber("Timestamp of frame captured", m_frameTimestamp);
+		m_angleToTurn = NerdyMath.boundAngle(m_angleToTurn);
+		m_error = m_angleToTurn - Robot.drive.getHistoricalYaw((long)m_frameTimestamp);
+		SmartDashboard.putNumber("Error from Target", m_error);
+		
+		m_isAligned = m_table.getBoolean("IS_ALIGNED");
+		SmartDashboard.putBoolean("Aligned to vision target", m_isAligned);
 	}
 	
 }

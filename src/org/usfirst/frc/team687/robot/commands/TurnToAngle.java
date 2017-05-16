@@ -49,10 +49,11 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected void execute() {
-		double robotAngle = (360-Robot.drive.getYaw()) % 360;
+		double robotAngle = (360-Robot.drive.getCurrentYaw()) % 360;
 		double error = m_angleToTurn - robotAngle;
 		error = NerdyMath.boundAngle(error);
-		double power = m_rotPID.calculate(Robot.drive.getYaw());
+		SmartDashboard.putNumber("Angle Error", error);
+		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;
 		}	else	{

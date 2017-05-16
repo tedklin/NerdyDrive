@@ -74,7 +74,7 @@ public class DriveDistanceRio extends Command {
 		double rightPow = (Constants.kDistP * m_rightError) + (Constants.kDistD * ((m_rightError - m_lastRightError)/Constants.kDt - goalVelocity)) + feedforward;
 		
 		if (m_isStraight) {
-			double angularPow = Constants.kRotP * Robot.drive.getYaw();
+			double angularPow = Constants.kRotP * Robot.drive.getCurrentYaw();
 			leftPow += angularPow;
 			rightPow -= angularPow;
 		}
