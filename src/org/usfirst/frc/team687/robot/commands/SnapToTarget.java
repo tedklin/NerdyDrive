@@ -46,16 +46,12 @@ public class SnapToTarget extends Command {
 		requires(Robot.drive);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "SnapToTarget");
-		
-		visionUpdate();
 		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-		m_rotPID.setDesired(m_error);
 	}
 
 	@Override
@@ -87,6 +83,7 @@ public class SnapToTarget extends Command {
 		SmartDashboard.putNumber("Angle from NerdyVision", m_angleToTurn);
 		m_frameTimestamp = m_table.getDouble("FRAME_TIME");
 		SmartDashboard.putNumber("Timestamp of frame captured", m_frameTimestamp);
+		
 		m_angleToTurn = NerdyMath.boundAngle(m_angleToTurn);
 		m_historicalAngle = Robot.drive.getHistoricalYaw((long)m_frameTimestamp);
 		SmartDashboard.putNumber("Historical angle at timestamp of frame captured", m_historicalAngle);

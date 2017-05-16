@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Turn to a specified angle (no vision)
+ * Turn to a specified angle according to field (no vision)
  */
 
 public class TurnToAngle extends Command {
