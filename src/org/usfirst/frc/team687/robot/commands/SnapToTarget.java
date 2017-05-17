@@ -81,7 +81,7 @@ public class SnapToTarget extends Command {
 	private void visionUpdate() {
 		m_angleToTurn = m_table.getDouble("ANGLE_TO_TURN");
 		SmartDashboard.putNumber("Angle from NerdyVision", m_angleToTurn);
-		m_frameTimestamp = m_table.getDouble("FRAME_TIME");
+		m_frameTimestamp = m_table.getDouble("CAPTURE_TIME");
 		SmartDashboard.putNumber("Timestamp of frame captured", m_frameTimestamp);
 		
 		m_angleToTurn = NerdyMath.boundAngle(m_angleToTurn);
