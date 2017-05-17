@@ -317,7 +317,7 @@ public class Drive extends Subsystem {
 	
     public void stopDrive() {
     	setPower(0, 0);
-    	resetSensors();
+    	resetEncoders();
     }
 	
 	public void reportToSmartDashboard() {

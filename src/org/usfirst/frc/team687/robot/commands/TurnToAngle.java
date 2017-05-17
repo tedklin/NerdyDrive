@@ -45,6 +45,9 @@ public class TurnToAngle extends Command {
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 		m_rotPID.setDesired(m_angleToTurn);
+		
+		Robot.drive.stopDrive();
+		Robot.drive.shiftDown();
 	}
 
 	@Override
