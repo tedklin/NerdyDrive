@@ -1,11 +1,7 @@
 package com.team687.frc2017;
 
-import com.team687.frc2017.commands.ResetGyro;
-import com.team687.frc2017.commands.ShiftDown;
-import com.team687.frc2017.commands.ShiftUp;
-import com.team687.frc2017.commands.SnapToTarget;
-import com.team687.frc2017.commands.TankDrive;
-import com.team687.frc2017.commands.TurnToAngle;
+import com.team687.frc2017.commands.*;
+import com.team687.frc2017.commands.tests.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -24,10 +20,15 @@ public class OI {
 	public Joystick driveJoyLeft = new Joystick(0);
 	public Joystick driveJoyRight = new Joystick(1);
 	
+	// buttons on driveJoyLeft
+	public JoystickButton testSensors_9;
+	public JoystickButton testMinRotPower_7;
+	public JoystickButton testRotPID_1;
+	
 	// buttons on driveJoyRight
 	public JoystickButton zeroGyro_9;
-	public JoystickButton clearAll_7;
-	public JoystickButton quickTurn_1;
+	public JoystickButton clearAll_8;
+	public JoystickButton quickTurn_7;
 	
 	public JoystickButton snapToTarget_2;
 	public JoystickButton turnToAngle_5;
@@ -38,9 +39,9 @@ public class OI {
 	public OI() {
 		zeroGyro_9 = new JoystickButton(driveJoyRight, 9);
 		zeroGyro_9.whenPressed(new ResetGyro());
-		clearAll_7 = new JoystickButton(driveJoyRight, 7);
-		clearAll_7.cancelWhenPressed(Robot.drive.getCurrentCommand());
-		quickTurn_1 = new JoystickButton(driveJoyRight, 1);
+		clearAll_8 = new JoystickButton(driveJoyRight, 8);
+		clearAll_8.cancelWhenPressed(Robot.drive.getCurrentCommand());
+		quickTurn_7 = new JoystickButton(driveJoyRight, 7);
 		
 		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
 		snapToTarget_2.whenPressed(new SnapToTarget(15));
@@ -52,6 +53,13 @@ public class OI {
 		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
 		shiftUp_3.whenPressed(new ShiftUp());
 		
+		testSensors_9 = new JoystickButton(driveJoyLeft, 9);
+		testSensors_9.whenPressed(new TestSensors());
+		testMinRotPower_7 = new JoystickButton(driveJoyLeft, 7);
+		testMinRotPower_7.whenPressed(new TestMinRotPower());
+		testRotPID_1 = new JoystickButton(driveJoyLeft, 1);
+		testRotPID_1.whenPressed(new TestRotPID());
+		
 		
 		// Smart Dashboard buttons
 		SmartDashboard.putData("Tank Drive", new TankDrive());
@@ -61,6 +69,10 @@ public class OI {
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
 		SmartDashboard.putData("Zero Gyro", new ResetGyro());
+		
+		SmartDashboard.putData("Test Sensors", new TestSensors());
+		SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
+		SmartDashboard.putData("Test Rot PID", new TestRotPID());
 	}
 	
 	/**
@@ -88,6 +100,6 @@ public class OI {
 	 * @return if quick turn state in cheesydrive mode
 	 */
 	public boolean getQuickTurn() {
-		return quickTurn_1.get();
+		return quickTurn_7.get();
 	}
 }
