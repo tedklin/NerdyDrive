@@ -76,16 +76,24 @@ public class OI {
 	}
 	
 	/**
-	 * @return input power from left drive joystick (-1.0 to +1.0)
+	 * @return input power from left drive joystick (-1.0 to +1.0) with compensation for deadband
 	 */
 	public double getDriveJoyL() {
-		return driveJoyLeft.getY();
+		double input = driveJoyLeft.getY();
+		if (Math.abs(input) < Constants.kLeftJoystickDeadband) {
+			input = 0;
+		}
+		return input;
 	}
 	
 	/**
-	 * @return input power from right drive joystick (-1.0 to +1.0)
+	 * @return input power from right drive joystick (-1.0 to +1.0) with compensation for deadband
 	 */
 	public double getDriveJoyR() {
+		double input = driveJoyRight.getY();
+		if (Math.abs(input) < Constants.kRightJoystickDeadband) {
+			input = 0;
+		}
 		return driveJoyRight.getY();
 	}
 	
