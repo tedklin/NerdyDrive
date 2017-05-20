@@ -6,6 +6,7 @@ import com.team687.frc2017.Constants;
  * Useful math functions
  *
  * @author Wesley
+ * @author tedfoodlin
  *
  */
 
@@ -24,21 +25,8 @@ public class NerdyMath {
 	public static int feetToTicks(double feet) {
 		return (int)(feet/(Math.PI * Math.pow(Constants.kWheelDiameter/2, 2)))*4096;
 	}
-
-    /**
-     * Thresholds the value between a upper and lower limit
-     * 
-     * @param val	The value
-     * @param min	The lower limit
-     * @param max	The upper limit
-     * @return		The thresholded value
-     */
-    public static double threshold(double val, double min, double max)	{
-    	return Math.min(max, Math.max(min, val));
-    }
     
     /**
-     * Simplified threshold
      * Limits the given input to the given magnitude. 
      * 
      * @param value

@@ -1,4 +1,4 @@
-package com.team687.frc2017.commands;
+package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.NerdyMath;
@@ -15,10 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TestSensors extends Command {
 	
-	private double m_desiredAngle = 0;
-	private double m_desiredLeftPos = 0;
-	private double m_desiredRightPos = 0;
-
     public TestSensors() {
     	// subsystem dependencies
         requires(Robot.drive);
@@ -30,12 +26,13 @@ public class TestSensors extends Command {
 		Robot.drive.stopDrive();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
+		double desiredAngle = SmartDashboard.getNumber("Desired Angle (test, editable)");
+		double desiredLeftPos = SmartDashboard.getNumber("Desired Left Pos (test, editable)");
+		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)");
 		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
-		SmartDashboard.putNumber("Desired Angle (test)", m_desiredAngle);
-		SmartDashboard.putNumber("Desired Left Pos (test)", m_desiredLeftPos);
-		SmartDashboard.putNumber("Desired Right Pos (test)", m_desiredRightPos);
 		SmartDashboard.putNumber("Actual Angle (test)", actualAngle);
 		SmartDashboard.putNumber("Actual Left Pos (test)", Robot.drive.getLeftPosition());
 		SmartDashboard.putNumber("Actual Right Pos (test)", Robot.drive.getRightPosition());
@@ -46,13 +43,13 @@ public class TestSensors extends Command {
 		SmartDashboard.putNumber("Actual Left Speed Ticks (test)", Robot.drive.getLeftTicksSpeed());
 		SmartDashboard.putNumber("Actual Right Speed Ticks (test)", Robot.drive.getRightTicksSpeed());
 		
-		double angleError = m_desiredAngle - actualAngle;
+		double angleError = desiredAngle - actualAngle;
 		angleError = (angleError > 180) ? angleError-360 : angleError;
 		angleError = (angleError < -180) ? angleError+360 : angleError;
-		double leftPosError = m_desiredLeftPos - Robot.drive.getLeftPosition();
-		double rightPosError = m_desiredRightPos - Robot.drive.getRightPosition();
-		double leftTicksError = m_desiredLeftPos - Robot.drive.getLeftTicks();
-		double rightTicksError = m_desiredRightPos - Robot.drive.getRightTicks();
+		double leftPosError = desiredLeftPos - Robot.drive.getLeftPosition();
+		double rightPosError = desiredRightPos - Robot.drive.getRightPosition();
+		double leftTicksError = desiredLeftPos - Robot.drive.getLeftTicks();
+		double rightTicksError = desiredRightPos - Robot.drive.getRightTicks();
 		
 		SmartDashboard.putNumber("Error Angle (test)", angleError);
 		SmartDashboard.putNumber("Error Left Pos (test)", leftPosError);
@@ -76,30 +73,6 @@ public class TestSensors extends Command {
 	@Override
 	protected void interrupted() {
 		end();
-	}
-	
-	public void setDesiredAngle(double desiredAngle) {
-		m_desiredAngle = desiredAngle;
-	}
-	
-	public void setDesiredLeftDistance(double desiredLeft) {
-		m_desiredLeftPos = desiredLeft;
-	}
-	
-	public void setDesiredRightDistance(double desiredRight) {
-		m_desiredRightPos = desiredRight;
-	}
-	
-	public double getDesiredAngle() {
-		return m_desiredAngle;
-	}
-	
-	public double getDesiredLeftDistance() {
-		return m_desiredLeftPos;
-	}
-	
-	public double getDesiredRightDistance() {
-		return m_desiredRightPos;
 	}
 
 }

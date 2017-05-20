@@ -1,4 +1,4 @@
-package com.team687.frc2017.commands;
+package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Robot;
 
@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * A simple test to find the minimum power (0 to 1.0) it takes for the drivetrain to start rotating
- * This value will be then be used as the minimum output of any PID turning on the drivetrain
+ * A test to find the minimum power (0 to 1.0) it takes for the drivetrain to start rotating
+ * This value can be then be used as the minimum output of any PID turning on the drivetrain
  *
  * @author tedfoodlin
  *
@@ -23,13 +23,15 @@ public class TestMinRotPower extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "TestMinRotPower");
+		SmartDashboard.putNumber("Turning Power (test, editable)", 0);
 		Robot.drive.stopDrive();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
-		SmartDashboard.putNumber("Current Turning Power", Robot.oi.getThrottleR());
-		Robot.drive.setPower(Robot.oi.getThrottleR(), -Robot.oi.getThrottleR());
+		double power = SmartDashboard.getNumber("Turning Power (test, editable)");
+		Robot.drive.setPower(power, -power);
 	}
 
 	@Override

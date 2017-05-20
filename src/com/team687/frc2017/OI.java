@@ -61,7 +61,6 @@ public class OI {
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
 		SmartDashboard.putData("Zero Gyro", new ResetGyro());
-		
 	}
 	
 	/**

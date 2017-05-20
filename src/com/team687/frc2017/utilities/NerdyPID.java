@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.util.BoundaryException;
  * 
  * @author Wesley
  * 
- * Modification for gyro PID by tedfoodlin
+ * Modification for gyro PID and minimum output by tedfoodlin
  *
  */
 
@@ -65,7 +65,19 @@ public class NerdyPID {
 		}
 		m_totalError += m_error;
 		
-		m_result = NerdyMath.threshold((m_kP * m_error) + (m_kI * m_totalError) - (m_kD * (m_error - m_lastError)), m_minimumOutput, m_maximumOutput);
+		m_result = (m_kP * m_error) + (m_kI * m_totalError) - (m_kD * (m_error - m_lastError));
+		
+		boolean isNegative = m_result < 0;
+		if (Math.abs(m_result) > m_maximumOutput && !isNegative) {
+			m_result = m_maximumOutput;
+		} else if (Math.abs(m_result) > m_maximumOutput && isNegative) {
+			m_result = -m_maximumOutput;
+		}
+		if (Math.abs(m_result) < m_minimumOutput && !isNegative) {
+			m_result = m_minimumOutput;
+		} else if (Math.abs(m_result) < m_minimumOutput && isNegative) {
+			m_result = -m_minimumOutput;
+		}
 		
 		return m_result;
 	}
@@ -92,10 +104,18 @@ public class NerdyPID {
 		m_desired = desired;
 	}
 	
+	/**
+	 * Sets absolute value output range
+	 * 
+	 * @param minimum
+	 * @param maximum
+	 */
 	public void setOutputRange(double minimum, double maximum)	{
 		if(minimum > maximum)	{
 			throw new BoundaryException("Lower bound is greater than upper bound");
 		}
+		m_minimumOutput = minimum;
+		m_maximumOutput = maximum;
 	}
 	
 	/**
