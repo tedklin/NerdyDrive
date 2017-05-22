@@ -44,12 +44,12 @@ public class TestRotPID extends Command {
 	@Override
 	protected void execute() {
 		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
-		SmartDashboard.putNumber("Actual Angle (test)", actualAngle);
-		double desiredAngle = SmartDashboard.getNumber("Desired Angle (test, editable)");
+		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
+		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
 		double angleError = desiredAngle - actualAngle;
 		angleError = (angleError > 180) ? angleError-360 : angleError;
 		angleError = (angleError < -180) ? angleError+360 : angleError;
-		SmartDashboard.putNumber("Error Angle (test)", angleError);
+		SmartDashboard.putNumber("Error Yaw (test)", angleError);
 		
 		double kP = SmartDashboard.getNumber("Rot P (test, editable)");
 		double kI = SmartDashboard.getNumber("Rot I (test, editable)");

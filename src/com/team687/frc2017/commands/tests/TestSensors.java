@@ -24,16 +24,18 @@ public class TestSensors extends Command {
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "TestSensors");
 		Robot.drive.stopDrive();
+		SmartDashboard.putNumber("Historical Yaw Timestamp (test, editable)", 0);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
-		double desiredAngle = SmartDashboard.getNumber("Desired Angle (test, editable)");
+		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
 		double desiredLeftPos = SmartDashboard.getNumber("Desired Left Pos (test, editable)");
 		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)");
 		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
-		SmartDashboard.putNumber("Actual Angle (test)", actualAngle);
+		
+		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
 		SmartDashboard.putNumber("Actual Left Pos (test)", Robot.drive.getLeftPosition());
 		SmartDashboard.putNumber("Actual Right Pos (test)", Robot.drive.getRightPosition());
 		SmartDashboard.putNumber("Actual Left Speed (test)", Robot.drive.getLeftSpeed());
@@ -43,6 +45,11 @@ public class TestSensors extends Command {
 		SmartDashboard.putNumber("Actual Left Speed Ticks (test)", Robot.drive.getLeftTicksSpeed());
 		SmartDashboard.putNumber("Actual Right Speed Ticks (test)", Robot.drive.getRightTicksSpeed());
 		
+		double timestamp = SmartDashboard.getNumber("Historical Yaw Timestamp (test, editable)");
+		long timestamp_ = (long)timestamp;
+		SmartDashboard.putNumber("Historical Yaw Timestamp (test, noneditable (long))", timestamp_);
+		SmartDashboard.putNumber("Historical Yaw (test)", Robot.drive.getHistoricalYaw(timestamp_));
+		
 		double angleError = desiredAngle - actualAngle;
 		angleError = (angleError > 180) ? angleError-360 : angleError;
 		angleError = (angleError < -180) ? angleError+360 : angleError;
@@ -51,7 +58,7 @@ public class TestSensors extends Command {
 		double leftTicksError = desiredLeftPos - Robot.drive.getLeftTicks();
 		double rightTicksError = desiredRightPos - Robot.drive.getRightTicks();
 		
-		SmartDashboard.putNumber("Error Angle (test)", angleError);
+		SmartDashboard.putNumber("Error Yaw (test)", angleError);
 		SmartDashboard.putNumber("Error Left Pos (test)", leftPosError);
 		SmartDashboard.putNumber("Error Right Pos (test)", rightPosError);
 		SmartDashboard.putNumber("Error Left Pos Ticks (test)", leftTicksError);
