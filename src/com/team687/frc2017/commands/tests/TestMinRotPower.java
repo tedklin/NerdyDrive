@@ -25,6 +25,7 @@ public class TestMinRotPower extends Command {
 		SmartDashboard.putString("Current Command", "TestMinRotPower");
 		SmartDashboard.putNumber("Turning Power (test, editable)", 0);
 		Robot.drive.stopDrive();
+		Robot.drive.shiftDown();
 	}
 	
 	@SuppressWarnings("deprecation")

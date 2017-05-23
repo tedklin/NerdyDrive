@@ -56,6 +56,9 @@ public class PivotToAngle extends Command {
 		m_rotPID.setPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setDesired(m_angle);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		
+		Robot.drive.stopDrive();
+		Robot.drive.shiftDown();
 	}
 	
 	@Override

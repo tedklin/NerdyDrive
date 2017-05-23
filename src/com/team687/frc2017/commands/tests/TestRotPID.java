@@ -38,6 +38,7 @@ public class TestRotPID extends Command {
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 		
 		Robot.drive.stopDrive();
+		Robot.drive.shiftUp();
 	}
 
 	@SuppressWarnings("deprecation")

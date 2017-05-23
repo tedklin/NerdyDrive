@@ -24,6 +24,7 @@ public class TestSensors extends Command {
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "TestSensors");
 		Robot.drive.stopDrive();
+		Robot.drive.shiftUp();
 		SmartDashboard.putNumber("Historical Yaw Timestamp (test, editable)", 0);
 	}
 

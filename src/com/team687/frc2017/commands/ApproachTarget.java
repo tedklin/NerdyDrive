@@ -49,9 +49,10 @@ public class ApproachTarget extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "ApproachTarget");
-		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		
+		m_startTime = Timer.getFPGATimestamp();
 		
 		Robot.drive.stopDrive();
 		Robot.drive.shiftDown();

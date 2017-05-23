@@ -49,12 +49,13 @@ public class SnapToTarget extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "SnapToTarget");
-		m_startTime = Timer.getFPGATimestamp();
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 		
 		Robot.drive.stopDrive();
 		Robot.drive.shiftDown();
+		
+		m_startTime = Timer.getFPGATimestamp();
 	}
 
 	@Override

@@ -63,7 +63,9 @@ public class DriveTrajectoryPathfinder extends Command {
         
         m_headingCorrection = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
         
-        Robot.drive.stopDrive();
+		Robot.drive.stopDrive();
+		Robot.drive.resetEncoders();
+		Robot.drive.shiftDown();
 	}
 	
 	@Override

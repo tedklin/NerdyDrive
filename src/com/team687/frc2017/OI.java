@@ -94,7 +94,7 @@ public class OI {
 		if (Math.abs(input) < Constants.kRightJoystickDeadband) {
 			input = 0;
 		}
-		return driveJoyRight.getY();
+		return input;
 	}
 	
 	/**

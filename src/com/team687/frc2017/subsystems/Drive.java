@@ -309,14 +309,8 @@ public class Drive extends Subsystem {
 //		m_rightEncoder.reset();
 //	}
 	
-	public void resetSensors() {
-		resetEncoders();
-		resetGyro();
-	}
-	
     public void stopDrive() {
     	setPower(0, 0);
-    	resetEncoders();
     }
 	
 	public void reportToSmartDashboard() {

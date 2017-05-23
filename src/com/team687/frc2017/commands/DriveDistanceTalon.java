@@ -39,8 +39,6 @@ public class DriveDistanceTalon extends Command {
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "DriveDistanceTalon");
 		Robot.drive.setValueMotionProfileOutput(CANTalon.SetValueMotionProfile.Disable);
-		Robot.drive.resetSensors();
-		Robot.drive.shiftDown();
 		
 		Robot.drive.changeMotionControlFramePeriod(5);
 		m_notifer.startPeriodic(0.005);
@@ -66,6 +64,10 @@ public class DriveDistanceTalon extends Command {
 			
 			Robot.drive.pushTrajectoryPoint(point);
 		}
+		
+		Robot.drive.stopDrive();
+		Robot.drive.resetEncoders();
+		Robot.drive.shiftDown();
 	}
 
 	@Override
@@ -81,6 +83,8 @@ public class DriveDistanceTalon extends Command {
 	@Override
 	protected void end() {
 		resetMotionProfile();
+        Robot.drive.stopDrive();
+        Robot.drive.resetEncoders();
 	}
 
 	@Override

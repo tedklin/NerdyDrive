@@ -47,8 +47,10 @@ public class DriveDistanceRio extends Command {
 		m_motionProfile = new MotionProfileGenerator(Constants.kMaxVelocity, Constants.kMaxAcceleration, -Constants.kMaxAcceleration);
 		m_motionProfile.generateProfile(m_distance);
 		
-		Robot.drive.resetSensors();
+		Robot.drive.stopDrive();
+		Robot.drive.resetEncoders();
 		Robot.drive.shiftDown();
+		
 		SmartDashboard.putNumber("Desired Distance", m_distance);
 		m_startTime = Timer.getFPGATimestamp();
 	}
