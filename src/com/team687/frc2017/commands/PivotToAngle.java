@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Pivot on one side of the drivetrain to turn to an angle (absolute)
+ * Pivot on one side of the drivetrain to turn to an angle (absolute, not meant to be very accurate)
  *
  * @author tedfoodlin
  *
@@ -25,19 +25,22 @@ public class PivotToAngle extends Command {
 	private NerdyPID m_rotPID;
 	private boolean m_isRightTurn;
 	private boolean m_isQuickPivot;
+	private boolean m_isForward;
 	
-	public PivotToAngle(double angle, boolean isQuickPivot) {
+	public PivotToAngle(double angle, boolean isQuickPivot, boolean isForward) {
 		m_angle = angle;
 		m_timeout = 5; //default
 		m_isQuickPivot = isQuickPivot;
+		m_isForward = isForward;
 		
 		requires(Robot.drive);
 	}
 	
-	public PivotToAngle(double angle, double timeout, boolean isQuickPivot) {
+	public PivotToAngle(double angle, double timeout, boolean isQuickPivot, boolean isForward) {
 		m_angle = angle;
 		m_timeout = timeout;
 		m_isQuickPivot = isQuickPivot;
+		m_isForward = isForward;
 		
 		requires(Robot.drive);
 	}
@@ -68,9 +71,14 @@ public class PivotToAngle extends Command {
 		if (m_isQuickPivot && Math.abs(power) > 0.1) {
 			power *= 2;
 		}
-		if (m_isRightTurn) {
+		
+		if (m_isRightTurn && m_isForward) {
 			Robot.drive.setPower(power, 0);
-		} else {
+		} else if (!m_isRightTurn && m_isForward) {
+			Robot.drive.setPower(0, -power);
+		} else if (m_isRightTurn && !m_isForward) {
+			Robot.drive.setPower(-power, 0);
+		} else if (!m_isRightTurn && !m_isForward) {
 			Robot.drive.setPower(0, power);
 		}
 	}

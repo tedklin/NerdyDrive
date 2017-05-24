@@ -63,7 +63,7 @@ public class ApproachTarget extends Command {
 		visionUpdate();
 		m_rotPID.setDesired(m_error);
 		double rotPower = m_rotPID.calculate(Robot.drive.getCurrentYaw() - m_historicalAngle);
-		double straightPower = 0.5;
+		double straightPower = 0.330;
 		Robot.drive.setPower(straightPower + rotPower, straightPower - rotPower);
 	}
 
