@@ -25,6 +25,9 @@ public class OI {
 	public JoystickButton testMinRotPower_7;
 	public JoystickButton testRotPID_1;
 	
+	public JoystickButton tankDrive_10;
+	public JoystickButton cheesyDrive_11;
+	
 	// buttons on driveJoyRight
 	public JoystickButton zeroGyro_9;
 	public JoystickButton clearAll_8;
@@ -73,12 +76,24 @@ public class OI {
 		testRotPID_1 = new JoystickButton(driveJoyLeft, 1);
 		testRotPID_1.whenPressed(new TestRotPID());
 		
+		tankDrive_10 = new JoystickButton(driveJoyLeft, 10);
+		tankDrive_10.whenPressed(new TankDrive());
+		cheesyDrive_11 = new JoystickButton(driveJoyLeft, 11);
+		cheesyDrive_11.whenPressed(new CheesyDrive());
+		
 		
 		// Smart Dashboard buttons
 		SmartDashboard.putData("Tank Drive", new TankDrive());
+		SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
 		SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
+		SmartDashboard.putData("Approach Target", new ApproachTarget());
 		SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
 		SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
+		SmartDashboard.putData("Arc Turn to 90", new ArcTurn(90, 0.254));
+		SmartDashboard.putData("Pivot to 170", new PivotToAngle(170, true, false));
+		SmartDashboard.putData("Arc Turn to -90", new ArcTurn(-90, 0.254));
+		SmartDashboard.putData("Pivot to -170", new PivotToAngle(-170, true, false));
+		
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
 		SmartDashboard.putData("Zero Gyro", new ResetGyro());
