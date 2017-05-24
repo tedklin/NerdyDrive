@@ -29,7 +29,7 @@ public class PivotToAngle extends Command {
 	
 	public PivotToAngle(double angle, boolean isQuickPivot, boolean isForward) {
 		m_angle = angle;
-		m_timeout = 5; //default
+		m_timeout = 6.87; //default
 		m_isQuickPivot = isQuickPivot;
 		m_isForward = isForward;
 		

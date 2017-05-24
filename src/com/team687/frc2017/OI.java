@@ -34,6 +34,11 @@ public class OI {
 	public JoystickButton turnToAngle_5;
 	public JoystickButton shiftDown_4;
 	
+	public JoystickButton approachTarget_10;
+	public JoystickButton arcTurn_11;
+	
+	public JoystickButton pivotToAngle_12;
+	
 	public JoystickButton shiftUp_3;
 	
 	public OI() {
@@ -49,6 +54,14 @@ public class OI {
 		turnToAngle_5.whenPressed(new TurnToAngle(45, 15));
 		shiftDown_4 = new JoystickButton(driveJoyRight, 4);
 		shiftDown_4.whenPressed(new ShiftDown());
+		
+		approachTarget_10 = new JoystickButton(driveJoyRight, 10);
+		approachTarget_10.whenPressed(new ApproachTarget());
+		arcTurn_11 = new JoystickButton(driveJoyRight, 11);
+		arcTurn_11.whenPressed(new ArcTurn(90, 0.254));
+		
+		pivotToAngle_12 = new JoystickButton(driveJoyRight, 12);
+		pivotToAngle_12.whenPressed(new PivotToAngle(170, false, false));
 		
 		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
 		shiftUp_3.whenPressed(new ShiftUp());
