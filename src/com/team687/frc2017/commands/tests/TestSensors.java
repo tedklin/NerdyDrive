@@ -36,15 +36,15 @@ public class TestSensors extends Command {
 		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)");
 		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
 		
-		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
-		SmartDashboard.putNumber("Actual Left Pos (test)", Robot.drive.getLeftPosition());
-		SmartDashboard.putNumber("Actual Right Pos (test)", Robot.drive.getRightPosition());
-		SmartDashboard.putNumber("Actual Left Speed (test)", Robot.drive.getLeftSpeed());
-		SmartDashboard.putNumber("Actual Right Speed (test)", Robot.drive.getRightSpeed());
-		SmartDashboard.putNumber("Actual Left Pos Ticks (test)", Robot.drive.getLeftTicks());
-		SmartDashboard.putNumber("Actual Right Pos Ticks (test)", Robot.drive.getRightTicks());
-		SmartDashboard.putNumber("Actual Left Speed Ticks (test)", Robot.drive.getLeftTicksSpeed());
-		SmartDashboard.putNumber("Actual Right Speed Ticks (test)", Robot.drive.getRightTicksSpeed());
+//		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
+//		SmartDashboard.putNumber("Actual Left Pos (test)", Robot.drive.getLeftPosition());
+//		SmartDashboard.putNumber("Actual Right Pos (test)", Robot.drive.getRightPosition());
+//		SmartDashboard.putNumber("Actual Left Speed (test)", Robot.drive.getLeftSpeed());
+//		SmartDashboard.putNumber("Actual Right Speed (test)", Robot.drive.getRightSpeed());
+//		SmartDashboard.putNumber("Actual Left Pos Ticks (test)", Robot.drive.getLeftTicks());
+//		SmartDashboard.putNumber("Actual Right Pos Ticks (test)", Robot.drive.getRightTicks());
+//		SmartDashboard.putNumber("Actual Left Speed Ticks (test)", Robot.drive.getLeftTicksSpeed());
+//		SmartDashboard.putNumber("Actual Right Speed Ticks (test)", Robot.drive.getRightTicksSpeed());
 		
 		double timestamp = SmartDashboard.getNumber("Historical Yaw Timestamp (test, editable)");
 		long timestamp_ = (long)timestamp;

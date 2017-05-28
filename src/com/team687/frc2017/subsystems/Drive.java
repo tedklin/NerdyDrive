@@ -5,6 +5,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.*;
+import com.team687.frc2017.commands.tests.*;
 import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.lib.kauailabs.navx.frc.AHRS;
 import com.team687.lib.kauailabs.sf2.frc.navXSensor;
@@ -27,8 +28,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {
 	
-    private static Drive drive_instance = new Drive();
-	
 	private final CANTalon m_leftMaster, m_leftSlave1, m_leftSlave2;
 	private final CANTalon m_rightMaster, m_rightSlave1, m_rightSlave2;
 	
@@ -46,17 +45,8 @@ public class Drive extends Subsystem {
 	
 	private double m_initTime;
 	private double m_currentTime;
-	
-    public static Drive getInstance() {
-    	if (drive_instance == null) {
-    		drive_instance = new Drive();
-    	}
-        return drive_instance;
-    }
     
-    private Drive() {
-    	super();
-    	
+    public Drive() {
     	m_leftMaster = new CANTalon(RobotMap.kLeftMasterTalonID);
     	m_leftSlave1 = new CANTalon(RobotMap.kLeftSlaveTalon1ID);
     	m_leftSlave2 = new CANTalon(RobotMap.kLeftSlaveTalon2ID);
@@ -99,7 +89,7 @@ public class Drive extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 		setDefaultCommand(new TankDrive());
-//		setDefaultCommand(new TestMinRotPower());
+//		setDefaultCommand(new TestSensors());
 	}
     
 	public double squareInput(double input)	{
@@ -314,7 +304,11 @@ public class Drive extends Subsystem {
     }
 	
 	public void reportToSmartDashboard() {
-		SmartDashboard.putBoolean("High Gear", isHighGear());
+		if (isHighGear()) {
+			SmartDashboard.putString("Gear Shift", "High");
+		} else if (!isHighGear()){
+			SmartDashboard.putString("Gear Shift", "Low");
+		}
 		SmartDashboard.putNumber("Yaw", getCurrentYaw());
 		
 		SmartDashboard.putNumber("Left Position", getLeftPosition());

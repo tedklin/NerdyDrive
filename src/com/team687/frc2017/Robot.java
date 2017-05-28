@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
 		compressor = new Compressor();
 		compressor.start();
 		
-		drive = Drive.getInstance();
+		drive = new Drive();
 		drive.stopDrive();
 		drive.shiftDown();
 		drive.resetEncoders();
