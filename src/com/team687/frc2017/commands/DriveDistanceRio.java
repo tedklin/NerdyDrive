@@ -30,6 +30,10 @@ public class DriveDistanceRio extends Command {
 	private double m_lastLeftError;
 	private double m_lastRightError;
 	
+	/**
+	 * @param distance
+	 * @param isStraight
+	 */
 	public DriveDistanceRio(double distance, boolean straight) {
 		m_distance = distance;
 		m_isStraight = straight;

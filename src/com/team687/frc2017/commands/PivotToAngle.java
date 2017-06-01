@@ -27,6 +27,11 @@ public class PivotToAngle extends Command {
 	private boolean m_isQuickPivot;
 	private boolean m_isForward;
 	
+	/**
+	 * @param angle
+	 * @param isQuickPivot
+	 * @param isForward
+	 */
 	public PivotToAngle(double angle, boolean isQuickPivot, boolean isForward) {
 		m_angle = angle;
 		m_timeout = 6.87; //default
@@ -36,7 +41,13 @@ public class PivotToAngle extends Command {
 		requires(Robot.drive);
 	}
 	
-	public PivotToAngle(double angle, double timeout, boolean isQuickPivot, boolean isForward) {
+	/**
+	 * @param angle
+	 * @param timeout
+	 * @param isQuickPivot
+	 * @param isForward
+	 */
+	public PivotToAngle(double angle, boolean isQuickPivot, boolean isForward, double timeout) {
 		m_angle = angle;
 		m_timeout = timeout;
 		m_isQuickPivot = isQuickPivot;

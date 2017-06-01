@@ -39,6 +39,9 @@ public class SnapToTarget extends Command {
 		requires(Robot.drive);
 	}
 	
+	/**
+	 * @param timeout
+	 */
 	public SnapToTarget(double timeout) {
 		m_timeout = timeout;
 		

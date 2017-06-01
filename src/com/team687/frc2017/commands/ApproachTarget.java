@@ -39,6 +39,9 @@ public class ApproachTarget extends Command {
 		requires(Robot.drive);
 	}
 	
+	/**
+	 * @param timeout
+	 */
 	public ApproachTarget(double timeout) {
 		m_timeout = timeout;
 		

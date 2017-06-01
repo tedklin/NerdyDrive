@@ -19,6 +19,10 @@ public class ArcTurn extends Command {
 	private double m_straightPower;
 	private NerdyPID m_rotPID;
 	
+	/**
+	 * @param angle
+	 * @param straightPower
+	 */
 	public ArcTurn(double angle, double straightPower) {
 		m_angle = angle;
 		m_timeout = 6.87; //default
@@ -27,6 +31,11 @@ public class ArcTurn extends Command {
 		requires(Robot.drive);
 	}
 	
+	/**
+	 * @param angle
+	 * @param straightPower
+	 * @param timeout
+	 */
 	public ArcTurn(double angle, double straightPower, double timeout) {
 		m_angle = angle;
 		m_timeout = timeout;

@@ -28,6 +28,9 @@ public class DriveDistanceTalon extends Command {
 	}
 	Notifier m_notifer = new Notifier(new PeriodicRunnable());
 
+	/**
+	 * @param distance
+	 */
     public DriveDistanceTalon(double distance) {
     	m_distance = distance;
     	

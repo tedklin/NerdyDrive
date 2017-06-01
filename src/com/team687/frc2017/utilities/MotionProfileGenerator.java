@@ -19,7 +19,6 @@ public class MotionProfileGenerator {
 	private double m_accel;
 	private double m_decel;
 	
-	private double m_clkInSeconds = Constants.kDt;
 	private double m_clkInMinutes = Constants.kDtInMinutes;
 	private int m_totalPoints;
 	

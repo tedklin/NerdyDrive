@@ -34,6 +34,9 @@ public class DriveTrajectoryPathfinder extends Command {
 	
 	private NerdyPID m_headingCorrection;
 	
+	/**
+	 * @param path (Waypoint Array)
+	 */
 	public DriveTrajectoryPathfinder(Waypoint[] path) {
 		m_path = path;
 		

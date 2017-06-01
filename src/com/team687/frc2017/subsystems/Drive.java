@@ -2,19 +2,15 @@ package com.team687.frc2017.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
-import com.team687.frc2017.Constants;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.*;
-import com.team687.frc2017.commands.tests.*;
 import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.lib.kauailabs.navx.frc.AHRS;
 import com.team687.lib.kauailabs.sf2.frc.navXSensor;
 import com.team687.lib.kauailabs.sf2.orientation.OrientationHistory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,10 +26,6 @@ public class Drive extends Subsystem {
 	
 	private final CANTalon m_leftMaster, m_leftSlave1, m_leftSlave2;
 	private final CANTalon m_rightMaster, m_rightSlave1, m_rightSlave2;
-	
-//	private final VictorSP m_leftMaster, m_leftSlave1, m_leftSlave2;
-//	private final VictorSP m_rightMaster, m_rightSlave1, m_rightSlave2;
-//	private final Encoder m_leftEncoder, m_rightEncoder;
 	
 	private final DoubleSolenoid m_shifter;
 	
@@ -58,23 +50,6 @@ public class Drive extends Subsystem {
     	m_leftMaster.reverseOutput(false);
     	m_rightMaster.reverseSensor(true);
     	m_rightMaster.reverseOutput(true);
-    	
-//    	m_leftMaster = new VictorSP(RobotMap.kLeftMasterTalonID);
-//    	m_leftSlave1 = new VictorSP(RobotMap.kLeftSlaveTalon1ID);
-//    	m_leftSlave2 = new VictorSP(RobotMap.kLeftSlaveTalon2ID);
-//    	m_rightMaster = new VictorSP(RobotMap.kRightMasterTalonID);
-//    	m_rightSlave1 = new VictorSP(RobotMap.kRightSlaveTalon1ID);
-//    	m_rightSlave2 = new VictorSP(RobotMap.kRightSlaveTalon2ID);
-//    	
-//    	m_rightMaster.setInverted(true);
-//    	m_rightSlave1.setInverted(true);
-//    	m_rightSlave2.setInverted(true);
-//    	
-//    	m_leftEncoder = new Encoder(RobotMap.kLeftEncoder1ID, RobotMap.kLeftEncoder2ID, false, Encoder.EncodingType.k4X);
-//    	m_rightEncoder = new Encoder(RobotMap.kRightEncoder1ID, RobotMap.kRightEncoder2ID, false, Encoder.EncodingType.k4X);
-//    	
-//    	m_leftEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
-//    	m_rightEncoder.setDistancePerPulse(Constants.kDistancePerPulse);
     	
     	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
     	
@@ -142,11 +117,7 @@ public class Drive extends Subsystem {
 	public double getCurrentTime() {
 		return m_currentTime;
 	}
-	
-// ----
-// Cosmos
-// ----
-	
+
 	/**
 	 * Set drivetrain motor power to value between -1.0 and +1.0
 	 * 
@@ -241,63 +212,6 @@ public class Drive extends Subsystem {
 		m_leftMaster.setEncPosition(0);
 		m_rightMaster.setEncPosition(0);
 	}
-	
-// ----
-// Mantis
-// ----
-
-//	/**
-//	 * Set drivetrain motor power to value between -1.0 and +1.0
-//	 * 
-//	 * @param lPow
-//	 * @param rPow
-//	 */
-//	public void setPower(double lPow, double rPow) {
-//		m_leftMaster.set(NerdyMath.limit(lPow, 0.5));
-//		m_leftSlave1.set(NerdyMath.limit(lPow, 0.5));
-//		m_leftSlave2.set(NerdyMath.limit(lPow, 0.5));
-//		
-//		m_rightMaster.set(NerdyMath.limit(rPow, 0.5));
-//		m_rightSlave1.set(NerdyMath.limit(rPow, 0.5));
-//		m_rightSlave2.set(NerdyMath.limit(rPow, 0.5));
-//	}
-//	
-//	public double getLeftPosition() {
-//		return m_leftEncoder.getDistance();
-//	}
-//	
-//	public double getRightPosition() {
-//		return m_rightEncoder.getDistance();
-//	}
-//	
-//	public int getLeftTicks() {
-//		return m_leftEncoder.getRaw();
-//	}
-//	
-//	public int getRightTicks() {
-//		return m_rightEncoder.getRaw();
-//	}
-//	
-//	public double getDrivetrainPosition() {
-//		return (getLeftPosition() + getRightPosition());
-//	}
-//	
-//	public int getDrivetrainTicks() {
-//		return (int)(getLeftTicks() + getRightTicks()/2);
-//	}
-//	
-//	public double getLeftTicksSpeed() {
-//		return m_leftEncoder.getRate();
-//	}
-//	
-//	public double getRightTicksSpeed() {
-//		return m_rightEncoder.getRate();
-//	}
-//	
-//	public void resetEncoders() {
-//		m_leftEncoder.reset();
-//		m_rightEncoder.reset();
-//	}
 	
     public void stopDrive() {
     	setPower(0, 0);
