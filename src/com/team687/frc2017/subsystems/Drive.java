@@ -10,9 +10,7 @@ import com.team687.lib.kauailabs.sf2.frc.navXSensor;
 import com.team687.lib.kauailabs.sf2.orientation.OrientationHistory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -33,8 +31,6 @@ public class Drive extends Subsystem {
 	private final navXSensor m_navxsensor;
 	private final OrientationHistory m_orientationHistory;
 	
-	private NetworkTable m_table;
-	
 	private double m_initTime;
 	private double m_currentTime;
     
@@ -52,9 +48,6 @@ public class Drive extends Subsystem {
     	m_rightMaster.reverseOutput(true);
     	
     	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
-    	
-		m_table = NetworkTable.getTable("NerdyVision");
-//        m_initTime = Timer.getFPGATimestamp();
         
     	m_nav = new AHRS(RobotMap.navID);
         m_navxsensor = new navXSensor(m_nav, "Drivetrain Orientation");
@@ -93,8 +86,8 @@ public class Drive extends Subsystem {
     public boolean isHighGear() {
     	return (m_shifter.get() == DoubleSolenoid.Value.kForward);
     }
-	
-	public double getCurrentYaw() {
+    
+    public double getCurrentYaw() {
 		return m_nav.getYaw();
 	}
 	
@@ -107,9 +100,9 @@ public class Drive extends Subsystem {
 	}
 	
 	public double timeMachineYaw(double processingTime) {
-        long navxTimestamp = m_nav.getLastSensorTimestamp();
-        navxTimestamp -= (1000 * processingTime); /* look backwards in time */
-        return getHistoricalYaw(navxTimestamp);
+		long navxTimestamp = m_nav.getLastSensorTimestamp();
+		navxTimestamp -= (1000 * processingTime); /* look backwards in time */
+		return getHistoricalYaw(navxTimestamp);
 	}
 	
 	public void resetGyro() {
