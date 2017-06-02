@@ -60,7 +60,11 @@ public class ArcTurn extends Command {
 	@Override
 	protected void execute() {
 		double rotPower = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-		Robot.drive.setPower(m_straightPower + rotPower, m_straightPower - rotPower);
+		double leftPower = m_straightPower + rotPower;
+		leftPower = (leftPower < 0) ? leftPower : 0;
+		double rightPower = m_straightPower - rotPower;
+		rightPower = (rightPower < 0) ? rightPower : 0;
+		Robot.drive.setPower(leftPower, rightPower);
 	}
 
 	@Override

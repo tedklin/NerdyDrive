@@ -74,6 +74,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
         drive.reportToSmartDashboard();
         SmartDashboard.putData("PDP", pdp);
 	}

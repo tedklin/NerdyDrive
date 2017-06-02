@@ -54,7 +54,7 @@ public class Drive extends Subsystem {
     	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
     	
 		m_table = NetworkTable.getTable("NerdyVision");
-        m_initTime = Timer.getFPGATimestamp();
+//        m_initTime = Timer.getFPGATimestamp();
         
     	m_nav = new AHRS(RobotMap.navID);
         m_navxsensor = new navXSensor(m_nav, "Drivetrain Orientation");
@@ -104,6 +104,12 @@ public class Drive extends Subsystem {
 	
 	public double getHistoricalYaw(long timestamp) {
 		return m_orientationHistory.getYawDegreesAtTime(timestamp);
+	}
+	
+	public double timeMachineYaw(double processingTime) {
+        long navxTimestamp = m_nav.getLastSensorTimestamp();
+        navxTimestamp -= (1000 * processingTime); /* look backwards in time */
+        return getHistoricalYaw(navxTimestamp);
 	}
 	
 	public void resetGyro() {
@@ -237,9 +243,9 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
 		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
 		
-		m_currentTime = Timer.getFPGATimestamp() - m_initTime;
-        m_table.putNumber("CURRENT_TIME", m_currentTime);
-        SmartDashboard.putNumber("Current Time", m_currentTime);
+//		m_currentTime = Timer.getFPGATimestamp() - m_initTime;
+//        m_table.putNumber("CURRENT_TIME", m_currentTime);
+//        SmartDashboard.putNumber("Current Time", m_currentTime);
 	}
 
 }
