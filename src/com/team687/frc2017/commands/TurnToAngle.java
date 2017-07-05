@@ -2,7 +2,6 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -63,7 +62,7 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected void execute() {
-		double robotAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
+		double robotAngle = Robot.drive.getCurrentYaw();
 		double error = m_angleToTurn - robotAngle;
 		SmartDashboard.putNumber("Angle Error", error);
 		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());

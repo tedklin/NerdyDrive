@@ -2,7 +2,6 @@ package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -44,12 +43,10 @@ public class TestRotPID extends Command {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
-		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
+		double actualAngle = Robot.drive.getCurrentYaw();
 		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
 		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
 		double angleError = desiredAngle - actualAngle;
-		angleError = (angleError > 180) ? angleError-360 : angleError;
-		angleError = (angleError < -180) ? angleError+360 : angleError;
 		SmartDashboard.putNumber("Error Yaw (test)", angleError);
 		
 		double kP = SmartDashboard.getNumber("Rot P (test, editable)");

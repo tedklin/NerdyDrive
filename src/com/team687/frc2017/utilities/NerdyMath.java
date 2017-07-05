@@ -70,5 +70,14 @@ public class NerdyMath {
 		angleDegrees = (360 - angleDegrees) % 360;
         return angleDegrees;
     }
+    
+    /**
+     * Bound angle error
+     */
+    public static double boundAngleError(double error) {
+		error = (error > 180) ? error-360 : error;
+		error = (error < -180) ? error+360 : error;
+		return error;
+    }
 	
 }

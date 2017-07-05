@@ -5,12 +5,19 @@ import org.junit.Test;
 
 import com.team687.frc2017.utilities.*;
 
+/**
+ * NerdyPID unit test
+ *
+ * @author tedfoodlin
+ *
+ */
+
 public class NerdyPIDTest {
 	
     private static final double kEpsilon = 1E-9;
 	
 	@Test
-	public void testNerdyPID() {
+	public void testOutputRange() {
 		NerdyPID nerdyTestPID = new NerdyPID(0.0687, 0, 0);
 		nerdyTestPID.setOutputRange(0.254, 0.971);
 		nerdyTestPID.setDesired(0);

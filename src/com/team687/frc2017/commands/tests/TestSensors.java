@@ -1,7 +1,6 @@
 package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,7 +33,8 @@ public class TestSensors extends Command {
 		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
 		double desiredLeftPos = SmartDashboard.getNumber("Desired Left Pos (test, editable)");
 		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)");
-		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
+//		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
+		double actualAngle = Robot.drive.getCurrentYaw();
 		
 //		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
 //		SmartDashboard.putNumber("Actual Left Pos (test)", Robot.drive.getLeftPosition());
@@ -52,8 +52,8 @@ public class TestSensors extends Command {
 		SmartDashboard.putNumber("Historical Yaw (test)", Robot.drive.getHistoricalYaw(timestamp_));
 		
 		double angleError = desiredAngle - actualAngle;
-		angleError = (angleError > 180) ? angleError-360 : angleError;
-		angleError = (angleError < -180) ? angleError+360 : angleError;
+//		angleError = (angleError > 180) ? angleError-360 : angleError;
+//		angleError = (angleError < -180) ? angleError+360 : angleError;
 		double leftPosError = desiredLeftPos - Robot.drive.getLeftPosition();
 		double rightPosError = desiredRightPos - Robot.drive.getRightPosition();
 		double leftTicksError = desiredLeftPos - Robot.drive.getLeftTicks();
