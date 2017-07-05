@@ -2,6 +2,8 @@ package com.team687.frc2017.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
+import com.team687.frc2017.Constants;
+import com.team687.frc2017.Robot;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.*;
 import com.team687.frc2017.utilities.NerdyMath;
@@ -63,6 +65,30 @@ public class Drive extends Subsystem {
 	public double squareInput(double input)	{
 		return Math.pow(input, 2) * (input / Math.abs(input));
 	}
+	
+	public double addLeftSensitivity(double input) {
+		double b = Constants.kLeftJoystickDeadband;
+		double a = Robot.oi.getThrottleL();
+		double output = 0;
+		if (input >= 0) {
+			output = b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		} else if (input < 0) {
+			output = -b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		}
+		return output;
+	}
+	
+	public double addRightSensitivity(double input) {
+		double b = Constants.kRightJoystickDeadband;
+		double a = Robot.oi.getThrottleR();
+		double output = 0;
+		if (input >= 0) {
+			output = b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		} else if (input < 0) {
+			output = -b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		}
+		return output;
+	}
     
     /**
      * Handles when the joystick moves slightly when you actually don't want it to move at all
@@ -116,51 +142,7 @@ public class Drive extends Subsystem {
 	public double getCurrentTime() {
 		return m_currentTime;
 	}
-
-	/**
-	 * Set drivetrain motor power to value between -1.0 and +1.0
-	 * 
-	 * @param lPow
-	 * @param rPow
-	 */
-	public void setPower(double lPow, double rPow) {
-		m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
-		m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
-	 	
-	 	m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
-	 	m_leftSlave1.set(m_leftMaster.getDeviceID());
-	 	m_leftSlave2.set(m_leftMaster.getDeviceID());
-	 	
-	 	m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
-	 	m_rightSlave1.set(m_rightMaster.getDeviceID());
-	 	m_rightSlave2.set(m_rightMaster.getDeviceID());
-	 }
-	 
-	public void processMotionProfileBuffer() {
-	 	m_leftMaster.processMotionProfileBuffer();
-	 	m_rightMaster.processMotionProfileBuffer();
-	 }
-	 
-	public void changeMotionControlFramePeriod(int time) {
-		m_leftMaster.changeMotionControlFramePeriod(time);
-		m_rightMaster.changeMotionControlFramePeriod(time);
-	}
 	
-	public void pushTrajectoryPoint(CANTalon.TrajectoryPoint point) {
-		m_leftMaster.pushMotionProfileTrajectory(point);
-		m_rightMaster.pushMotionProfileTrajectory(point);
-	}
-	 
-	public void clearMotionProfileTrajectories() {
-		m_leftMaster.clearMotionProfileTrajectories();
-		m_rightMaster.clearMotionProfileTrajectories();
-	}
-	 
-	public void setValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
-		m_leftMaster.set(output.value);
-		m_rightMaster.set(output.value);
-	 }
-
 	public double getLeftPosition() {
 		return m_leftMaster.getPosition();
 	}
@@ -178,7 +160,7 @@ public class Drive extends Subsystem {
 	}
 	
 	public double getDrivetrainPosition() {
-		return (getLeftPosition() + getRightPosition());
+		return (getLeftPosition() + getRightPosition()/2);
 	}
 	
 	public int getDrivetrainTicks() {
@@ -211,6 +193,90 @@ public class Drive extends Subsystem {
 		m_leftMaster.setEncPosition(0);
 		m_rightMaster.setEncPosition(0);
 	}
+
+	/**
+	 * Set drivetrain motor power to value between -1.0 and +1.0
+	 * 
+	 * @param lPow
+	 * @param rPow
+	 */
+	public void setPower(double lPow, double rPow) {
+		m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
+		m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
+	 	
+	 	m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
+	 	m_leftSlave1.set(m_leftMaster.getDeviceID());
+	 	m_leftSlave2.set(m_leftMaster.getDeviceID());
+	 	
+	 	m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
+	 	m_rightSlave1.set(m_rightMaster.getDeviceID());
+	 	m_rightSlave2.set(m_rightMaster.getDeviceID());
+	 }
+	 
+	public void processMotionProfileBuffer() {
+		processLeftMotionProfileBuffer();
+		processRightMotionProfileBuffer();
+	}
+	
+	public void processLeftMotionProfileBuffer() {
+		m_leftMaster.processMotionProfileBuffer();
+	}
+	
+	public void processRightMotionProfileBuffer() {
+		m_rightMaster.processMotionProfileBuffer();
+	}
+	 
+	public void changeMotionControlFramePeriod(int time) {
+		m_leftMaster.changeMotionControlFramePeriod(time);
+		m_rightMaster.changeMotionControlFramePeriod(time);
+	}
+	
+	public void pushTrajectoryPoint(CANTalon.TrajectoryPoint point) {
+		pushLeftTrajectoryPoint(point);
+		pushRightTrajectoryPoint(point);
+	}
+	
+	public void pushLeftTrajectoryPoint(CANTalon.TrajectoryPoint point) {
+		m_leftMaster.pushMotionProfileTrajectory(point);
+	}
+	
+	public void pushRightTrajectoryPoint(CANTalon.TrajectoryPoint point) {
+		m_rightMaster.pushMotionProfileTrajectory(point);
+	}
+	 
+	public void clearMotionProfileTrajectories() {
+		m_leftMaster.clearMotionProfileTrajectories();
+		m_rightMaster.clearMotionProfileTrajectories();
+	}
+	 
+	public void setValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
+		setLeftValueMotionProfileOutput(output);
+		setRightValueMotionProfileOutput(output);
+	}
+	
+	public void setLeftValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
+		m_leftMaster.set(output.value);
+	}
+	
+	public void setRightValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
+		m_rightMaster.set(output.value);
+	}
+	
+	public boolean isMotionProfileFinished() {
+		return isLeftMotionProfileFinished() && isRightMotionProfileFinished();
+	}
+	
+	public boolean isLeftMotionProfileFinished() {
+		CANTalon.MotionProfileStatus status = new CANTalon.MotionProfileStatus();
+		m_leftMaster.getMotionProfileStatus(status);
+		return status.activePoint.isLastPoint;
+	}
+	
+	public boolean isRightMotionProfileFinished() {
+		CANTalon.MotionProfileStatus status = new CANTalon.MotionProfileStatus();
+		m_rightMaster.getMotionProfileStatus(status);
+		return status.activePoint.isLastPoint;
+	}
 	
     public void stopDrive() {
     	setPower(0, 0);
@@ -237,8 +303,8 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
 		
 //		m_currentTime = Timer.getFPGATimestamp() - m_initTime;
-//        m_table.putNumber("CURRENT_TIME", m_currentTime);
-//        SmartDashboard.putNumber("Current Time", m_currentTime);
+//		m_table.putNumber("CURRENT_TIME", m_currentTime);
+//		SmartDashboard.putNumber("Current Time", m_currentTime);
 	}
 
 }

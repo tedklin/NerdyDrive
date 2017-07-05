@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static PowerDistributionPanel pdp;
 	public static Compressor compressor;
 	public static OI oi;
+	public static VisionAdapter visionAdapter;
 
 	@Override
 	public void robotInit() {
@@ -51,24 +52,29 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
         SmartDashboard.putData(drive);
+        
+        visionAdapter = VisionAdapter.getInstance();
 	}
 
 	@Override
 	public void disabledInit() {
 		Scheduler.getInstance().removeAll();
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
 	}
 
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
 	}
 
 	@Override
@@ -76,12 +82,14 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
         SmartDashboard.putData("PDP", pdp);
 	}
 
 	@Override
 	public void teleopInit() {
 		Scheduler.getInstance().removeAll();
+        visionAdapter.reportToSmartDashboard();
         drive.reportToSmartDashboard();
 	}
 
@@ -89,6 +97,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
         SmartDashboard.putData("PDP", pdp);
 	}
 
@@ -96,6 +105,7 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
         drive.reportToSmartDashboard();
+        visionAdapter.reportToSmartDashboard();
         SmartDashboard.putData("PDP", pdp);
 	}
 }

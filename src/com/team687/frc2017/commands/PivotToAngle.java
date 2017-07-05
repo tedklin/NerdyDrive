@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Pivot on one side of the drivetrain to turn to an angle (absolute, not meant to be very accurate)
+ * Pivot on one side of the drivetrain to turn to an angle (absolute)
  *
  * @author tedfoodlin
  *
@@ -70,6 +70,7 @@ public class PivotToAngle extends Command {
 		m_rotPID.setPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setDesired(m_angle);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		m_rotPID.setGyro(true);
 		
 		Robot.drive.stopDrive();
 		Robot.drive.shiftDown();

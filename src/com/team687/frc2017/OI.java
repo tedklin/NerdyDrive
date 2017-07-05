@@ -29,7 +29,7 @@ public class OI {
 	public JoystickButton cheesyDrive_11;
 	
 	// buttons on driveJoyRight
-	public JoystickButton zeroGyro_9;
+	public JoystickButton pivotToAngle_9;
 	public JoystickButton clearAll_8;
 	public JoystickButton quickTurn_7;
 	
@@ -40,13 +40,11 @@ public class OI {
 	public JoystickButton approachTarget_10;
 	public JoystickButton arcTurn_11;
 	
-	public JoystickButton pivotToAngle_12;
-	
 	public JoystickButton shiftUp_3;
 	
 	public OI() {
-		zeroGyro_9 = new JoystickButton(driveJoyRight, 9);
-		zeroGyro_9.whenPressed(new ResetGyro());
+		pivotToAngle_9 = new JoystickButton(driveJoyRight, 9);
+		pivotToAngle_9.whenPressed(new PivotToAngle(170, false, false));
 		clearAll_8 = new JoystickButton(driveJoyRight, 8);
 		clearAll_8.cancelWhenPressed(Robot.drive.getCurrentCommand());
 		quickTurn_7 = new JoystickButton(driveJoyRight, 7);
@@ -62,9 +60,6 @@ public class OI {
 		approachTarget_10.whenPressed(new ApproachTarget());
 		arcTurn_11 = new JoystickButton(driveJoyRight, 11);
 		arcTurn_11.whenPressed(new ArcTurn(90, 0.254));
-		
-		pivotToAngle_12 = new JoystickButton(driveJoyRight, 12);
-		pivotToAngle_12.whenPressed(new PivotToAngle(170, false, false));
 		
 		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
 		shiftUp_3.whenPressed(new ShiftUp());
@@ -96,7 +91,6 @@ public class OI {
 		
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
-		SmartDashboard.putData("Zero Gyro", new ResetGyro());
 		
 		SmartDashboard.putData("Test Sensors", new TestSensors());
 		SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
@@ -104,25 +98,31 @@ public class OI {
 	}
 	
 	/**
-	 * @return input power from left drive joystick (-1.0 to +1.0) with compensation for deadband
+	 * @return input power from left drive joystick Y (-1.0 to +1.0)
 	 */
-	public double getDriveJoyL() {
-		double input = driveJoyLeft.getY();
-		if (Math.abs(input) < Constants.kLeftJoystickDeadband) {
-			input = 0;
-		}
-		return input;
+	public double getDriveJoyLeftY() {
+		return driveJoyLeft.getY();
 	}
 	
 	/**
-	 * @return input power from right drive joystick (-1.0 to +1.0) with compensation for deadband
+	 * @return input power from right drive joystick Y (-1.0 to +1.0)
 	 */
-	public double getDriveJoyR() {
-		double input = driveJoyRight.getY();
-		if (Math.abs(input) < Constants.kRightJoystickDeadband) {
-			input = 0;
-		}
-		return input;
+	public double getDriveJoyRightY() {
+		return driveJoyRight.getY();
+	}
+	
+	/**
+	 * @return input power from left drive joystick X (-1.0 to +1.0)
+	 */
+	public double getDriveJoyLeftX() {
+		return driveJoyLeft.getX();
+	}
+	
+	/**
+	 * @return input power from right drive joystick X (-1.0 to +1.0)
+	 */
+	public double getDriveJoyRightX() {
+		return driveJoyRight.getX();
 	}
 	
 	/**
@@ -130,6 +130,13 @@ public class OI {
 	 */
 	public double getThrottleR() {
 		return (driveJoyRight.getThrottle() + 1) / 2;
+	}
+	
+	/**
+	 * @return input throttle from left drive josytick
+	 */
+	public double getThrottleL() {
+		return (driveJoyLeft.getThrottle() + 1) / 2;
 	}
 	
 	/**

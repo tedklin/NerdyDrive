@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Tank drive with squared inputs
+ * 
+ * @author tedfoodlin
+ * 
  */
 
 public class TankDrive extends Command{
@@ -24,8 +27,8 @@ public class TankDrive extends Command{
 
 	@Override
 	protected void execute() {
-		double leftPow = Robot.drive.squareInput(Robot.oi.getDriveJoyL());
-		double rightPow = Robot.drive.squareInput(Robot.oi.getDriveJoyR());
+		double leftPow = Robot.drive.addLeftSensitivity(Robot.oi.getDriveJoyLeftY());
+		double rightPow = Robot.drive.addRightSensitivity(Robot.oi.getDriveJoyRightY());
 		Robot.drive.setPower(leftPow, rightPow);
 	}
 

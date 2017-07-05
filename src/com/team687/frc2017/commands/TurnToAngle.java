@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Turn to a specified angle (no vision, absolute)
+ * 
+ * @author tedfoodlin
+ * 
  */
 
 public class TurnToAngle extends Command {
@@ -52,6 +55,7 @@ public class TurnToAngle extends Command {
 		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 		m_rotPID.setDesired(m_angleToTurn);
+		m_rotPID.setGyro(true);
 		
 		Robot.drive.stopDrive();
 		Robot.drive.shiftDown();
@@ -65,7 +69,7 @@ public class TurnToAngle extends Command {
 		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
 			m_counter += 1;
-		}	else	{
+		} else {
 			m_counter = 0;
 		}
 		Robot.drive.setPower(power, -power);

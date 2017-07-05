@@ -9,6 +9,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Arc turn
+ *
+ * @author tedfoodlin
+ *
+ */
+
 public class ArcTurn extends Command {
 	
 	private double m_angle;
@@ -52,6 +59,7 @@ public class ArcTurn extends Command {
 		m_rotPID.setPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 		m_rotPID.setDesired(m_angle);
 		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		m_rotPID.setGyro(true);
 		
 		Robot.drive.stopDrive();
 		m_startTime = Timer.getFPGATimestamp();
