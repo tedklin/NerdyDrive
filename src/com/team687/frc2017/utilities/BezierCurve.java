@@ -113,6 +113,14 @@ public class BezierCurve {
 		return m_heading;
 	}
 	
+	public double[] getXParam() {
+		return m_xVal;
+	}
+	
+	public double[] getYParam() {
+		return m_yVal;
+	}
+	
 	public void clearAll() {
 		m_xPoints.clear();
 		m_yPoints.clear();
