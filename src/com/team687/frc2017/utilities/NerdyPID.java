@@ -105,6 +105,13 @@ public class NerdyPID {
 	}
 	
 	/**
+	 * @return target value
+	 */
+	public double getDesired() {
+		return m_desired;
+	}
+	
+	/**
 	 * Sets absolute value output range
 	 * 
 	 * @param minimum
@@ -123,8 +130,15 @@ public class NerdyPID {
 	 * 
 	 * @return The last calculated output.
 	 */
-	public double get()	{
+	public double getResult()	{
 		return m_result;
+	}
+	
+	/**
+	 * @return last error
+	 */
+	public double getError() {
+		return m_error;
 	}
 	
 	/**
@@ -142,13 +156,13 @@ public class NerdyPID {
      * @param isGyro
      */
     public void setGyro(boolean isGyro) {
-    	m_isGyro = isGyro;
+    		m_isGyro = isGyro;
     }
     
     /**
      * Returns if the PID is for gyro
      */
     public boolean isGyro() {
-    	return m_isGyro;
+    		return m_isGyro;
     }
 }
