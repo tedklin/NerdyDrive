@@ -2,7 +2,6 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -97,7 +96,7 @@ public class PivotToAngle extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(NerdyMath.boundAngle(Robot.drive.getCurrentYaw()) - m_angle) <= Constants.kDriveRotationTolerance 
+		return Math.abs(Robot.drive.getCurrentYaw() - m_angle) <= Constants.kDriveRotationTolerance 
 				|| Timer.getFPGATimestamp() - m_startTime >= m_timeout;
 	}
 

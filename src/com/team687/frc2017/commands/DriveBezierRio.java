@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.BezierCurve;
-import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -61,7 +60,7 @@ public class DriveBezierRio extends Command {
 		double straightPow = 0;
 		if (m_counter < m_arcLength.size()) {
 			if (Robot.drive.getDrivetrainPosition() < m_arcLength.get(m_counter)) {
-				m_rotPID.setDesired(NerdyMath.boundAngle(m_heading.get(m_counter)));
+				m_rotPID.setDesired(m_heading.get(m_counter));
 				rotPow = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 				straightPow = m_distPID.calculate(Robot.drive.getDrivetrainPosition());
 				
