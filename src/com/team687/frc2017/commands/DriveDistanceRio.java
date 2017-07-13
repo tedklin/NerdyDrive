@@ -75,7 +75,7 @@ public class DriveDistanceRio extends Command {
 		int index = (int)(m_timestamp/Constants.kDt);
 		if (m_timestamp > m_motionProfile.getAccelTime() * 60) {
 			index += 1;
-		} else if (m_timestamp >= (m_motionProfile.getAccelTime() * 60 + m_motionProfile.getDecelTime() * 60)) {
+		} else if (m_timestamp >= ((m_motionProfile.getAccelTime() + m_motionProfile.getCruiseTime()) * 60)) {
 			index += 2;
 		}
 		double setpoint = m_motionProfile.readPosition(index);
