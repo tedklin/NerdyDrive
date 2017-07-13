@@ -44,10 +44,9 @@ public class NormalizerTest {
 		double[] normalizedVal = NerdyMath.normalize(m_rawVal, false);
 		for (int i = 0; i < normalizedVal.length - 1; i++) {
 			assertTrue(Math.abs(normalizedVal[i]) <= 1.0);
+			assertTrue(isNegative(m_rawVal[i]) == isNegative(normalizedVal[i]));
 		}
 		assertEquals((m_rawVal[0]/m_rawVal[1]), (normalizedVal[0]/normalizedVal[1]), kEpsilon);
-		assertTrue(isNegative(m_rawVal[0]) == isNegative(normalizedVal[0]));
-		assertTrue(isNegative(m_rawVal[1]) == isNegative(normalizedVal[1]));
     }
     
     public static boolean isNegative(double d) {

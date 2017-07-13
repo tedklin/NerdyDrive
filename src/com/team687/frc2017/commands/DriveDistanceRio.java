@@ -4,6 +4,7 @@ import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.MotionProfileGenerator;
 import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -23,7 +24,9 @@ public class DriveDistanceRio extends Command {
 	private MotionProfileGenerator m_motionProfile;
 	
 	private double m_startTime;
-	private double m_timeStamp;
+	private double m_timestamp;
+	
+	private NerdyPID m_rotPID;
 	
 	private double m_leftError;
 	private double m_rightError;
@@ -55,6 +58,11 @@ public class DriveDistanceRio extends Command {
 		Robot.drive.resetEncoders();
 		Robot.drive.shiftDown();
 		
+		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+		m_rotPID.setGyro(true);
+		m_rotPID.setDesired(Robot.drive.getCurrentYaw());
+		
 		SmartDashboard.putNumber("Desired Distance", m_distance);
 		m_startTime = Timer.getFPGATimestamp();
 	}
@@ -63,8 +71,13 @@ public class DriveDistanceRio extends Command {
 	protected void execute() {
 		m_lastLeftError = m_leftError;
 		m_lastRightError = m_rightError;
-		m_timeStamp = Timer.getFPGATimestamp() - m_startTime;
-		int index = (int)(m_timeStamp/Constants.kDt);
+		m_timestamp = Timer.getFPGATimestamp() - m_startTime;
+		int index = (int)(m_timestamp/Constants.kDt);
+		if (m_timestamp > m_motionProfile.getAccelTime() * 60) {
+			index += 1;
+		} else if (m_timestamp >= (m_motionProfile.getAccelTime() * 60 + m_motionProfile.getDecelTime() * 60)) {
+			index += 2;
+		}
 		double setpoint = m_motionProfile.readPosition(index);
 		double goalVelocity = m_motionProfile.readVelocity(index);
 		double goalAccel = m_motionProfile.readAcceleration(index);
@@ -80,7 +93,7 @@ public class DriveDistanceRio extends Command {
 		double rightPow = (Constants.kDistP * m_rightError) + (Constants.kDistD * ((m_rightError - m_lastRightError)/Constants.kDt - goalVelocity)) + feedforward;
 		
 		if (m_isStraight) {
-			double angularPow = Constants.kRotP * Robot.drive.getCurrentYaw();
+			double angularPow = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 			leftPow += angularPow;
 			rightPow -= angularPow;
 		}
@@ -93,9 +106,9 @@ public class DriveDistanceRio extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Robot.drive.getLeftPosition() - m_distance) <= 1 
-				&& Math.abs(Robot.drive.getRightPosition() - m_distance) <= 1 
-				&& m_timeStamp >= m_motionProfile.getTotalTime();
+		return (Math.abs(Robot.drive.getLeftPosition() - m_distance) <= 1 
+				&& Math.abs(Robot.drive.getRightPosition() - m_distance) <= 1) 
+				|| m_timestamp >= m_motionProfile.getTotalTime() * 60;
 	}
 	
 	@Override
