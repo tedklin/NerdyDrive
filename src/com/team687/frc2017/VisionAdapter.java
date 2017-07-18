@@ -27,19 +27,16 @@ public class VisionAdapter {
 		m_visionTable = NetworkTable.getTable("NerdyVision");
 	}
 	
-	@SuppressWarnings("deprecation")
 	public boolean isAligned() {
-		return m_visionTable.getBoolean("IS_ALIGNED");
+		return m_visionTable.getBoolean("IS_ALIGNED", false);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public double getAngleToTurn() {
-		return m_visionTable.getNumber("ANGLE_TO_TURN");
+		return m_visionTable.getNumber("ANGLE_TO_TURN", 0);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public double getProcessedTime() {
-		return m_visionTable.getNumber("PROCESSED_TIME");
+		return m_visionTable.getNumber("PROCESSED_TIME", 0);
 	}
 	
 	public void reportToSmartDashboard() {
