@@ -27,6 +27,7 @@ public class TestRotPID extends Command {
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "TestRotPID");
 		
+		SmartDashboard.putNumber("Desired Yaw (test, editable)", 0);
 		SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotP);
 		SmartDashboard.putNumber("Rot I (test, editable)", Constants.kRotI);
 		SmartDashboard.putNumber("Rot D (test, editable)", Constants.kRotD);
@@ -39,19 +40,20 @@ public class TestRotPID extends Command {
 		Robot.drive.shiftUp();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
 		double actualAngle = Robot.drive.getCurrentYaw();
 		SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
-		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)", 0);
+		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
 		double angleError = desiredAngle - actualAngle;
 		SmartDashboard.putNumber("Error Yaw (test)", angleError);
 		
-		double kP = SmartDashboard.getNumber("Rot P (test, editable)", 0);
-		double kI = SmartDashboard.getNumber("Rot I (test, editable)", 0);
-		double kD = SmartDashboard.getNumber("Rot D (test, editable)", 0);
-		double kMinRotPower = SmartDashboard.getNumber("Rot Min Power (test, editable)", 0);
-		double kMaxRotPower = SmartDashboard.getNumber("Rot Max Power (test, editable)", 0);
+		double kP = SmartDashboard.getNumber("Rot P (test, editable)");
+		double kI = SmartDashboard.getNumber("Rot I (test, editable)");
+		double kD = SmartDashboard.getNumber("Rot D (test, editable)");
+		double kMinRotPower = SmartDashboard.getNumber("Rot Min Power (test, editable)");
+		double kMaxRotPower = SmartDashboard.getNumber("Rot Max Power (test, editable)");
 		
 		m_rotPID = new NerdyPID(kP, kI, kD);
 		m_rotPID.setOutputRange(kMinRotPower, kMaxRotPower);

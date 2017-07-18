@@ -28,9 +28,10 @@ public class TestMinRotPower extends Command {
 		Robot.drive.shiftDown();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
-		double power = SmartDashboard.getNumber("Turning Power (test, editable)", 0);
+		double power = SmartDashboard.getNumber("Turning Power (test, editable)");
 		Robot.drive.setPower(power, -power);
 	}
 

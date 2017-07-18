@@ -25,13 +25,20 @@ public class TestSensors extends Command {
 		Robot.drive.stopDrive();
 		Robot.drive.shiftUp();
 		SmartDashboard.putNumber("Historical Yaw Timestamp (test, editable)", 0);
+		SmartDashboard.putNumber("Desired Yaw (test, editable)", 0);
+		SmartDashboard.putNumber("Desired Left Pos (test, editable)", 0);
+		SmartDashboard.putNumber("Desired Right Pos (test, editable)", 0);
+		SmartDashboard.putNumber("Historical Yaw Timestamp (test, editable)", 0);
+		SmartDashboard.putNumber("NavX lookback time (test, editable)", 0);
+		
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute() {
-		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)", 0);
-		double desiredLeftPos = SmartDashboard.getNumber("Desired Left Pos (test, editable)", 0);
-		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)", 0);
+		double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
+		double desiredLeftPos = SmartDashboard.getNumber("Desired Left Pos (test, editable)");
+		double desiredRightPos = SmartDashboard.getNumber("Desired Right Pos (test, editable)");
 //		double actualAngle = NerdyMath.boundAngle(Robot.drive.getCurrentYaw());
 		double actualAngle = Robot.drive.getCurrentYaw();
 		
@@ -45,11 +52,11 @@ public class TestSensors extends Command {
 //		SmartDashboard.putNumber("Actual Left Speed Ticks (test)", Robot.drive.getLeftTicksSpeed());
 //		SmartDashboard.putNumber("Actual Right Speed Ticks (test)", Robot.drive.getRightTicksSpeed());
 		
-		double timestamp = SmartDashboard.getNumber("Historical Yaw Timestamp (test, editable)", 0);
+		double timestamp = SmartDashboard.getNumber("Historical Yaw Timestamp (test, editable)");
 		long timestamp_ = (long)timestamp;
 		SmartDashboard.putNumber("Historical Yaw Timestamp (test, noneditable (long))", timestamp_);
 		SmartDashboard.putNumber("Historical Yaw (test)", Robot.drive.getHistoricalYaw(timestamp_));
-		double lookbackTime = SmartDashboard.getNumber("NavX lookback time (test, editable)", 0);
+		double lookbackTime = SmartDashboard.getNumber("NavX lookback time (test, editable)");
 		long lookbackTime_ = (long)lookbackTime;
 		SmartDashboard.putNumber("Time Machine Yaw (test)", Robot.drive.timeMachineYaw(lookbackTime_));
 		
