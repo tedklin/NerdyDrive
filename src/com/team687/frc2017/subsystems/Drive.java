@@ -2,7 +2,6 @@ package com.team687.frc2017.subsystems;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
-import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.*;
@@ -67,27 +66,11 @@ public class Drive extends Subsystem {
 	}
 	
 	public double addLeftSensitivity(double input) {
-		double b = Constants.kLeftJoystickDeadband;
-		double a = Robot.oi.getThrottleL();
-		double output = 0;
-		if (input >= 0) {
-			output = b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
-		} else if (input < 0) {
-			output = -b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
-		}
-		return output;
+		return NerdyMath.addSensitivity(input, Robot.oi.getThrottleL());
 	}
 	
 	public double addRightSensitivity(double input) {
-		double b = Constants.kRightJoystickDeadband;
-		double a = Robot.oi.getThrottleR();
-		double output = 0;
-		if (input >= 0) {
-			output = b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
-		} else if (input < 0) {
-			output = -b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
-		}
-		return output;
+		return NerdyMath.addSensitivity(input, Robot.oi.getThrottleR());
 	}
     
     /**

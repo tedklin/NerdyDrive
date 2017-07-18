@@ -38,6 +38,24 @@ public class NerdyMath {
     }
     
     /**
+     * Add joystick sensitivity (Ether method)
+     * 
+     * @param input
+     * @param throttle
+     */
+	public static double addSensitivity(double input, double throttle) {
+		double b = Constants.kLeftJoystickDeadband;
+		double a = throttle;
+		double output = 0;
+		if (input >= 0) {
+			output = b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		} else if (input < 0) {
+			output = -b + (1 - b) * (a * Math.pow(input, 3) + (1 - a) * input);
+		}
+		return output;
+	}
+    
+    /**
      * Normalizes the array to -1 or 1
      * 
      * @param values	The values
