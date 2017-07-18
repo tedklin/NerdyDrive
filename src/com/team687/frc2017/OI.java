@@ -43,11 +43,11 @@ public class OI {
 	public JoystickButton shiftUp_3;
 	
 	public OI() {
-		pivotToAngle_9 = new JoystickButton(driveJoyRight, 9);
-		pivotToAngle_9.whenPressed(new PivotToAngle(170, false, false));
+//		pivotToAngle_9 = new JoystickButton(driveJoyRight, 9);
+//		pivotToAngle_9.whenPressed(new PivotToAngle(170, false, false));
 		clearAll_8 = new JoystickButton(driveJoyRight, 8);
 		clearAll_8.cancelWhenPressed(Robot.drive.getCurrentCommand());
-		quickTurn_7 = new JoystickButton(driveJoyRight, 7);
+//		quickTurn_7 = new JoystickButton(driveJoyRight, 7);
 		
 		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
 		snapToTarget_2.whenPressed(new SnapToTarget(15));
@@ -56,10 +56,10 @@ public class OI {
 		shiftDown_4 = new JoystickButton(driveJoyRight, 4);
 		shiftDown_4.whenPressed(new ShiftDown());
 		
-		approachTarget_10 = new JoystickButton(driveJoyRight, 10);
-		approachTarget_10.whenPressed(new ApproachTarget());
-		arcTurn_11 = new JoystickButton(driveJoyRight, 11);
-		arcTurn_11.whenPressed(new ArcTurn(90, 0.254));
+//		approachTarget_10 = new JoystickButton(driveJoyRight, 10);
+//		approachTarget_10.whenPressed(new ApproachTarget());
+//		arcTurn_11 = new JoystickButton(driveJoyRight, 11);
+//		arcTurn_11.whenPressed(new ArcTurn(90, 0.254));
 		
 		shiftUp_3 = new JoystickButton(driveJoyRight, 3);
 		shiftUp_3.whenPressed(new ShiftUp());
@@ -71,23 +71,23 @@ public class OI {
 		testRotPID_1 = new JoystickButton(driveJoyLeft, 1);
 		testRotPID_1.whenPressed(new TestRotPID());
 		
-		tankDrive_10 = new JoystickButton(driveJoyLeft, 10);
-		tankDrive_10.whenPressed(new TankDrive());
-		cheesyDrive_11 = new JoystickButton(driveJoyLeft, 11);
-		cheesyDrive_11.whenPressed(new CheesyDrive());
+//		tankDrive_10 = new JoystickButton(driveJoyLeft, 10);
+//		tankDrive_10.whenPressed(new TankDrive());
+//		cheesyDrive_11 = new JoystickButton(driveJoyLeft, 11);
+//		cheesyDrive_11.whenPressed(new CheesyDrive());
 		
 		
 		// Smart Dashboard buttons
-		SmartDashboard.putData("Tank Drive", new TankDrive());
-		SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
+//		SmartDashboard.putData("Tank Drive", new TankDrive());
+//		SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
 		SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
-		SmartDashboard.putData("Approach Target", new ApproachTarget());
+//		SmartDashboard.putData("Approach Target", new ApproachTarget());
 		SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
 		SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
-		SmartDashboard.putData("Arc Turn to 90", new ArcTurn(90, 0.254));
-		SmartDashboard.putData("Pivot to 170", new PivotToAngle(170, true, false));
-		SmartDashboard.putData("Arc Turn to -90", new ArcTurn(-90, 0.254));
-		SmartDashboard.putData("Pivot to -170", new PivotToAngle(-170, true, false));
+//		SmartDashboard.putData("Arc Turn to 90", new ArcTurn(90, 0.254));
+//		SmartDashboard.putData("Pivot to 170", new PivotToAngle(170, true, false));
+//		SmartDashboard.putData("Arc Turn to -90", new ArcTurn(-90, 0.254));
+//		SmartDashboard.putData("Pivot to -170", new PivotToAngle(-170, true, false));
 		
 		SmartDashboard.putData("Shift Up", new ShiftUp());
 		SmartDashboard.putData("Shift Down", new ShiftDown());
