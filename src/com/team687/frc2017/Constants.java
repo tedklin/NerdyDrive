@@ -18,13 +18,14 @@ public class Constants {
 	public final static double kDriveDistanceOscillationCount = 5;
 	
 	// Rotation
-	public final static double kRotP = 0;
+	public final static double kRotP = 0.02;
 	public final static double kRotI = 0;
 	public final static double kRotD = 0;
-	public final static double kMinRotPower = 0;
+	public final static double kMinRotPower = 0.12;
 	public final static double kMaxRotPower = 1.0;
 	// Tolerance for closed loop DriveTurnToAngle command in degrees
-	public final static double kDriveRotationTolerance = 0.687;
+	public final static double kDriveRotationTolerance = 0.5;
+	public final static double kDriveRotationDeadband = 0.25;
 	public final static double kDriveRotationOscillationCount = 5;
 	
 	// Motion Profiling and Trajectories

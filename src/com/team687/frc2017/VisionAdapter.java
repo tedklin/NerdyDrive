@@ -28,7 +28,7 @@ public class VisionAdapter {
 	}
 	
 	public boolean isAligned() {
-		return m_visionTable.getBoolean("IS_ALIGNED", false);
+		return m_visionTable.getBoolean("IS_ALIGNED", true);
 	}
 	
 	public double getAngleToTurn() {

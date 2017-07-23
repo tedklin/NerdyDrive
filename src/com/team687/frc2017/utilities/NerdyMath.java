@@ -39,6 +39,9 @@ public class NerdyMath {
     
     /**
      * Add joystick sensitivity (Ether method)
+     * If throttle is 0, joystick output is linear
+     * If throttle is 1, joystick output is cubic
+     * You can adjust in between
      * 
      * @param input
      * @param throttle

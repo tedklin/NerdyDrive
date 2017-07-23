@@ -23,7 +23,7 @@ public class OI {
 	// buttons on driveJoyLeft
 	public JoystickButton testSensors_9;
 	public JoystickButton testMinRotPower_7;
-	public JoystickButton testRotPID_1;
+	public JoystickButton liveVisionTrack_1;
 	
 	public JoystickButton tankDrive_10;
 	public JoystickButton cheesyDrive_11;
@@ -49,8 +49,8 @@ public class OI {
 		clearAll_8.cancelWhenPressed(Robot.drive.getCurrentCommand());
 //		quickTurn_7 = new JoystickButton(driveJoyRight, 7);
 		
-		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
-		snapToTarget_2.whenPressed(new SnapToTarget(15));
+//		snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
+//		snapToTarget_2.whenPressed(new SnapToTarget(15));
 		turnToAngle_5 = new JoystickButton(driveJoyRight, 5);
 		turnToAngle_5.whenPressed(new TurnToAngle(90, 15));
 		shiftDown_4 = new JoystickButton(driveJoyRight, 4);
@@ -68,8 +68,8 @@ public class OI {
 		testSensors_9.whenPressed(new TestSensors());
 		testMinRotPower_7 = new JoystickButton(driveJoyLeft, 7);
 		testMinRotPower_7.whenPressed(new TestMinRotPower());
-		testRotPID_1 = new JoystickButton(driveJoyLeft, 1);
-		testRotPID_1.whenPressed(new TestRotPID());
+		liveVisionTrack_1 = new JoystickButton(driveJoyLeft, 1);
+		liveVisionTrack_1.whenPressed(new LiveVisionTracking());
 		
 //		tankDrive_10 = new JoystickButton(driveJoyLeft, 10);
 //		tankDrive_10.whenPressed(new TankDrive());
@@ -80,10 +80,10 @@ public class OI {
 		// Smart Dashboard buttons
 //		SmartDashboard.putData("Tank Drive", new TankDrive());
 //		SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
-		SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
+//		SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
 //		SmartDashboard.putData("Approach Target", new ApproachTarget());
-		SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
-		SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
+//		SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
+//		SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
 //		SmartDashboard.putData("Arc Turn to 90", new ArcTurn(90, 0.254));
 //		SmartDashboard.putData("Pivot to 170", new PivotToAngle(170, true, false));
 //		SmartDashboard.putData("Arc Turn to -90", new ArcTurn(-90, 0.254));

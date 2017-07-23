@@ -18,18 +18,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TurnToAngle extends Command {
 	
 	private double m_angleToTurn;
-	private int m_counter = 0;
 	private double m_startTime;
 	private double m_timeout;
+	private double error;
 	
-	private NerdyPID m_rotPID;
+//	private NerdyPID m_rotPID;
 	
 	/**
 	 * @param angle
 	 */
 	public TurnToAngle(double angle) {
 		m_angleToTurn = angle;
-		m_timeout = 3; // default timeout is 3 seconds
+		m_timeout = 10; // default timeout is 10 seconds
 		
 		// subsystem dependencies
 		requires(Robot.drive);
@@ -51,10 +51,10 @@ public class TurnToAngle extends Command {
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "TurnToAngle");
 		m_startTime = Timer.getFPGATimestamp();
-		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
-		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-		m_rotPID.setDesired(m_angleToTurn);
-		m_rotPID.setGyro(true);
+//		m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+//		m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+//		m_rotPID.setDesired(m_angleToTurn);
+//		m_rotPID.setGyro(true);
 		
 		Robot.drive.stopDrive();
 		Robot.drive.shiftDown();
@@ -62,21 +62,17 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected void execute() {
-		double robotAngle = Robot.drive.getCurrentYaw();
-		double error = m_angleToTurn - robotAngle;
+		double robotAngle = (360-Robot.drive.getCurrentYaw()) % 360;
+		error = m_angleToTurn - robotAngle;
 		SmartDashboard.putNumber("Angle Error", error);
-		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-		if (Math.abs(error) <= Constants.kDriveRotationTolerance) {
-			m_counter += 1;
-		} else {
-			m_counter = 0;
-		}
-		Robot.drive.setPower(power, -power);
+//		double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
+		double power = Constants.kRotP * error;
+		Robot.drive.setPower(power, power);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return m_counter > Constants.kDriveRotationOscillationCount || Timer.getFPGATimestamp() - m_startTime > m_timeout;
+		return Math.abs(error) <= Constants.kDriveRotationTolerance || Timer.getFPGATimestamp() - m_startTime > m_timeout;
 	}
 
 	@Override

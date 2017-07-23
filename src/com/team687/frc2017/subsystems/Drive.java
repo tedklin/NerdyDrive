@@ -11,6 +11,7 @@ import com.team687.lib.kauailabs.sf2.frc.navXSensor;
 import com.team687.lib.kauailabs.sf2.orientation.OrientationHistory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -50,7 +51,7 @@ public class Drive extends Subsystem {
     	
     	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
         
-    	m_nav = new AHRS(RobotMap.navID);
+    	m_nav = new AHRS(SerialPort.Port.kMXP);
         m_navxsensor = new navXSensor(m_nav, "Drivetrain Orientation");
         m_orientationHistory = new OrientationHistory(m_navxsensor, m_nav.getRequestedUpdateRate() * 10);
     } 
@@ -187,13 +188,13 @@ public class Drive extends Subsystem {
 		m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
 		m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
 	 	
-	 	m_leftMaster.set(NerdyMath.limit(lPow, 1.0));
-	 	m_leftSlave1.set(m_leftMaster.getDeviceID());
-	 	m_leftSlave2.set(m_leftMaster.getDeviceID());
+	 	m_leftMaster.set(lPow);
+	 	m_leftSlave1.set(lPow);
+	 	m_leftSlave2.set(lPow);
 	 	
-	 	m_rightMaster.set(NerdyMath.limit(rPow, 1.0));
-	 	m_rightSlave1.set(m_rightMaster.getDeviceID());
-	 	m_rightSlave2.set(m_rightMaster.getDeviceID());
+	 	m_rightMaster.set(rPow);
+	 	m_rightSlave1.set(rPow);
+	 	m_rightSlave2.set(rPow);
 	 }
 	 
 	public void processMotionProfileBuffer() {
