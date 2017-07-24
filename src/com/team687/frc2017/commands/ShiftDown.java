@@ -9,34 +9,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Shift to low gear
  */
 
-public class ShiftDown extends Command{
-	
-	public ShiftDown() {
-		// subsystem dependencies
-		requires(Robot.drive);
-	}
+public class ShiftDown extends Command {
 
-	@Override
-	protected void initialize() {
-		SmartDashboard.putString("Current Command", "ShiftDown");
-		Robot.drive.shiftDown();
-	}
+    public ShiftDown() {
+	// subsystem dependencies
+	requires(Robot.drive);
+    }
 
-	@Override
-	protected void execute() {
-	}
+    @Override
+    protected void initialize() {
+	SmartDashboard.putString("Current Command", "ShiftDown");
+	Robot.drive.shiftDown();
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected void execute() {
+    }
 
-	@Override
-	protected void end() {
-	}
+    @Override
+    protected boolean isFinished() {
+	return true;
+    }
 
-	@Override
-	protected void interrupted() {
-	}
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    protected void interrupted() {
+    }
 
 }

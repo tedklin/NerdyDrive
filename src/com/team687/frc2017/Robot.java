@@ -10,102 +10,89 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *                        
- * _._ _..._ .-',     _.._(`)
- *'-. `     '  /-._.-'    ',/
- *   )         \            '.
- *  / _    _    |             \
- * |  a    a    /              |
- * \   .-.                     ;  
- *  '-('' ).-'       ,'       ;
- *     '-;           |      .'
- *        \           \    /
- *        | 7  .__  _.-\   \
- *        | |  |  ``/  /`  /
- *       /,_|  |   /,_/   /
- *          /,_/      '`-'
- *          
+ * Cosmos 2017
+ * 
  * @author tedfoodlin
  * 
  */
 
 public class Robot extends IterativeRobot {
 
-	public static Drive drive;
-	public static PowerDistributionPanel pdp;
-	public static Compressor compressor;
-	public static OI oi;
-	public static VisionAdapter visionAdapter;
+    public static Drive drive;
+    public static PowerDistributionPanel pdp;
+    public static Compressor compressor;
+    public static OI oi;
+    public static VisionAdapter visionAdapter;
 
-	@Override
-	public void robotInit() {
-		pdp = new PowerDistributionPanel();
-		compressor = new Compressor();
-		compressor.start();
-		
-		drive = new Drive();
-		drive.stopDrive();
-		drive.shiftDown();
-		drive.resetEncoders();
-		drive.resetGyro();
-		
-		oi = new OI();
+    @Override
+    public void robotInit() {
+	pdp = new PowerDistributionPanel();
+	compressor = new Compressor();
+	compressor.start();
 
-        SmartDashboard.putData(drive);
-        
-        visionAdapter = VisionAdapter.getInstance();
-	}
+	drive = new Drive();
+	drive.stopDrive();
+	drive.shiftDown();
+	drive.resetEncoders();
+	drive.resetGyro();
 
-	@Override
-	public void disabledInit() {
-		Scheduler.getInstance().removeAll();
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-	}
+	oi = new OI();
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-	}
+	SmartDashboard.putData(drive);
 
-	@Override
-	public void autonomousInit() {
-		Scheduler.getInstance().removeAll();
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-	}
+	visionAdapter = VisionAdapter.getInstance();
+    }
 
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-		
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-        SmartDashboard.putData("PDP", pdp);
-	}
+    @Override
+    public void disabledInit() {
+	Scheduler.getInstance().removeAll();
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+    }
 
-	@Override
-	public void teleopInit() {
-		Scheduler.getInstance().removeAll();
-        visionAdapter.reportToSmartDashboard();
-        drive.reportToSmartDashboard();
-	}
+    @Override
+    public void disabledPeriodic() {
+	Scheduler.getInstance().run();
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+    }
 
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-        SmartDashboard.putData("PDP", pdp);
-	}
+    @Override
+    public void autonomousInit() {
+	Scheduler.getInstance().removeAll();
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+    }
 
-	@Override
-	public void testPeriodic() {
-		LiveWindow.run();
-        drive.reportToSmartDashboard();
-        visionAdapter.reportToSmartDashboard();
-        SmartDashboard.putData("PDP", pdp);
-	}
+    @Override
+    public void autonomousPeriodic() {
+	Scheduler.getInstance().run();
+
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+	SmartDashboard.putData("PDP", pdp);
+    }
+
+    @Override
+    public void teleopInit() {
+	Scheduler.getInstance().removeAll();
+	visionAdapter.reportToSmartDashboard();
+	drive.reportToSmartDashboard();
+    }
+
+    @Override
+    public void teleopPeriodic() {
+	Scheduler.getInstance().run();
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+	SmartDashboard.putData("PDP", pdp);
+    }
+
+    @Override
+    public void testPeriodic() {
+	LiveWindow.run();
+	drive.reportToSmartDashboard();
+	visionAdapter.reportToSmartDashboard();
+	SmartDashboard.putData("PDP", pdp);
+    }
 }

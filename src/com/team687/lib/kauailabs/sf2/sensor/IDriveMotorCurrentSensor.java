@@ -25,5 +25,5 @@ THE SOFTWARE.
 package com.team687.lib.kauailabs.sf2.sensor;
 
 public interface IDriveMotorCurrentSensor {
-	double getCurrentAmps();
+    double getCurrentAmps();
 }

@@ -25,7 +25,7 @@ THE SOFTWARE.
 package com.team687.lib.kauailabs.sf2.sensor;
 
 public interface IWheelVelocitySensor {
-	void reset(); // ????
+    void reset(); // ????
 
-	double getCurrentDistanceInches();
+    double getCurrentDistanceInches();
 }

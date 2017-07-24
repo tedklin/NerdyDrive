@@ -37,5 +37,5 @@ import com.team687.lib.kauailabs.sf2.time.Timestamp;
  *            - the object of type T representing the newly-received data.
  */
 public interface ISensorDataSubscriber {
-	void publish(IQuantity[] curr_values, Timestamp timestamp);
+    void publish(IQuantity[] curr_values, Timestamp timestamp);
 }

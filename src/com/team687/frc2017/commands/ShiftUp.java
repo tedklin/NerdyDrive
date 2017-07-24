@@ -10,33 +10,33 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 
 public class ShiftUp extends Command {
-	
-	public ShiftUp() {
-		// subsystem dependencies
-		requires(Robot.drive);
-	}
 
-	@Override
-	protected void initialize() {
-		SmartDashboard.putString("Current Command", "ShiftUp");
-		Robot.drive.shiftUp();
-	}
+    public ShiftUp() {
+	// subsystem dependencies
+	requires(Robot.drive);
+    }
 
-	@Override
-	protected void execute() {
-	}
+    @Override
+    protected void initialize() {
+	SmartDashboard.putString("Current Command", "ShiftUp");
+	Robot.drive.shiftUp();
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected void execute() {
+    }
 
-	@Override
-	protected void end() {
-	}
+    @Override
+    protected boolean isFinished() {
+	return true;
+    }
 
-	@Override
-	protected void interrupted() {
-	}
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    protected void interrupted() {
+    }
 
 }
