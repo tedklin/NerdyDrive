@@ -8,16 +8,16 @@ public class Constants {
 
     // Distance
     public final static double kDistF = 0;
-    public final static double kDistP = 0;
+    public final static double kDistP = 0.001;
     public final static double kDistI = 0;
     public final static double kDistD = 0;
     public final static double kMinDistPower = 0;
     public final static double kMaxDistPower = 1.0;
-    public final static double kDriveDistanceTolerance = 2.056;
+    public final static double kDriveDistanceTolerance = 205.6;
     public final static double kDriveDistanceOscillationCount = 5;
 
     // Rotation
-    public final static double kRotP = 0.02;
+    public final static double kRotP = 0.015;
     public final static double kRotI = 0;
     public final static double kRotD = 0;
     public final static double kMinRotPower = 0.12;

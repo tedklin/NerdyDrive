@@ -65,7 +65,7 @@ public class DriveDistancePID extends Command {
 	double rPow = m_rightDistPID.calculate(Robot.drive.getRightTicks());
 	double rotPow = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 
-	double[] pow = { rotPow + lPow, -rotPow + rPow };
+	double[] pow = { rotPow + lPow, rotPow - rPow };
 	pow = NerdyMath.normalize(pow, false);
 	Robot.drive.setPower(pow[0], pow[1]);
 
