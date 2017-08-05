@@ -67,7 +67,9 @@ public class DriveBezierRio extends Command {
 
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		double error = m_heading.get(m_counter) - robotAngle;
-		double straightPower = 0.5;
+		error = (error > 180) ? error - 360 : error;
+		error = (error < -180) ? error + 360 : error;
+		double straightPower = 0.8;
 		double rotPower = Constants.kRotP * error;
 
 		double leftPow = rotPower + straightPower;
@@ -83,7 +85,7 @@ public class DriveBezierRio extends Command {
 
     @Override
     protected boolean isFinished() {
-	return m_pathIsFinished || Robot.drive.getDrivetrainTicks() <= m_arcLength.get(m_arcLength.size() - 1);
+	return m_pathIsFinished || Robot.drive.getDrivetrainTicks() >= m_arcLength.get(m_arcLength.size() - 1);
     }
 
     @Override
