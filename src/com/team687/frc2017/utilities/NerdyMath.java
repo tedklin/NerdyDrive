@@ -46,7 +46,7 @@ public class NerdyMath {
      * @param throttle
      */
     public static double addSensitivity(double input, double throttle) {
-	double b = Constants.kLeftJoystickDeadband;
+	double b = Constants.kJoystickDeadband;
 	double a = throttle;
 	double output = 0;
 	if (input >= 0) {

@@ -4,7 +4,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.RobotMap;
-import com.team687.frc2017.commands.*;
+import com.team687.frc2017.commands.TankDrive;
 import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.lib.kauailabs.navx.frc.AHRS;
 import com.team687.lib.kauailabs.sf2.frc.navXSensor;
@@ -117,7 +117,7 @@ public class Drive extends Subsystem {
     }
 
     public void resetGyro() {
-	m_nav.zeroYaw();
+	m_nav.reset();
     }
 
     public double getInitTime() {

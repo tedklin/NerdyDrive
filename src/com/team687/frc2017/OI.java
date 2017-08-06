@@ -1,7 +1,12 @@
 package com.team687.frc2017;
 
-import com.team687.frc2017.commands.*;
-import com.team687.frc2017.commands.tests.*;
+import com.team687.frc2017.commands.LiveVisionTracking;
+import com.team687.frc2017.commands.ResetGyro;
+import com.team687.frc2017.commands.ShiftDown;
+import com.team687.frc2017.commands.ShiftUp;
+import com.team687.frc2017.commands.TankDrive;
+import com.team687.frc2017.commands.auto.RedGearHopperShootAuto;
+import com.team687.frc2017.commands.auto.RedHopperShootAuto;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -51,8 +56,8 @@ public class OI {
 
 	// snapToTarget_2 = new JoystickButton(driveJoyRight, 2);
 	// snapToTarget_2.whenPressed(new SnapToTarget(15));
-	turnToAngle_5 = new JoystickButton(driveJoyRight, 5);
-	turnToAngle_5.whenPressed(new TurnToAngle(90, 15));
+	// turnToAngle_5 = new JoystickButton(driveJoyRight, 5);
+	// turnToAngle_5.whenPressed(new TurnToAngle(90, 15));
 	shiftDown_4 = new JoystickButton(driveJoyRight, 4);
 	shiftDown_4.whenPressed(new ShiftDown());
 
@@ -64,10 +69,10 @@ public class OI {
 	shiftUp_3 = new JoystickButton(driveJoyRight, 3);
 	shiftUp_3.whenPressed(new ShiftUp());
 
-	testSensors_9 = new JoystickButton(driveJoyLeft, 9);
-	testSensors_9.whenPressed(new TestSensors());
-	testMinRotPower_7 = new JoystickButton(driveJoyLeft, 7);
-	testMinRotPower_7.whenPressed(new TestMinRotPower());
+	// testSensors_9 = new JoystickButton(driveJoyLeft, 9);
+	// testSensors_9.whenPressed(new TestSensors());
+	// testMinRotPower_7 = new JoystickButton(driveJoyLeft, 7);
+	// testMinRotPower_7.whenPressed(new TestMinRotPower());
 	liveVisionTrack_1 = new JoystickButton(driveJoyLeft, 1);
 	liveVisionTrack_1.whenPressed(new LiveVisionTracking());
 
@@ -77,23 +82,19 @@ public class OI {
 	// cheesyDrive_11.whenPressed(new CheesyDrive());
 
 	// Smart Dashboard buttons
-	// SmartDashboard.putData("Tank Drive", new TankDrive());
+	SmartDashboard.putData("Tank Drive", new TankDrive());
+	SmartDashboard.putData("Reset Gyro", new ResetGyro());
 	// SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
-	// SmartDashboard.putData("Snap to Target", new SnapToTarget(15));
-	// SmartDashboard.putData("Approach Target", new ApproachTarget());
-	// SmartDashboard.putData("Turn to 90", new TurnToAngle(90, 15));
-	// SmartDashboard.putData("Turn to 45", new TurnToAngle(45, 15));
-	// SmartDashboard.putData("Arc Turn to 90", new ArcTurn(90, 0.254));
-	// SmartDashboard.putData("Pivot to 170", new PivotToAngle(170, true, false));
-	// SmartDashboard.putData("Arc Turn to -90", new ArcTurn(-90, 0.254));
-	// SmartDashboard.putData("Pivot to -170", new PivotToAngle(-170, true, false));
 
 	SmartDashboard.putData("Shift Up", new ShiftUp());
 	SmartDashboard.putData("Shift Down", new ShiftDown());
+	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
+	SmartDashboard.putData("Hopper Auto", new RedHopperShootAuto());
+	SmartDashboard.putData("Gear + Hopper Auto", new RedGearHopperShootAuto());
 
-	SmartDashboard.putData("Test Sensors", new TestSensors());
-	SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
-	SmartDashboard.putData("Test Rot PID", new TestRotPID());
+	// SmartDashboard.putData("Test Sensors", new TestSensors());
+	// SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
+	// SmartDashboard.putData("Test Rot PID", new TestRotPID());
     }
 
     /**
