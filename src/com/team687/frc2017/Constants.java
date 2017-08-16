@@ -1,5 +1,7 @@
 package com.team687.frc2017;
 
+import com.team687.frc2017.utilities.Waypoint;
+
 /**
  * Important constants
  */
@@ -38,6 +40,7 @@ public class Constants {
     public final static double kA = 0;
     public final static double kDt = 0.01;
     public final static double kDtInMinutes = kDt / 60;
+    public final static double kCruiseVelocity = 0;
 
     // Teleop
     public final static double kSensitivityHigh = 0.85;
@@ -56,5 +59,9 @@ public class Constants {
     public final static double RedHopperBackUpDistance = -0;
     public final static double RedHopperAngleToShoot = 0;
     public final static double[] RedPathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    // placeholder path from Simbot2017
+    public final static Waypoint[] SimRedPathWallToHopper = new Waypoint[] { new Waypoint(0, 0, 90),
+	    new Waypoint(0, 3.85, 90), new Waypoint(-6.66, 11.25, 90), new Waypoint(-7.55, 11.35, 180) };
 
 }

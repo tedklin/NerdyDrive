@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Drive a path generated from Bezier curve
+ * Drive a path generated from Bezier curve based on 1241
  *
  * @author tedfoodlin
  *
