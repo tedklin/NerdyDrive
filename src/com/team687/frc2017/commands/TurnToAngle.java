@@ -2,7 +2,6 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyPID;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,6 +21,8 @@ public class TurnToAngle extends Command {
     private double m_timeout;
     private double error;
 
+    private boolean m_isHighGear;
+
     // private NerdyPID m_rotPID;
 
     /**
@@ -30,6 +31,7 @@ public class TurnToAngle extends Command {
     public TurnToAngle(double angle) {
 	m_angleToTurn = angle;
 	m_timeout = 10; // default timeout is 10 seconds
+	m_isHighGear = false;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -42,6 +44,16 @@ public class TurnToAngle extends Command {
     public TurnToAngle(double angle, double timeout) {
 	m_angleToTurn = angle;
 	m_timeout = timeout;
+	m_isHighGear = false;
+
+	// subsystem dependencies
+	requires(Robot.drive);
+    }
+
+    public TurnToAngle(double angle, double timeout, boolean isHighGear) {
+	m_angleToTurn = angle;
+	m_timeout = timeout;
+	m_isHighGear = isHighGear;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -57,7 +69,11 @@ public class TurnToAngle extends Command {
 	// m_rotPID.setGyro(true);
 
 	Robot.drive.stopDrive();
-	Robot.drive.shiftDown();
+	if (m_isHighGear) {
+	    Robot.drive.shiftUp();
+	} else {
+	    Robot.drive.shiftDown();
+	}
     }
 
     @Override
