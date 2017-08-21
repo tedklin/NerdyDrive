@@ -28,7 +28,7 @@ public class LiveVisionTracking extends Command {
 
     @Override
     protected void initialize() {
-	SmartDashboard.putString("Current Command", "TurnToAngle");
+	SmartDashboard.putString("Current Command", "LiveVisionTracking");
 	// m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
 	// m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	// m_rotPID.setDesired(m_angleToTurn);
@@ -48,6 +48,10 @@ public class LiveVisionTracking extends Command {
 	SmartDashboard.putNumber("Angle Error", error);
 	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 	double power = Constants.kRotPLowGear * error;
+	double sign = Math.signum(power);
+	if (Math.abs(power) < Constants.kMinRotPowerLowGear) {
+	    power = sign * Constants.kMinRotPowerLowGear;
+	}
 	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
 	    power = 0;
 	}

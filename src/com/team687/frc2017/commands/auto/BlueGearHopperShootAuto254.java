@@ -7,6 +7,13 @@ import com.team687.frc2017.commands.LiveVisionTracking;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+/**
+ * 254 style blue gear+hopper auto
+ * 
+ * @author tedlin
+ *
+ */
+
 public class BlueGearHopperShootAuto254 extends CommandGroup {
 
     public BlueGearHopperShootAuto254() {

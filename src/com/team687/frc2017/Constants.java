@@ -32,7 +32,7 @@ public class Constants {
     public final static double kMinRotPowerLowGear = 0.12;
     public final static double kMaxRotPowerLowGear = 1.0;
     public final static double kDriveRotationTolerance = 0.5;
-    public final static double kDriveRotationDeadband = 0.25;
+    public final static double kDriveRotationDeadband = 0.5;
 
     public final static double kRotPHighGear = 0;
     public final static double kMinRotPowerHighGear = 0.254;

@@ -5,6 +5,7 @@ import com.team687.frc2017.commands.ResetGyro;
 import com.team687.frc2017.commands.ShiftDown;
 import com.team687.frc2017.commands.ShiftUp;
 import com.team687.frc2017.commands.TankDrive;
+import com.team687.frc2017.commands.auto.BlueGearHopperShootAuto254;
 import com.team687.frc2017.commands.auto.BlueHopperShootAuto973;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,6 +29,8 @@ public class OI {
     public JoystickButton testSensors_9;
     public JoystickButton testMinRotPower_7;
     public JoystickButton liveVisionTrack_1;
+
+    public JoystickButton wantToShoot_4;
 
     public JoystickButton tankDrive_10;
     public JoystickButton cheesyDrive_11;
@@ -88,7 +91,8 @@ public class OI {
 	SmartDashboard.putData("Shift Up", new ShiftUp());
 	SmartDashboard.putData("Shift Down", new ShiftDown());
 	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
-	SmartDashboard.putData("Hopper Auto", new BlueHopperShootAuto973());
+	SmartDashboard.putData("Blue 973 Hopper Auto", new BlueHopperShootAuto973());
+	SmartDashboard.putData("Blue 254 Gear + Hopper Auto", new BlueGearHopperShootAuto254());
 
 	// SmartDashboard.putData("Test Sensors", new TestSensors());
 	// SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
@@ -142,5 +146,12 @@ public class OI {
      */
     public boolean getQuickTurn() {
 	return quickTurn_7.get();
+    }
+
+    /**
+     * @return if want to shoot
+     */
+    public boolean wantToShoot() {
+	return wantToShoot_4.get();
     }
 }

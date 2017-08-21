@@ -20,8 +20,9 @@ public class TurnToAngle extends Command {
     private double m_startTime;
     private double m_timeout;
     private double error;
-    private double m_kP;
 
+    private double m_kP;
+    private double m_minRotPower;
     private boolean m_isHighGear;
 
     // private NerdyPID m_rotPID;
@@ -72,9 +73,11 @@ public class TurnToAngle extends Command {
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
 	    m_kP = Constants.kRotPHighGear;
+	    m_minRotPower = Constants.kMinRotPowerHighGear;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
 	    m_kP = Constants.kRotPLowGear;
+	    m_minRotPower = Constants.kMinRotPowerLowGear;
 	}
     }
 
@@ -85,6 +88,10 @@ public class TurnToAngle extends Command {
 	SmartDashboard.putNumber("Angle Error", error);
 	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
 	double power = m_kP * error;
+	double sign = Math.signum(power);
+	if (Math.abs(power) < m_minRotPower) {
+	    power = sign * m_minRotPower;
+	}
 	Robot.drive.setPower(power, power);
     }
 

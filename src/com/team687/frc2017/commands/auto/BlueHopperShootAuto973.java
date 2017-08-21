@@ -9,7 +9,7 @@ import com.team687.frc2017.commands.LiveVisionTracking;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Blue hopper auto
+ * Blue hopper auto 973 style
  * 
  * @author tedlin
  *
