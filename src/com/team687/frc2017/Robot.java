@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Cosmos 2017
  * 
- * @author tedfoodlin
+ * @author tedlin
  * 
  */
 

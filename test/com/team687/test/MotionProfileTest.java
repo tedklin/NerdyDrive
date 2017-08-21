@@ -9,7 +9,7 @@ import com.team687.frc2017.utilities.*;
 /**
  * Tests for motion profile generation and integration
  * 
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

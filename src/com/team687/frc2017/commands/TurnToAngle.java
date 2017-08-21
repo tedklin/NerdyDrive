@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Turn to a specified angle (no vision, absolute)
  * 
- * @author tedfoodlin
+ * @author tedlin
  * 
  */
 
@@ -20,6 +20,7 @@ public class TurnToAngle extends Command {
     private double m_startTime;
     private double m_timeout;
     private double error;
+    private double m_kP;
 
     private boolean m_isHighGear;
 
@@ -68,11 +69,12 @@ public class TurnToAngle extends Command {
 	// m_rotPID.setDesired(m_angleToTurn);
 	// m_rotPID.setGyro(true);
 
-	Robot.drive.stopDrive();
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	} else {
+	    m_kP = Constants.kRotPHighGear;
+	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
+	    m_kP = Constants.kRotPLowGear;
 	}
     }
 
@@ -82,7 +84,7 @@ public class TurnToAngle extends Command {
 	error = m_angleToTurn - robotAngle;
 	SmartDashboard.putNumber("Angle Error", error);
 	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	double power = Constants.kRotP * error;
+	double power = m_kP * error;
 	Robot.drive.setPower(power, power);
     }
 

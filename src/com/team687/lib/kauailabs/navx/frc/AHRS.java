@@ -1353,7 +1353,7 @@ public class AHRS extends SensorBase implements PIDSource, LiveWindowSendable {
 	    // 9-axis data
 	    AHRS.this.fused_heading = ahrs_update.fused_heading;
 
-	    // Gravity-corrected linear acceleration (world-frame)
+	    // Gravity-correctedlinear acceleration (world-frame)
 	    AHRS.this.world_linear_accel_x = ahrs_update.linear_accel_x;
 	    AHRS.this.world_linear_accel_y = ahrs_update.linear_accel_y;
 	    AHRS.this.world_linear_accel_z = ahrs_update.linear_accel_z;
@@ -1437,7 +1437,7 @@ public class AHRS extends SensorBase implements PIDSource, LiveWindowSendable {
 	    // 9-axis data
 	    AHRS.this.fused_heading = ahrs_update.fused_heading;
 
-	    // Gravity-corrected linear acceleration (world-frame)
+	    // Gravity-correctedlinear acceleration (world-frame)
 	    AHRS.this.world_linear_accel_x = ahrs_update.linear_accel_x;
 	    AHRS.this.world_linear_accel_y = ahrs_update.linear_accel_y;
 	    AHRS.this.world_linear_accel_z = ahrs_update.linear_accel_z;

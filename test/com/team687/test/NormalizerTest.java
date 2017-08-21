@@ -15,7 +15,7 @@ import com.team687.frc2017.utilities.*;
 /**
  * Test for normalizer
  * 
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

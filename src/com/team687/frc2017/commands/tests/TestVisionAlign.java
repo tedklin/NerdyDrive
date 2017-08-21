@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Testing vision alignment
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -26,7 +26,7 @@ public class TestVisionAlign extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
-	m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 
 	Robot.drive.stopDrive();

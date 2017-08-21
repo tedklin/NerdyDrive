@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * start rotating This value can be then be used as the minimum output of any
  * PID turning on the drivetrain
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

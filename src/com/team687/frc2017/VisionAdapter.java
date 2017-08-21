@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Vision adapter for use with NerdyVision
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

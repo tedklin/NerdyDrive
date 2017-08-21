@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcTurn extends Command {
 
+    private double m_kP;
+    private double m_straightPower;
     private double m_desiredAngle;
     private boolean m_isRightPowered;
     private double m_timeout;
@@ -28,10 +30,12 @@ public class ArcTurn extends Command {
      * 
      * @param desiredAngle
      * @param isRightPowered
+     * @param straightPower
      */
-    public ArcTurn(double desiredAngle, boolean isRightPowered) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
+	m_straightPower = straightPower;
 	m_timeout = 10;
 	m_isHighGear = false;
 
@@ -43,13 +47,15 @@ public class ArcTurn extends Command {
      * 
      * @param desiredAngle
      * @param isRightPowered
-     * @param timeout
+     * @param straightPower
+     * @param isHighGear
      */
-    public ArcTurn(double desiredAngle, boolean isRightPowered, double timeout) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower, boolean isHighGear) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
-	m_timeout = timeout;
-	m_isHighGear = false;
+	m_straightPower = straightPower;
+	m_timeout = 10;
+	m_isHighGear = isHighGear;
 
 	requires(Robot.drive);
     }
@@ -59,12 +65,15 @@ public class ArcTurn extends Command {
      * 
      * @param desiredAngle
      * @param isRightPowered
-     * @param timeout
+     * @param striaghtPower
      * @param isHighGear
+     * @param timeout
      */
-    public ArcTurn(double desiredAngle, boolean isRightPowered, double timeout, boolean isHighGear) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower, boolean isHighGear,
+	    double timeout) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
+	m_straightPower = straightPower;
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
 
@@ -76,11 +85,12 @@ public class ArcTurn extends Command {
 	SmartDashboard.putString("Current Command", "ArcTurn");
 
 	m_startTime = Timer.getFPGATimestamp();
-	Robot.drive.stopDrive();
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	} else {
+	    m_kP = Constants.kRotPHighGear;
+	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
+	    m_kP = Constants.kRotPLowGear;
 	}
     }
 
@@ -89,12 +99,11 @@ public class ArcTurn extends Command {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 	m_error = m_desiredAngle - robotAngle;
 	SmartDashboard.putNumber("Angle Error", m_error);
-	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	double power = Constants.kRotP * m_error * 1.95;
+	double power = m_kP * m_error * 1.95;
 	if (m_isRightPowered) {
-	    Robot.drive.setPower(0, power);
+	    Robot.drive.setPower(0 + m_straightPower, power - m_straightPower);
 	} else if (!m_isRightPowered) {
-	    Robot.drive.setPower(power, 0);
+	    Robot.drive.setPower(power + m_straightPower, 0 - m_straightPower);
 	}
     }
 

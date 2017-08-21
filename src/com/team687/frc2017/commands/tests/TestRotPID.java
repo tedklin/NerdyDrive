@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * A test for rotational PID output without actuating anything
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -28,12 +28,12 @@ public class TestRotPID extends Command {
 	SmartDashboard.putString("Current Command", "TestRotPID");
 
 	SmartDashboard.putNumber("Desired Yaw (test, editable)", 0);
-	SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotP);
+	SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotPLowGear);
 	SmartDashboard.putNumber("Rot I (test, editable)", Constants.kRotI);
 	SmartDashboard.putNumber("Rot D (test, editable)", Constants.kRotD);
 	SmartDashboard.putNumber("Rot Min Power (test, editable)", Constants.kMinRotPower);
 	SmartDashboard.putNumber("Rot Max Power (test, editable)", Constants.kMaxRotPower);
-	m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 
 	Robot.drive.stopDrive();

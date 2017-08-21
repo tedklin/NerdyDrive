@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Drive a path with motion profiling with optional straight driving heading
  * correction with a P-loop on NavX reading
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -60,7 +60,7 @@ public class DriveDistanceRio extends Command {
 	Robot.drive.resetEncoders();
 	Robot.drive.shiftDown();
 
-	m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	m_rotPID.setGyro(true);
 	m_rotPID.setDesired(Robot.drive.getCurrentYaw());

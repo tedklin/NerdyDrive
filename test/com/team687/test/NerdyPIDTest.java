@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.util.BoundaryException;
 /**
  * NerdyPID unit testing
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

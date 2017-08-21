@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Approach a target based on vision and gyro Used with NerdyVision
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -42,7 +42,7 @@ public class ApproachTarget extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "ApproachTarget");
-	m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	m_rotPID.setGyro(true);
 

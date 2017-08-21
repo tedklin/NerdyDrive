@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Drive a path generated from Bezier curve based on 1241
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -57,7 +57,7 @@ public class DriveBezierRio extends Command {
 		error = (error > 180) ? error - 360 : error;
 		error = (error < -180) ? error + 360 : error;
 		double straightPower = 0.8;
-		double rotPower = Constants.kRotP * error;
+		double rotPower = Constants.kRotPLowGear * error;
 
 		double leftPow = rotPower + straightPower;
 		double rightPow = rotPower - straightPower;

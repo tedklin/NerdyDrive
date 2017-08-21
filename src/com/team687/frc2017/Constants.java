@@ -4,6 +4,8 @@ import com.team687.frc2017.utilities.Waypoint;
 
 /**
  * Important constants
+ * 
+ * @author tedlin
  */
 
 public class Constants {
@@ -24,7 +26,8 @@ public class Constants {
     public final static double kDriveDistanceOscillationCount = 5;
 
     // Rotation PID
-    public final static double kRotP = 0.015;
+    public final static double kRotPLowGear = 0.015;
+    public final static double kRotPHighGear = 0;
     public final static double kRotI = 0;
     public final static double kRotD = 0;
     public final static double kMinRotPower = 0.12;
@@ -54,6 +57,8 @@ public class Constants {
     public final static double kBezierMaxStraightPow = 0.5172;
 
     // Paths
+    public final static double RedPathWallToHopperInitialDistance = 0;
+    public final static double RedPathWallToHopperArcTurnAngle = 0;
     public final static double[] RedPathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double[] RedPathWallToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double RedHopperBackUpDistance = -0;
@@ -62,6 +67,18 @@ public class Constants {
 
     // placeholder path from Simbot2017
     public final static Waypoint[] SimRedPathWallToHopper = new Waypoint[] { new Waypoint(0, 0, 90),
+	    new Waypoint(0, 3.85, 90), new Waypoint(-6.66, 11.25, 90), new Waypoint(-7.55, 11.35, 180) };
+
+    public final static double BluePathWallToHopperInitialDistance = 0;
+    public final static double BluePathWallToHopperArcTurnAngle = 0;
+    public final static double[] BluePathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double[] BluePathWallToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double BlueHopperBackUpDistance = -0;
+    public final static double BlueHopperAngleToShoot = 0;
+    public final static double[] BluePathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    // placeholder path from Simbot2017
+    public final static Waypoint[] SimBluePathWallToHopper = new Waypoint[] { new Waypoint(0, 0, 90),
 	    new Waypoint(0, 3.85, 90), new Waypoint(-6.66, 11.25, 90), new Waypoint(-7.55, 11.35, 180) };
 
 }

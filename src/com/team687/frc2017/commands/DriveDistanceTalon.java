@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Drive a straight distance with built-in Talon motion profiling
  * 
- * @author tedfoodlin
+ * @author tedlin
  * 
  */
 

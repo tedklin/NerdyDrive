@@ -5,8 +5,7 @@ import com.team687.frc2017.commands.ResetGyro;
 import com.team687.frc2017.commands.ShiftDown;
 import com.team687.frc2017.commands.ShiftUp;
 import com.team687.frc2017.commands.TankDrive;
-import com.team687.frc2017.commands.auto.RedGearHopperShootAuto;
-import com.team687.frc2017.commands.auto.RedHopperShootAuto;
+import com.team687.frc2017.commands.auto.BlueHopperShootAuto973;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -16,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  * 
- * @author tedfoodlin
+ * @author tedlin
  * 
  */
 
@@ -89,8 +88,7 @@ public class OI {
 	SmartDashboard.putData("Shift Up", new ShiftUp());
 	SmartDashboard.putData("Shift Down", new ShiftDown());
 	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
-	SmartDashboard.putData("Hopper Auto", new RedHopperShootAuto());
-	SmartDashboard.putData("Gear + Hopper Auto", new RedGearHopperShootAuto());
+	SmartDashboard.putData("Hopper Auto", new BlueHopperShootAuto973());
 
 	// SmartDashboard.putData("Test Sensors", new TestSensors());
 	// SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());

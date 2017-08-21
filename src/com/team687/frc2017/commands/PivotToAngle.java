@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Pivot on one side of the drivetrain to turn to an angle (absolute)
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -66,7 +66,7 @@ public class PivotToAngle extends Command {
 	}
 
 	m_rotPID = new NerdyPID();
-	m_rotPID.setPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID.setPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setDesired(m_angle);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	m_rotPID.setGyro(true);

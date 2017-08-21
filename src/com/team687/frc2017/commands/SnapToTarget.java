@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Alignment based on vision and gyro
  * 
- * @author tedfoodlin
+ * @author tedlin
  * 
  */
 
@@ -42,7 +42,7 @@ public class SnapToTarget extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
-	m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	m_rotPID.setGyro(true);
 

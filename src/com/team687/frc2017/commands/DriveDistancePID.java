@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Pure PID distance control
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -50,7 +50,7 @@ public class DriveDistancePID extends Command {
 	m_rightDistPID.setDesired(m_rightDistance);
 
 	m_rotPID = new NerdyPID();
-	m_rotPID.setPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
+	m_rotPID.setPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
 	m_rotPID.setOutputRange(Constants.kMinDistPower, Constants.kMaxDistPower);
 	m_rotPID.setGyro(true);
 	m_rotPID.setDesired(Robot.drive.getCurrentYaw());

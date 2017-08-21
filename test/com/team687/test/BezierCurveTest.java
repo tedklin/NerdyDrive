@@ -9,7 +9,7 @@ import com.team687.frc2017.utilities.*;
 /**
  * Bezier curve unit testing
  * 
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

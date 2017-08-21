@@ -82,7 +82,7 @@ public class Sim2DProfile extends Command {
 	m_rotError = -heading - robotAngle;
 	m_rotError = (m_rotError > 180) ? m_rotError - 360 : m_rotError;
 	m_rotError = (m_rotError < -180) ? m_rotError + 360 : m_rotError;
-	double rotPower = Constants.kRotP * m_rotError;
+	double rotPower = Constants.kRotPLowGear * m_rotError;
 	Robot.drive.setPower(rotPower + straightPower, rotPower - straightPower);
     }
 

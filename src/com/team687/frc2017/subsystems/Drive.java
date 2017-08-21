@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Drive subsystem
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

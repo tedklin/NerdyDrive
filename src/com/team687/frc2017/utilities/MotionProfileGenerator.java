@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Trapezoidal motion profile generator
  * 
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

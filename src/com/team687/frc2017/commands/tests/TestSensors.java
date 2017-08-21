@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Test sensor values without actuating anything
  *
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 

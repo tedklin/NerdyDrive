@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Live vision tracking (follows target around, no end)
  * 
- * @author tedfoodlin
+ * @author tedlin
  *
  */
 
@@ -35,7 +35,7 @@ public class LiveVisionTracking extends Command {
 	// m_rotPID.setGyro(true);
 
 	Robot.drive.stopDrive();
-	Robot.drive.shiftUp();
+	Robot.drive.shiftDown();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class LiveVisionTracking extends Command {
 	double error = absoluteDesiredAngle - robotAngle;
 	SmartDashboard.putNumber("Angle Error", error);
 	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	double power = Constants.kRotP * error;
+	double power = Constants.kRotPLowGear * error;
 	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
 	    power = 0;
 	}
