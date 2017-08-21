@@ -31,10 +31,10 @@ public class TestRotPID extends Command {
 	SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotPLowGear);
 	SmartDashboard.putNumber("Rot I (test, editable)", Constants.kRotI);
 	SmartDashboard.putNumber("Rot D (test, editable)", Constants.kRotD);
-	SmartDashboard.putNumber("Rot Min Power (test, editable)", Constants.kMinRotPower);
-	SmartDashboard.putNumber("Rot Max Power (test, editable)", Constants.kMaxRotPower);
+	SmartDashboard.putNumber("Rot Min Power (test, editable)", Constants.kMinRotPowerLowGear);
+	SmartDashboard.putNumber("Rot Max Power (test, editable)", Constants.kMaxRotPowerLowGear);
 	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+	m_rotPID.setOutputRange(Constants.kMinRotPowerLowGear, Constants.kMaxRotPowerLowGear);
 
 	Robot.drive.stopDrive();
 	Robot.drive.shiftUp();

@@ -61,7 +61,7 @@ public class DriveDistanceRio extends Command {
 	Robot.drive.shiftDown();
 
 	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+	// m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
 	m_rotPID.setGyro(true);
 	m_rotPID.setDesired(Robot.drive.getCurrentYaw());
 

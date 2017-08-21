@@ -43,7 +43,7 @@ public class SnapToTarget extends Command {
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
 	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+	m_rotPID.setOutputRange(Constants.kMinRotPowerLowGear, Constants.kMaxRotPowerLowGear);
 	m_rotPID.setGyro(true);
 
 	Robot.drive.stopDrive();

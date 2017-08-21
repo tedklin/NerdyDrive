@@ -27,7 +27,7 @@ public class TestVisionAlign extends Command {
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
 	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
+	m_rotPID.setOutputRange(Constants.kMinRotPowerLowGear, Constants.kMaxRotPowerLowGear);
 
 	Robot.drive.stopDrive();
 	Robot.drive.shiftUp();
