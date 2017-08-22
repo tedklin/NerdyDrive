@@ -19,9 +19,12 @@ public class SnapToTarget extends Command {
 
     private double m_startTime;
     private double m_timeout = 6.87;
+    private int m_counter;
+    private boolean m_isAuto;
 
-    public SnapToTarget() {
-	m_timeout = 6.87; // default timeout is 6.87 seconds
+    public SnapToTarget(boolean isAuto) {
+	m_timeout = 3.3; // default timeout is 6.87 seconds
+	m_isAuto = isAuto;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -30,8 +33,9 @@ public class SnapToTarget extends Command {
     /**
      * @param timeout
      */
-    public SnapToTarget(double timeout) {
+    public SnapToTarget(double timeout, boolean isAuto) {
 	m_timeout = timeout;
+	m_isAuto = isAuto;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -43,6 +47,7 @@ public class SnapToTarget extends Command {
 
 	Robot.drive.stopDrive();
 	Robot.drive.shiftDown();
+	m_counter = 0;
 
 	m_startTime = Timer.getFPGATimestamp();
     }
@@ -58,13 +63,23 @@ public class SnapToTarget extends Command {
 	double rotPower = Constants.kRotPLowGear * error;
 	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
 	    rotPower = 0;
+	    m_counter++;
+	} else {
+	    m_counter = 0;
 	}
 	Robot.drive.setPower(rotPower, rotPower);
     }
 
     @Override
     protected boolean isFinished() {
-	return Timer.getFPGATimestamp() - m_startTime > m_timeout || !Robot.oi.wantToShoot();
+	boolean isFinished = false;
+	if (!m_isAuto) {
+	    isFinished = Timer.getFPGATimestamp() - m_startTime > m_timeout || !Robot.oi.wantToShoot();
+	} else if (m_isAuto) {
+	    isFinished = Timer.getFPGATimestamp() - m_startTime > m_timeout
+		    || m_counter > Constants.kDriveRotationCounter;
+	}
+	return isFinished;
     }
 
     @Override

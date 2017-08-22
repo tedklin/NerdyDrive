@@ -33,6 +33,7 @@ public class Constants {
     public final static double kMaxRotPowerLowGear = 1.0;
     public final static double kDriveRotationTolerance = 0.5;
     public final static double kDriveRotationDeadband = 0.5;
+    public final static int kDriveRotationCounter = 3;
 
     public final static double kRotPHighGear = 0;
     public final static double kMinRotPowerHighGear = 0.254;
@@ -48,6 +49,8 @@ public class Constants {
     public final static double kDtInMinutes = kDt / 60;
     public final static double kCruiseVelocity = 0;
 
+    // Collision Detection
+
     // Teleop
     public final static double kSensitivityHigh = 0.85;
     public final static double kSensitivityLow = 0.75;
@@ -61,31 +64,37 @@ public class Constants {
     public final static double kBezierMaxStraightPow = 0.5172;
 
     // Paths
-    public final static double RedPathWallToHopperInitialDistance = 0;
-    public final static double RedPathWallToHopperArcTurnAngle = 0;
     public final static double[] RedPathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double[] RedPathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double RedPathHopperToBoilerAngle = 0;
+
     public final static double[] RedPathWallToHopper973 = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    public final static double[] RedPathWallToHopper1678 = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    public final static double[] RedPathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double RedPathWallToHopperInitialDistance = 0;
+    public final static double RedPathWallToHopperArcTurnAngle = 0;
     public final static double RedHopperBackUpDistance = -0;
     public final static double RedHopperAngleToShoot = 0;
+
+    public final static double[] RedPathWallToHopper1678 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double[] RedPathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double RedPathDistanceAlignWithHopper = 0;
 
     // placeholder path from Simbot2017
     public final static Waypoint[] SimRedPathWallToHopper = new Waypoint[] { new Waypoint(0, 0, 90),
 	    new Waypoint(0, 3.85, 90), new Waypoint(-6.66, 11.25, 90), new Waypoint(-7.55, 11.35, 180) };
 
-    public final static double BluePathWallToHopperInitialDistance = 0;
-    public final static double BluePathWallToHopperArcTurnAngle = 0;
     public final static double[] BluePathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double[] BluePathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double BluePathHopperToBoilerAngle = 0;
+
     public final static double[] BluePathWallToHopper973 = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    public final static double[] BluePathWallToHopper1678 = { 0, 0, 0, 0, 0, 0, 0, 0 };
-    public final static double[] BluePathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double BluePathWallToHopperInitialDistance = 0;
+    public final static double BluePathWallToHopperArcTurnAngle = 0;
     public final static double BlueHopperBackUpDistance = -0;
     public final static double BlueHopperAngleToShoot = 0;
+
+    public final static double[] BluePathWallToHopper1678 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double[] BluePathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double BluePathDistanceAlignWithHopper = 0;
 
     // placeholder path from Simbot2017
     public final static Waypoint[] SimBluePathWallToHopper = new Waypoint[] { new Waypoint(0, 0, 90),
