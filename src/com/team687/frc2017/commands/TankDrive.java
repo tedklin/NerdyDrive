@@ -27,8 +27,12 @@ public class TankDrive extends Command {
 
     @Override
     protected void execute() {
-	double leftPow = Robot.drive.addLeftSensitivity(Robot.oi.getDriveJoyLeftY());
-	double rightPow = Robot.drive.addRightSensitivity(Robot.oi.getDriveJoyRightY());
+	// double leftPow = Robot.drive.addLeftSensitivity(Robot.oi.getDriveJoyLeftY());
+	// double rightPow =
+	// Robot.drive.addRightSensitivity(Robot.oi.getDriveJoyRightY());
+
+	double leftPow = Robot.oi.getDriveJoyLeftY();
+	double rightPow = Robot.oi.getDriveJoyRightY();
 	Robot.drive.setPower(leftPow, -rightPow);
     }
 
