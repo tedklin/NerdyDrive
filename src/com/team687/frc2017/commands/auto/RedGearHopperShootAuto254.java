@@ -7,26 +7,28 @@ import com.team687.frc2017.commands.DriveBezierRio;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * 254 style blue gear+hopper auto
+ * 254 style gear + hopper red auto
  * 
  * @author tedlin
  *
  */
 
-public class BlueGearHopperShootAuto254 extends CommandGroup {
+public class RedGearHopperShootAuto254 extends CommandGroup {
 
-    public BlueGearHopperShootAuto254() {
+    public RedGearHopperShootAuto254() {
 	// deploy gear
-	addSequential(new DriveBezierRio(Constants.BluePathWallToPeg, 0.687));
+	addSequential(new DriveBezierRio(Constants.RedPathWallToPeg, 0.687));
 	// addSequential(new SetGearManipulatorDown());
 
 	// drive to hopper
 	// addParallel(new SetGearManipulatorUp());
-	addSequential(new DriveBezierRio(Constants.BluePathPegToHopper, -0.687));
-	addSequential(new ArcTurn(Constants.BluePathHopperToBoilerAngle, false, 0));
+	addSequential(new DriveBezierRio(Constants.RedPathPegToHopper, -0.687));
+	addSequential(new ArcTurn(Constants.RedPathHopperToBoilerAngle, true, 0));
 
 	// shoot
 	// addParallel(new LiveVisionTracking());
 	// addParallel(new Shoot());
+
     }
+
 }

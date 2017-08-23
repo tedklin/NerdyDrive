@@ -7,6 +7,8 @@ import com.team687.frc2017.commands.ShiftUp;
 import com.team687.frc2017.commands.SnapToTarget;
 import com.team687.frc2017.commands.TankDrive;
 import com.team687.frc2017.commands.auto.BlueGearHopperShootAuto254;
+import com.team687.frc2017.commands.auto.BlueHopperShootAuto1678;
+import com.team687.frc2017.commands.auto.BlueHopperShootAuto2056;
 import com.team687.frc2017.commands.auto.BlueHopperShootAuto973;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -95,8 +97,8 @@ public class OI {
 	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
 	SmartDashboard.putData("Snap To Target Auto", new SnapToTarget(true));
 	SmartDashboard.putData("Blue 973 Hopper Auto", new BlueHopperShootAuto973());
-	SmartDashboard.putData("Blue 1678 Hopper Auto", new BlueHopperShootAuto973());
-	SmartDashboard.putData("Blue 2056 Hopper Auto", new BlueHopperShootAuto973());
+	SmartDashboard.putData("Blue 1678 Hopper Auto", new BlueHopperShootAuto1678());
+	SmartDashboard.putData("Blue 2056 Hopper Auto", new BlueHopperShootAuto2056());
 	SmartDashboard.putData("Blue 254 Gear + Hopper Auto", new BlueGearHopperShootAuto254());
 
 	// SmartDashboard.putData("Test Sensors", new TestSensors());

@@ -9,28 +9,27 @@ import com.team687.frc2017.commands.TurnTime;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Blue hopper auto 2056 (similar to 1678). Starting configuration is aligned
- * with and touching the line that defines the key in front of the boiler.
+ * 2056 follow the wall red
  * 
  * @author tedlin
  *
  */
 
-public class BlueHopperShootAuto2056 extends CommandGroup {
+public class RedHopperShootAuto2056 extends CommandGroup {
 
-    public BlueHopperShootAuto2056() {
+    public RedHopperShootAuto2056() {
 	// drive a little past hopper
-	addSequential(new DriveBezierRio(Constants.BluePathWallToHopper2056, 0.687));
+	addSequential(new DriveBezierRio(Constants.RedPathWallToHopper2056, 0.687));
 
 	// proc hopper by turning
-	addSequential(new TurnTime(0.687, 0.67, true));
+	addSequential(new TurnTime(-0.687, 0.67, true));
 
 	// drive align with goal
 	addSequential(new SnapToTarget(true));
 
 	// drive to perfectly align with hopper
-	addSequential(new DriveDistancePID(Constants.BluePathDistanceAlignWithHopper,
-		Constants.BluePathDistanceAlignWithHopper));
+	addSequential(new DriveDistancePID(Constants.RedPathDistanceAlignWithHopper,
+		Constants.RedPathDistanceAlignWithHopper));
 
 	// shoot
 	// addParallel(new LiveVisionTracking());
