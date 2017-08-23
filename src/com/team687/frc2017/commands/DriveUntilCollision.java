@@ -26,6 +26,11 @@ public class DriveUntilCollision extends Command {
     private double m_jerkX;
     private double m_jerkY;
 
+    /**
+     * 
+     * @param straightPower
+     * @param isHighGear
+     */
     public DriveUntilCollision(double straightPower, boolean isHighGear) {
 	m_straightPower = straightPower;
 	m_isHighGear = isHighGear;

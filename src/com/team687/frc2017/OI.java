@@ -1,5 +1,6 @@
 package com.team687.frc2017;
 
+import com.team687.frc2017.commands.DriveUntilCollision;
 import com.team687.frc2017.commands.LiveVisionTracking;
 import com.team687.frc2017.commands.ResetGyro;
 import com.team687.frc2017.commands.ShiftDown;
@@ -14,6 +15,7 @@ import com.team687.frc2017.commands.auto.RedGearHopperShootAuto254;
 import com.team687.frc2017.commands.auto.RedHopperShootAuto1678;
 import com.team687.frc2017.commands.auto.RedHopperShootAuto2056;
 import com.team687.frc2017.commands.auto.RedHopperShootAuto973;
+import com.team687.frc2017.commands.tests.TestCollisionDetection;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -93,18 +95,23 @@ public class OI {
 
 	// Smart Dashboard buttons
 	SmartDashboard.putData("Tank Drive", new TankDrive());
-	SmartDashboard.putData("Reset Gyro", new ResetGyro());
 	// SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
+
+	SmartDashboard.putData("Reset Gyro", new ResetGyro());
 
 	SmartDashboard.putData("Shift Up", new ShiftUp());
 	SmartDashboard.putData("Shift Down", new ShiftDown());
+
+	SmartDashboard.putData("Test Collision Detection", new TestCollisionDetection());
+	SmartDashboard.putData("Drive until Collision", new DriveUntilCollision(0.687, true));
+
 	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
 	SmartDashboard.putData("Snap To Target Auto", new SnapToTarget(true));
+
 	SmartDashboard.putData("Blue 973 Hopper Auto", new BlueHopperShootAuto973());
 	SmartDashboard.putData("Blue 1678 Hopper Auto", new BlueHopperShootAuto1678());
 	SmartDashboard.putData("Blue 2056 Hopper Auto", new BlueHopperShootAuto2056());
 	SmartDashboard.putData("Blue 254 Gear + Hopper Auto", new BlueGearHopperShootAuto254());
-
 	SmartDashboard.putData("Red 973 Hopper Auto", new RedHopperShootAuto973());
 	SmartDashboard.putData("Red 1678 Hopper Auto", new RedHopperShootAuto1678());
 	SmartDashboard.putData("Red 2056 Hopper Auto", new RedHopperShootAuto2056());
