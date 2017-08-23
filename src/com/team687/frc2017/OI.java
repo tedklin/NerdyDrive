@@ -10,6 +10,10 @@ import com.team687.frc2017.commands.auto.BlueGearHopperShootAuto254;
 import com.team687.frc2017.commands.auto.BlueHopperShootAuto1678;
 import com.team687.frc2017.commands.auto.BlueHopperShootAuto2056;
 import com.team687.frc2017.commands.auto.BlueHopperShootAuto973;
+import com.team687.frc2017.commands.auto.RedGearHopperShootAuto254;
+import com.team687.frc2017.commands.auto.RedHopperShootAuto1678;
+import com.team687.frc2017.commands.auto.RedHopperShootAuto2056;
+import com.team687.frc2017.commands.auto.RedHopperShootAuto973;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -100,6 +104,11 @@ public class OI {
 	SmartDashboard.putData("Blue 1678 Hopper Auto", new BlueHopperShootAuto1678());
 	SmartDashboard.putData("Blue 2056 Hopper Auto", new BlueHopperShootAuto2056());
 	SmartDashboard.putData("Blue 254 Gear + Hopper Auto", new BlueGearHopperShootAuto254());
+
+	SmartDashboard.putData("Red 973 Hopper Auto", new RedHopperShootAuto973());
+	SmartDashboard.putData("Red 1678 Hopper Auto", new RedHopperShootAuto1678());
+	SmartDashboard.putData("Red 2056 Hopper Auto", new RedHopperShootAuto2056());
+	SmartDashboard.putData("Red 254 Gear + Hopper Auto", new RedGearHopperShootAuto254());
 
 	// SmartDashboard.putData("Test Sensors", new TestSensors());
 	// SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());
