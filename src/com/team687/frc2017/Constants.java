@@ -50,6 +50,7 @@ public class Constants {
     public final static double kCruiseVelocity = 0;
 
     // Collision Detection
+    public final static double kCollisionThreshold = 0;
 
     // Teleop
     public final static double kSensitivityHigh = 0.85;

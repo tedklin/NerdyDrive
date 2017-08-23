@@ -120,6 +120,18 @@ public class Drive extends Subsystem {
 	m_nav.reset();
     }
 
+    public double getCurrentAccelX() {
+	return m_nav.getWorldLinearAccelX();
+    }
+
+    public double getCurrentAccelY() {
+	return m_nav.getWorldLinearAccelY();
+    }
+
+    public double getCurrentAccelZ() {
+	return m_nav.getWorldLinearAccelZ();
+    }
+
     public double getInitTime() {
 	return m_initTime;
     }
