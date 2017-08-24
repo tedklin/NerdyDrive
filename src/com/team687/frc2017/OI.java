@@ -95,7 +95,6 @@ public class OI {
 
 	// Smart Dashboard buttons
 	SmartDashboard.putData("Tank Drive", new TankDrive());
-	// SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
 
 	SmartDashboard.putData("Reset Gyro", new ResetGyro());
 

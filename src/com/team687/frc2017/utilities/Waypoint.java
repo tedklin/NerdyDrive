@@ -1,5 +1,9 @@
 package com.team687.frc2017.utilities;
 
+/**
+ * Waypoint for use in 1114's paths
+ */
+
 public class Waypoint {
 
     private static double m_x;

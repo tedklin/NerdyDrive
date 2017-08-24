@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 
 	oi = new OI();
 
+	// displays which command is running on Drive
 	SmartDashboard.putData(drive);
 
 	visionAdapter = VisionAdapter.getInstance();

@@ -13,7 +13,7 @@ public class Constants {
     // Conversions
     public final static double kDriveFeetToEncoderUnitsR = 4.388 * 3 / (Math.PI);
     public final static double kDriveFeetToEncoderUnitsL = 4.487 * 3 / (Math.PI);
-    public final static double kWheelDiameter = 0;
+    public final static double kWheelDiameter = 0; // in inches
 
     // Distance PID
     public final static double kDistF = 0;

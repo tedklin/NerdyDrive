@@ -22,8 +22,28 @@ public class NerdyMath {
 	return rads * (2 * Math.PI) / 360;
     }
 
-    public static int feetToTicks(double feet) {
-	return (int) (feet / (Math.PI * Math.pow(Constants.kWheelDiameter / 2, 2))) * 4096;
+    public static double inchesToRotations(double inches) {
+	return (int) (inches / (Math.PI * Constants.kWheelDiameter));
+    }
+
+    public static int rotationsToTicks(double rotations) {
+	return (int) (rotations * 4096);
+    }
+
+    public static int inchesToTicks(double inches) {
+	return (int) (rotationsToTicks(inchesToRotations(inches)));
+    }
+
+    public static double ticksToRotations(int ticks) {
+	return ticks / rotationsToTicks(1);
+    }
+
+    public static double rotationsToInches(double rotations) {
+	return rotations / inchesToRotations(1);
+    }
+
+    public static double ticksToInches(int ticks) {
+	return rotationsToInches(ticksToRotations(ticks));
     }
 
     /**
