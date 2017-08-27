@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Odometry {
 
+    private static Odometry m_instance = null;
+
     private double m_x;
     private double m_y;
 
@@ -21,7 +23,14 @@ public class Odometry {
     private double m_hypotenuse;
     private double m_lastHypotenuse;
 
-    public Odometry() {
+    public static Odometry getInstance() {
+	if (m_instance == null) {
+	    m_instance = new Odometry();
+	}
+	return m_instance;
+    }
+
+    protected Odometry() {
 	m_absoluteX = 0;
 	m_absoluteY = 0;
 	m_theta = 0;

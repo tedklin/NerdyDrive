@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
     public static Compressor compressor;
     public static OI oi;
     public static VisionAdapter visionAdapter;
+    public static Odometry odometry;
 
     @Override
     public void robotInit() {
@@ -42,6 +43,7 @@ public class Robot extends IterativeRobot {
 	SmartDashboard.putData(drive);
 
 	visionAdapter = VisionAdapter.getInstance();
+	odometry = Odometry.getInstance();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot {
 	Scheduler.getInstance().removeAll();
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
     }
 
     @Override
@@ -56,6 +59,7 @@ public class Robot extends IterativeRobot {
 	Scheduler.getInstance().run();
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
     }
 
     @Override
@@ -63,6 +67,7 @@ public class Robot extends IterativeRobot {
 	Scheduler.getInstance().removeAll();
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
     }
 
     @Override
@@ -71,6 +76,7 @@ public class Robot extends IterativeRobot {
 
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
 	SmartDashboard.putData("PDP", pdp);
     }
 
@@ -79,6 +85,7 @@ public class Robot extends IterativeRobot {
 	Scheduler.getInstance().removeAll();
 	visionAdapter.reportToSmartDashboard();
 	drive.reportToSmartDashboard();
+	odometry.update();
     }
 
     @Override
@@ -86,6 +93,7 @@ public class Robot extends IterativeRobot {
 	Scheduler.getInstance().run();
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
 	SmartDashboard.putData("PDP", pdp);
     }
 
@@ -94,6 +102,7 @@ public class Robot extends IterativeRobot {
 	LiveWindow.run();
 	drive.reportToSmartDashboard();
 	visionAdapter.reportToSmartDashboard();
+	odometry.update();
 	SmartDashboard.putData("PDP", pdp);
     }
 }
