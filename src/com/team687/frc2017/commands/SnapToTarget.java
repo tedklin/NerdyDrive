@@ -23,7 +23,7 @@ public class SnapToTarget extends Command {
     private boolean m_isAuto;
 
     public SnapToTarget(boolean isAuto) {
-	m_timeout = 3.3; // default timeout is 6.87 seconds
+	m_timeout = 2; // default timeout is 6.87 seconds
 	m_isAuto = isAuto;
 
 	// subsystem dependencies
