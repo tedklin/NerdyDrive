@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveBezierRio extends Command {
 
     private BezierCurve m_path;
-    private double m_straightPower;
+    private double m_baseStraightPower;
     private ArrayList<Double> m_heading;
     private ArrayList<Double> m_arcLength;
     private int m_counter;
@@ -29,7 +29,7 @@ public class DriveBezierRio extends Command {
     public DriveBezierRio(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
 	    double straightPower) {
 	m_path = new BezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
-	m_straightPower = straightPower;
+	m_baseStraightPower = straightPower;
     }
 
     /**
@@ -41,7 +41,7 @@ public class DriveBezierRio extends Command {
      */
     public DriveBezierRio(double[] path, double straightPower) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
-	m_straightPower = straightPower;
+	m_baseStraightPower = straightPower;
     }
 
     @Override
@@ -65,13 +65,19 @@ public class DriveBezierRio extends Command {
 	    if (Robot.drive.getDrivetrainTicks() < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		double error = -m_heading.get(m_counter) - robotAngle;
+		double deltaHeading = 0;
+		if (m_counter >= 1) {
+		    deltaHeading = Math.abs(m_heading.get(m_counter) - m_heading.get(m_counter - 1));
+		}
+
 		error = (error > 180) ? error - 360 : error;
 		error = (error < -180) ? error + 360 : error;
 
 		double rotPower = Constants.kRotPHighGear * error;
+		double straightPower = m_baseStraightPower / deltaHeading;
 
-		double leftPow = rotPower + m_straightPower;
-		double rightPow = rotPower - m_straightPower;
+		double leftPow = rotPower + m_baseStraightPower;
+		double rightPow = rotPower - m_baseStraightPower;
 		Robot.drive.setPower(leftPow, rightPow);
 	    } else {
 		m_counter++;
