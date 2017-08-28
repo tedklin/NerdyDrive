@@ -65,16 +65,16 @@ public class DriveBezierRio extends Command {
 	    if (Robot.drive.getDrivetrainTicks() < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		double error = -m_heading.get(m_counter) - robotAngle;
-		double deltaHeading = 0;
+		double expectedDeltaHeading = 0;
 		if (m_counter >= 1) {
-		    deltaHeading = Math.abs(m_heading.get(m_counter) - m_heading.get(m_counter - 1));
+		    expectedDeltaHeading = Math.abs(m_heading.get(m_counter) - m_heading.get(m_counter - 1));
 		}
 
 		error = (error > 180) ? error - 360 : error;
 		error = (error < -180) ? error + 360 : error;
 
 		double rotPower = Constants.kRotPHighGear * error;
-		double straightPower = m_baseStraightPower / deltaHeading;
+		double straightPower = m_baseStraightPower / (error * 0.5);
 		double sign = Math.signum(straightPower);
 
 		if (Math.abs(straightPower) > 0.75) {

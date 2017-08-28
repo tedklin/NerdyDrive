@@ -33,7 +33,7 @@ public class Constants {
     public final static double kDriveRotationDeadband = 0.5;
     public final static int kDriveRotationCounter = 3;
 
-    public final static double kRotPHighGear = 0.03;
+    public final static double kRotPHighGear = 0.05;
     public final static double kMinRotPowerHighGear = 0.254;
     public final static double kMaxRotPowerHighGear = 1.0;
 
