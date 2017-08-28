@@ -75,6 +75,11 @@ public class DriveBezierRio extends Command {
 
 		double rotPower = Constants.kRotPHighGear * error;
 		double straightPower = m_baseStraightPower / deltaHeading;
+		double sign = Math.signum(straightPower);
+
+		if (Math.abs(straightPower) > 0.75) {
+		    straightPower = 0.75 * sign;
+		}
 
 		double leftPow = rotPower + straightPower;
 		double rightPow = rotPower - straightPower;
