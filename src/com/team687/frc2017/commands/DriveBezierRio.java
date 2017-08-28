@@ -76,8 +76,8 @@ public class DriveBezierRio extends Command {
 		double rotPower = Constants.kRotPHighGear * error;
 		double straightPower = m_baseStraightPower / deltaHeading;
 
-		double leftPow = rotPower + m_baseStraightPower;
-		double rightPow = rotPower - m_baseStraightPower;
+		double leftPow = rotPower + straightPower;
+		double rightPow = rotPower - straightPower;
 		Robot.drive.setPower(leftPow, rightPow);
 	    } else {
 		m_counter++;

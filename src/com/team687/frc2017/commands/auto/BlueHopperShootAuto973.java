@@ -19,7 +19,7 @@ public class BlueHopperShootAuto973 extends CommandGroup {
 
     public BlueHopperShootAuto973() {
 	// drive to hopper with Bezier curves
-	addSequential(new DriveBezierRio(Constants.BluePathWallToHopper973, 0.687));
+	addSequential(new DriveBezierRio(Constants.BluePathWallToHopper973, 1));
 
 	// drive to hopper with continuous motion and arc turns
 	// addSequential(new

@@ -19,7 +19,7 @@ public class RedHopperShootAuto973 extends CommandGroup {
 
     public RedHopperShootAuto973() {
 	// drive to hopper with Bezier curves
-	// addSequential(new DriveBezierRio(Constants.RedPathWallToHopper, 0.687));
+	// addSequential(new DriveBezierRio(Constants.RedPathWallToHopper, 1));
 
 	// drive to hopper with continuous motion and arc turns
 	addSequential(new DriveStraightContinuous(Constants.RedPathWallToHopperInitialDistance, 0.687, true));
