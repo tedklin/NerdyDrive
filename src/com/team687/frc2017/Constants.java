@@ -57,10 +57,11 @@ public class Constants {
     public final static double kJoystickDeadband = 0.02;
 
     // Bezier Curves
-    public final static double kBezierStep = 30;
-    public final static double kRotPBezier = 0;
-    public final static double kBezierMinStraightPow = 0.1241;
-    public final static double kBezierMaxStraightPow = 0.5172;
+    public final static double kBezierStep = 60;
+    public final static double kRotPBezier = 0.04;
+    public final static double kMaxStraightPower = 0.75;
+    public final static double kStraightPowerAdjuster = 0.5; // the higher this is, the slower the robot will
+							     // go during a sharp turn
 
     // Paths
     public final static double[] RedPathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -81,7 +82,7 @@ public class Constants {
     public final static double[] BluePathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double BluePathHopperToBoilerAngle = 0;
 
-    public final static double[] BluePathWallToHopper973 = { 0, 0, 0, 88000, 0, 100300, -48000, 100900 };
+    public final static double[] BluePathWallToHopper973 = { 0, 0, 0, 100300, 0, 100300, -48000, 100900 };
     public final static double BluePathWallToHopperInitialDistance = 0;
     public final static double BluePathWallToHopperArcTurnAngle = 86;
     public final static double BlueHopperBackUpDistance = -20000;

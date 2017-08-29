@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveBezierRio extends Command {
 
     private BezierCurve m_path;
-    private double m_baseStraightPower;
+    private double m_baseStraightPower; // always equal to 1
     private ArrayList<Double> m_heading;
     private ArrayList<Double> m_arcLength;
     private int m_counter;
@@ -65,20 +65,21 @@ public class DriveBezierRio extends Command {
 	    if (Robot.drive.getDrivetrainTicks() < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		double error = -m_heading.get(m_counter) - robotAngle;
-		double expectedDeltaHeading = 0;
-		if (m_counter >= 1) {
-		    expectedDeltaHeading = Math.abs(m_heading.get(m_counter) - m_heading.get(m_counter - 1));
-		}
+		// double expectedDeltaHeading = 0;
+		// if (m_counter >= 1) {
+		// expectedDeltaHeading = Math.abs(m_heading.get(m_counter) -
+		// m_heading.get(m_counter - 1));
+		// }
 
 		error = (error > 180) ? error - 360 : error;
 		error = (error < -180) ? error + 360 : error;
 
-		double rotPower = Constants.kRotPHighGear * error;
-		double straightPower = m_baseStraightPower / (error * 0.5);
-		double sign = Math.signum(straightPower);
+		double rotPower = Constants.kRotPBezier * error;
+		double straightPower = m_baseStraightPower / (error * Constants.kStraightPowerAdjuster);
 
-		if (Math.abs(straightPower) > 0.75) {
-		    straightPower = 0.75 * sign;
+		double sign = Math.signum(straightPower);
+		if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
+		    straightPower = Constants.kMaxStraightPower * sign;
 		}
 
 		double leftPow = rotPower + straightPower;

@@ -65,6 +65,8 @@ public class BezierCurve {
 	    m_xPoints.add(calculateX(i));
 	    m_yPoints.add(calculateY(i));
 	}
+	m_xPoints.add(m_xVal[3]);
+	m_yPoints.add(m_yVal[3]);
     }
 
     public void calculateBezier() {
