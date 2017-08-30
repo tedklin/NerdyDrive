@@ -69,18 +69,9 @@ public class BezierCurveTest {
 		straightPower = Constants.kMaxStraightPower * sign;
 	    }
 
+	    // concept: straight power is base, rot power is added as adjustment for heading
 	    double leftPower = straightPower + rotPower;
 	    double rightPower = straightPower - rotPower;
-
-	    System.out.println("Counter: " + counter);
-	    // System.out.println("Current Heading:" + heading.get(counter));
-	    // System.out.println("Last Heading: " + heading.get(counter - 1));
-	    System.out.println("Heading Error: " + headingError);
-	    System.out.println("Desired Angle: " + Math.abs(heading.get(counter)));
-	    // System.out.println("Rot Power: " + rotPower);
-	    System.out.println("Straight Power: " + straightPower);
-	    System.out.println("Left Power: " + leftPower);
-	    System.out.println("Right Power: " + rightPower);
 
 	    assertTrue(0.0 <= leftPower && leftPower <= 1.0);
 	    assertTrue(0.0 <= rightPower && rightPower <= 1.0);
