@@ -17,12 +17,12 @@ public class RedGearHopperShootAuto254 extends CommandGroup {
 
     public RedGearHopperShootAuto254() {
 	// deploy gear
-	addSequential(new DriveBezierRio(Constants.RedPathWallToPeg, -1));
+	addSequential(new DriveBezierRio(Constants.RedPathWallToPeg, -0.687, false));
 	// addSequential(new SetGearManipulatorDown());
 
 	// drive to hopper
 	// addParallel(new SetGearManipulatorUp());
-	addSequential(new DriveBezierRio(Constants.RedPathPegToHopper, 1));
+	addSequential(new DriveBezierRio(Constants.RedPathPegToHopper, 0.687, true));
 	addSequential(new ArcTurn(Constants.RedPathHopperToBoilerAngle, true, 0));
 
 	// shoot

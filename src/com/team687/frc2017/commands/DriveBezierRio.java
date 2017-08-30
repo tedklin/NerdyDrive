@@ -21,7 +21,7 @@ public class DriveBezierRio extends Command {
     private BezierCurve m_path;
     private double m_basePower = 1; // always equal to 1
     private double m_straightPower;
-    private boolean m_straightPowerIsDyanmic;
+    private boolean m_straightPowerIsDynamic;
     private ArrayList<Double> m_heading;
     private ArrayList<Double> m_arcLength;
     private int m_counter;
@@ -32,6 +32,7 @@ public class DriveBezierRio extends Command {
 	    double straightPower, boolean straightPowerIsDynamic) {
 	m_path = new BezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
 	m_straightPower = straightPower;
+	m_straightPowerIsDynamic = straightPowerIsDynamic;
     }
 
     /**
@@ -40,10 +41,13 @@ public class DriveBezierRio extends Command {
      * @param straightPower
      *            (postive if going forward (forward is side with climber), negative
      *            if going backwards)
+     * @param straightPowerIsDynamic
+     *            (true for paths with sharp turns)
      */
-    public DriveBezierRio(double[] path, double straightPower) {
+    public DriveBezierRio(double[] path, double straightPower, boolean straightPowerIsDynamic) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
 	m_straightPower = straightPower;
+	m_straightPowerIsDynamic = straightPowerIsDynamic;
     }
 
     @Override
@@ -81,9 +85,12 @@ public class DriveBezierRio extends Command {
 		double straightPower = m_straightPower;
 		double direction = Math.signum(m_straightPower);
 
-		// comment out next line to disable straight power adjuster
-		straightPower = direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
+		// dynamic straight power
+		if (m_straightPowerIsDynamic) {
+		    straightPower = direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
+		}
 
+		// limit straight power to maintain rotPower to straightPower ratio
 		if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
 		    straightPower = Constants.kMaxStraightPower * direction;
 		}

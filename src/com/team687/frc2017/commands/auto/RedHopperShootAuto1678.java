@@ -17,7 +17,7 @@ public class RedHopperShootAuto1678 extends CommandGroup {
 
     public RedHopperShootAuto1678() {
 	// drive up next to hopper
-	addSequential(new DriveBezierRio(Constants.RedPathWallToHopper1678, 1));
+	addSequential(new DriveBezierRio(Constants.RedPathWallToHopper1678, 0.4, false));
 
 	// proc hopper
 	// addSequential(new ExpandHopper());
