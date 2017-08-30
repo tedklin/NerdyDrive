@@ -60,9 +60,9 @@ public class BezierCurveTest {
 	int counter = 1;
 	double baseStraightPower = 1; // always equal to 1
 	for (counter = 1; counter < heading.size(); counter++) {
-	    double headingError = Math.abs(heading.get(counter) - heading.get(counter - 1));
+	    double headingError = heading.get(counter) - heading.get(counter - 1);
 	    double rotPower = Constants.kRotPBezier * headingError;
-	    double straightPower = baseStraightPower / (headingError * Constants.kStraightPowerAdjuster);
+	    double straightPower = baseStraightPower / (Math.abs(headingError) * Constants.kStraightPowerAdjuster);
 
 	    double sign = Math.signum(straightPower);
 	    if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
@@ -75,7 +75,8 @@ public class BezierCurveTest {
 	    System.out.println("Counter: " + counter);
 	    // System.out.println("Current Heading:" + heading.get(counter));
 	    // System.out.println("Last Heading: " + heading.get(counter - 1));
-	    // System.out.println("Heading Error: " + headingError);
+	    System.out.println("Heading Error: " + headingError);
+	    System.out.println("Desired Angle: " + Math.abs(heading.get(counter)));
 	    // System.out.println("Rot Power: " + rotPower);
 	    System.out.println("Straight Power: " + straightPower);
 	    System.out.println("Left Power: " + leftPower);

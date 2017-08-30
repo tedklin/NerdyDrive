@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveBezierRio extends Command {
 
     private BezierCurve m_path;
-    private double m_baseStraightPower; // always equal to 1
+    private double m_basePower = 1; // always equal to 1
+    private double m_straightPower;
+    private boolean m_straightPowerIsDyanmic;
     private ArrayList<Double> m_heading;
     private ArrayList<Double> m_arcLength;
     private int m_counter;
@@ -27,9 +29,9 @@ public class DriveBezierRio extends Command {
     private boolean m_pathIsFinished;
 
     public DriveBezierRio(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
-	    double straightPower) {
+	    double straightPower, boolean straightPowerIsDynamic) {
 	m_path = new BezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
-	m_baseStraightPower = straightPower;
+	m_straightPower = straightPower;
     }
 
     /**
@@ -41,7 +43,7 @@ public class DriveBezierRio extends Command {
      */
     public DriveBezierRio(double[] path, double straightPower) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
-	m_baseStraightPower = straightPower;
+	m_straightPower = straightPower;
     }
 
     @Override
@@ -57,6 +59,7 @@ public class DriveBezierRio extends Command {
 
 	m_counter = 0;
 	m_pathIsFinished = false;
+	m_basePower = 1 * Math.signum(m_straightPower);
     }
 
     @Override
@@ -75,11 +78,14 @@ public class DriveBezierRio extends Command {
 		error = (error < -180) ? error + 360 : error;
 
 		double rotPower = Constants.kRotPBezier * error;
-		double straightPower = m_baseStraightPower / (error * Constants.kStraightPowerAdjuster);
+		double straightPower = m_straightPower;
+		double direction = Math.signum(m_straightPower);
 
-		double sign = Math.signum(straightPower);
+		// comment out next line to disable straight power adjuster
+		straightPower = direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
+
 		if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
-		    straightPower = Constants.kMaxStraightPower * sign;
+		    straightPower = Constants.kMaxStraightPower * direction;
 		}
 
 		double leftPow = rotPower + straightPower;
