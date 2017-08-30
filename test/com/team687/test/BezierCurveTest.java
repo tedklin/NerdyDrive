@@ -5,8 +5,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.utilities.BezierCurve;
@@ -18,7 +23,21 @@ import com.team687.frc2017.utilities.BezierCurve;
  *
  */
 
+@RunWith(Parameterized.class)
 public class BezierCurveTest {
+
+    @SuppressWarnings("rawtypes")
+    @Parameters
+    public static Collection testCases() {
+	return Arrays.asList(new double[][] { Constants.BluePathWallToHopper1678, Constants.BluePathWallToHopper2056,
+		Constants.BluePathWallToHopper973, Constants.BluePathWallToPeg, Constants.BluePathPegToHopper });
+    }
+
+    private double[] m_path;
+
+    public BezierCurveTest(double[] path) {
+	m_path = path;
+    }
 
     private static final double kEpsilon = 1E-9;
 
@@ -33,7 +52,7 @@ public class BezierCurveTest {
 
     @Test
     public void testBezierSize() {
-	BezierCurve bezierCurve = new BezierCurve(0, 0, 0, 100300, 0, 100300, -48000, 100300);
+	BezierCurve bezierCurve = new BezierCurve(m_path);
 	bezierCurve.calculateBezier();
 	assertEquals(Constants.kBezierStep + 1, bezierCurve.getXPoints().size(), 1);
 	assertEquals(Constants.kBezierStep + 1, bezierCurve.getYPoints().size(), 1);
@@ -53,7 +72,7 @@ public class BezierCurveTest {
 
     @Test
     public void testDynamicStraightPower() {
-	BezierCurve bezierCurve = new BezierCurve(0, 0, 0, 100300, 0, 100300, -48000, 100300);
+	BezierCurve bezierCurve = new BezierCurve(m_path);
 	bezierCurve.calculateBezier();
 
 	ArrayList<Double> heading = bezierCurve.getHeading();

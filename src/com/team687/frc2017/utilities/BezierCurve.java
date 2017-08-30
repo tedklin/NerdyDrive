@@ -40,6 +40,17 @@ public class BezierCurve {
 	m_yVal[3] = y3;
     }
 
+    public BezierCurve(double[] path) {
+	m_xVal[0] = path[0];
+	m_xVal[1] = path[2];
+	m_xVal[2] = path[4];
+	m_xVal[3] = path[6];
+	m_yVal[0] = path[1];
+	m_yVal[1] = path[3];
+	m_yVal[2] = path[5];
+	m_yVal[3] = path[7];
+    }
+
     public void calculateParams() {
 	m_cx = 3 * (m_xVal[1] - m_xVal[0]);
 	m_bx = 3 * (m_xVal[2] - m_xVal[1]) - m_cx;
