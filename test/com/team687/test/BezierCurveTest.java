@@ -17,7 +17,7 @@ import com.team687.frc2017.Constants;
 import com.team687.frc2017.utilities.BezierCurve;
 
 /**
- * Bezier curve/paths unit testing
+ * Bezier curve/path unit testing
  * 
  * @author tedlin
  *
