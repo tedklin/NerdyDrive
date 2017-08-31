@@ -46,6 +46,8 @@ public class DriveBezierRio extends Command {
      *            if going backwards)
      * @param straightPowerIsDynamic
      *            (true for paths with sharp turns)
+     * @param softStop
+     *            (if you want to slow down near end)
      */
     public DriveBezierRio(double[] path, double straightPower, boolean straightPowerIsDynamic, boolean softStop) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
