@@ -22,17 +22,20 @@ public class DriveBezierRio extends Command {
     private double m_basePower = 1; // always equal to 1
     private double m_straightPower;
     private boolean m_straightPowerIsDynamic;
+    private boolean m_softStop;
+
     private ArrayList<Double> m_heading;
     private ArrayList<Double> m_arcLength;
-    private int m_counter;
 
+    private int m_counter;
     private boolean m_pathIsFinished;
 
     public DriveBezierRio(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
-	    double straightPower, boolean straightPowerIsDynamic) {
+	    double straightPower, boolean straightPowerIsDynamic, boolean softStop) {
 	m_path = new BezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
 	m_straightPower = straightPower;
 	m_straightPowerIsDynamic = straightPowerIsDynamic;
+	m_softStop = softStop;
     }
 
     /**
@@ -44,10 +47,11 @@ public class DriveBezierRio extends Command {
      * @param straightPowerIsDynamic
      *            (true for paths with sharp turns)
      */
-    public DriveBezierRio(double[] path, double straightPower, boolean straightPowerIsDynamic) {
+    public DriveBezierRio(double[] path, double straightPower, boolean straightPowerIsDynamic, boolean softStop) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
 	m_straightPower = straightPower;
 	m_straightPowerIsDynamic = straightPowerIsDynamic;
+	m_softStop = softStop;
     }
 
     @Override
@@ -82,6 +86,7 @@ public class DriveBezierRio extends Command {
 		error = (error < -180) ? error + 360 : error;
 
 		double rotPower = Constants.kRotPBezier * error;
+		// default is specified straight power
 		double straightPower = m_straightPower;
 		double direction = Math.signum(m_straightPower);
 
@@ -90,9 +95,15 @@ public class DriveBezierRio extends Command {
 		    straightPower = direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
 		}
 
+		double maxStraightPower = Constants.kMaxStraightPower;
+		if (m_softStop) {
+		    maxStraightPower = Constants.kDistP * Robot.drive.getDrivetrainTicks();
+		}
+
 		// limit straight power to maintain rotPower to straightPower ratio
-		if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
-		    straightPower = Constants.kMaxStraightPower * direction;
+		// also for soft landings
+		if (Math.abs(straightPower) > maxStraightPower) {
+		    straightPower = maxStraightPower * direction;
 		}
 
 		double leftPow = rotPower + straightPower;
