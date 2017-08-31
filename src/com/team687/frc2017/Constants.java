@@ -60,6 +60,7 @@ public class Constants {
     // Bezier Curves
     public final static double kBezierStep = 60;
     public final static double kRotPBezier = 0.03;
+    public final static double kDistPBezier = 0.001;
     public final static double kMaxStraightPower = 0.75;
     public final static double kStraightPowerAdjuster = 0.5; // the higher this is, the slower the robot will
 							     // go during a sharp turn

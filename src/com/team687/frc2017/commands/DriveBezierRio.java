@@ -99,7 +99,7 @@ public class DriveBezierRio extends Command {
 
 		double maxStraightPower = Constants.kMaxStraightPower;
 		if (m_softStop) {
-		    maxStraightPower = Constants.kDistP * Robot.drive.getDrivetrainTicks();
+		    maxStraightPower = Constants.kDistPBezier * Robot.drive.getDrivetrainTicks();
 		}
 
 		// limit straight power to maintain rotPower to straightPower ratio
