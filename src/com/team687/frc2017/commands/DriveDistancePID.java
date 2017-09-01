@@ -25,6 +25,10 @@ public class DriveDistancePID extends Command {
 
     private double m_counter = 0;
 
+    /**
+     * @param leftDistance
+     * @param rightDistance
+     */
     public DriveDistancePID(double leftDistance, double rightDistance) {
 	m_leftDistance = leftDistance;
 	m_rightDistance = rightDistance;

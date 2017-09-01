@@ -18,6 +18,9 @@ public class WaitTime extends Command {
     private double m_time;
     private double m_startTime;
 
+    /**
+     * @param time
+     */
     public WaitTime(double time) {
 	m_time = time;
 

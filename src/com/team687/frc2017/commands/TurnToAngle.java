@@ -27,9 +27,6 @@ public class TurnToAngle extends Command {
 
     // private NerdyPID m_rotPID;
 
-    /**
-     * @param angle
-     */
     public TurnToAngle(double angle) {
 	m_angleToTurn = angle;
 	m_timeout = 10; // default timeout is 10 seconds
@@ -52,6 +49,11 @@ public class TurnToAngle extends Command {
 	requires(Robot.drive);
     }
 
+    /**
+     * @param angle
+     * @param timeout
+     * @param isHighGear
+     */
     public TurnToAngle(double angle, double timeout, boolean isHighGear) {
 	m_angleToTurn = angle;
 	m_timeout = timeout;

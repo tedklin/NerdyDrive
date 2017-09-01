@@ -26,11 +26,6 @@ public class DriveUntilCollision extends Command {
     private double m_jerkX;
     private double m_jerkY;
 
-    /**
-     * 
-     * @param straightPower
-     * @param isHighGear
-     */
     public DriveUntilCollision(double straightPower, boolean isHighGear) {
 	m_straightPower = straightPower;
 	m_isHighGear = isHighGear;
@@ -40,6 +35,11 @@ public class DriveUntilCollision extends Command {
 	requires(Robot.drive);
     }
 
+    /**
+     * @param straightPower
+     * @param isHighGear
+     * @param timeout
+     */
     public DriveUntilCollision(double straightPower, boolean isHighGear, double timeout) {
 	m_straightPower = straightPower;
 	m_isHighGear = isHighGear;

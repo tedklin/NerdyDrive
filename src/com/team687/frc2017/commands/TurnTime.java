@@ -21,7 +21,6 @@ public class TurnTime extends Command {
     private double m_startTime;
 
     /**
-     * 
      * @param straightPower
      * @param timeout
      * @param isHighGear

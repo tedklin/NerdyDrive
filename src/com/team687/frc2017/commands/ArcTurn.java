@@ -25,13 +25,6 @@ public class ArcTurn extends Command {
     private double m_startTime;
     private double m_error;
 
-    /**
-     * Arc Turn
-     * 
-     * @param desiredAngle
-     * @param isRightPowered
-     * @param straightPower
-     */
     public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
@@ -43,8 +36,6 @@ public class ArcTurn extends Command {
     }
 
     /**
-     * Arc Turn
-     * 
      * @param desiredAngle
      * @param isRightPowered
      * @param straightPower

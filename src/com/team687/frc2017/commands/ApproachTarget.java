@@ -32,6 +32,8 @@ public class ApproachTarget extends Command {
     }
 
     /**
+     * @param distance
+     * @param straightPower
      * @param timeout
      */
     public ApproachTarget(double distance, double straightPower, double timeout) {

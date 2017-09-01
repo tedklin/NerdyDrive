@@ -32,8 +32,9 @@ public class SnapToTarget extends Command {
 
     /**
      * @param timeout
+     * @param isAuto
      */
-    public SnapToTarget(double timeout, boolean isAuto) {
+    public SnapToTarget(boolean isAuto, double timeout) {
 	m_timeout = timeout;
 	m_isAuto = isAuto;
 

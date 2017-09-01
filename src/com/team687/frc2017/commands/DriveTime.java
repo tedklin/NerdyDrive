@@ -21,7 +21,6 @@ public class DriveTime extends Command {
     private double m_startTime;
 
     /**
-     * 
      * @param straightPower
      * @param timeout
      * @param isHighGear

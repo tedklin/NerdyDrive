@@ -30,6 +30,10 @@ public class Sim2DProfile extends Command {
     private double m_timestamp;
     private double m_startTime;
 
+    /**
+     * @param path
+     *            (as an array of Waypoints)
+     */
     public Sim2DProfile(Waypoint[] path) {
 	m_path = path;
 	point1 = m_path[0];
