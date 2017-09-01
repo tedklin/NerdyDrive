@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.team687.frc2017.Constants;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 /**
  * Trapezoidal motion profile generator
  * 

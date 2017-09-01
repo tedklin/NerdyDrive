@@ -58,6 +58,17 @@ public class Odometry {
 	m_hypotenuse = Robot.drive.getDrivetrainTicks() - m_lastHypotenuse;
 	m_gyroYaw = Robot.drive.getCurrentYaw();
 
+	SmartDashboard.putNumber("Left Position Ticks", m_leftDistance);
+	SmartDashboard.putNumber("Right Position Ticks", m_rightDistance);
+	SmartDashboard.putNumber("Drivetrain Position Ticks", Robot.drive.getDrivetrainTicks());
+	SmartDashboard.putNumber("Left Speed Ticks", m_leftSpeed);
+	SmartDashboard.putNumber("Right Speed Ticks", m_rightSpeed);
+
+	SmartDashboard.putNumber("Yaw", m_gyroYaw);
+	SmartDashboard.putNumber("Accel X", Robot.drive.getCurrentAccelX());
+	SmartDashboard.putNumber("Accel Y", Robot.drive.getCurrentAccelY());
+	SmartDashboard.putNumber("Accel Z", Robot.drive.getCurrentAccelZ());
+
 	// calculations
 	m_x = Math.sin(m_gyroYaw) * m_hypotenuse;
 	m_y = Math.cos(m_gyroYaw) * m_hypotenuse;

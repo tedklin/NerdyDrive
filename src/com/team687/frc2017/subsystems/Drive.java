@@ -286,23 +286,6 @@ public class Drive extends Subsystem {
 	    SmartDashboard.putString("Gear Shift", "Low");
 	}
 
-	// SmartDashboard.putNumber("Left Position", getLeftPosition());
-	// SmartDashboard.putNumber("Right Position", getRightPosition());
-	// SmartDashboard.putNumber("Drivetrain Position", getDrivetrainPosition());
-	// SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-	// SmartDashboard.putNumber("Right Speed", getRightSpeed());
-
-	SmartDashboard.putNumber("Left Position Ticks", getLeftTicks());
-	SmartDashboard.putNumber("Right Position Ticks", getRightTicks());
-	SmartDashboard.putNumber("Drivetrain Position Ticks", getDrivetrainTicks());
-	SmartDashboard.putNumber("Left Speed Ticks", getLeftTicksSpeed());
-	SmartDashboard.putNumber("Right Speed Ticks", getRightTicksSpeed());
-
-	SmartDashboard.putNumber("Yaw", getCurrentYaw());
-	SmartDashboard.putNumber("Accel X", getCurrentAccelX());
-	SmartDashboard.putNumber("Accel Y", getCurrentAccelY());
-	SmartDashboard.putNumber("Accel Z", getCurrentAccelZ());
-
 	// m_currentTime = Timer.getFPGATimestamp() - m_initTime;
 	// m_table.putNumber("CURRENT_TIME", m_currentTime);
 	// SmartDashboard.putNumber("Current Time", m_currentTime);
