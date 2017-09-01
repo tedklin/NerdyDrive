@@ -21,11 +21,13 @@ public class ApproachTarget extends Command {
     private double m_straightPower;
     private double m_startTime;
     private double m_timeout = 6.87;
+    private boolean m_softStop;
 
-    public ApproachTarget(double distance, double straightPower) {
+    public ApproachTarget(double distance, double straightPower, boolean softStop) {
 	m_distance = distance;
 	m_straightPower = straightPower;
 	m_timeout = 6.87; // default timeout is 5 seconds
+	m_softStop = softStop;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -34,12 +36,14 @@ public class ApproachTarget extends Command {
     /**
      * @param distance
      * @param straightPower
+     * @param softStop
      * @param timeout
      */
-    public ApproachTarget(double distance, double straightPower, double timeout) {
+    public ApproachTarget(double distance, double straightPower, boolean softStop, double timeout) {
 	m_distance = distance;
 	m_straightPower = straightPower;
 	m_timeout = timeout;
+	m_softStop = softStop;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -61,13 +65,18 @@ public class ApproachTarget extends Command {
 	double relativeAngleError = VisionAdapter.getInstance().getAngleToTurn();
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
-	double error = absoluteDesiredAngle - robotAngle;
-	SmartDashboard.putNumber("Angle Error", error);
-	double rotPower = Constants.kRotPLowGear * error;
-	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
+	double rotError = absoluteDesiredAngle - robotAngle;
+	double rotPower = Constants.kRotPLowGear * rotError;
+	if (Math.abs(rotError) <= Constants.kDriveRotationDeadband) {
 	    rotPower = 0;
 	}
-	Robot.drive.setPower(rotPower + m_straightPower, rotPower - m_straightPower);
+
+	double straightPower = m_straightPower; // default
+	double straightError = m_distance - Robot.drive.getDrivetrainTicks();
+	if (m_softStop) {
+	    straightPower = Constants.kDistP * straightError;
+	}
+	Robot.drive.setPower(rotPower + straightPower, rotPower - straightPower);
     }
 
     @Override
