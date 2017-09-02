@@ -19,10 +19,14 @@ public class Constants {
     public final static double kDistP = 0.001;
     public final static double kDistI = 0;
     public final static double kDistD = 0;
-    public final static double kMinDistPower = 0;
-    public final static double kMaxDistPower = 1.0;
+    public final static double kMinDistPowerLowGear = 0;
+    public final static double kMaxDistPowerLowGear = 1.0;
     public final static double kDriveDistanceTolerance = 205.6;
     public final static double kDriveDistanceOscillationCount = 5;
+
+    public final static double kDistPHighGear = 0.001;
+    public final static double kMinDistPowerHighGear = 0;
+    public final static double kMaxDistPowerHighGear = 1.0;
 
     // Rotation PID
     public final static double kRotPLowGear = 0.015;

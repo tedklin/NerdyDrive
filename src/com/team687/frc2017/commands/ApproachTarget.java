@@ -76,6 +76,11 @@ public class ApproachTarget extends Command {
 	if (m_softStop) {
 	    straightPower = Constants.kDistP * straightError;
 	}
+	double sign = Math.signum(straightPower);
+	if (Math.abs(straightPower) < Constants.kMinDistPowerLowGear) {
+	    straightPower = Constants.kMinDistPowerLowGear * sign;
+	}
+
 	Robot.drive.setPower(rotPower + straightPower, rotPower - straightPower);
     }
 

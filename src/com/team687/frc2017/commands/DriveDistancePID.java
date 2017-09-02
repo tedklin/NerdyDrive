@@ -43,24 +43,25 @@ public class DriveDistancePID extends Command {
 
 	m_leftDistPID = new NerdyPID();
 	m_leftDistPID.setPID(Constants.kDistP, Constants.kDistI, Constants.kDistD);
-	m_leftDistPID.setOutputRange(Constants.kMinDistPower, Constants.kMaxDistPower);
+	m_leftDistPID.setOutputRange(Constants.kMinDistPowerLowGear, Constants.kMaxDistPowerLowGear);
 	m_leftDistPID.setGyro(false);
 	m_leftDistPID.setDesired(m_leftDistance);
 
 	m_rightDistPID = new NerdyPID();
 	m_rightDistPID.setPID(Constants.kDistP, Constants.kDistI, Constants.kDistD);
-	m_rightDistPID.setOutputRange(Constants.kMinDistPower, Constants.kMaxDistPower);
+	m_rightDistPID.setOutputRange(Constants.kMinDistPowerLowGear, Constants.kMaxDistPowerLowGear);
 	m_rightDistPID.setGyro(false);
 	m_rightDistPID.setDesired(m_rightDistance);
 
 	m_rotPID = new NerdyPID();
 	m_rotPID.setPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinDistPower, Constants.kMaxDistPower);
+	m_rotPID.setOutputRange(Constants.kMinDistPowerLowGear, Constants.kMaxDistPowerLowGear);
 	m_rotPID.setGyro(true);
 	m_rotPID.setDesired(Robot.drive.getCurrentYaw());
 
 	Robot.drive.resetEncoders();
 	Robot.drive.stopDrive();
+	Robot.drive.shiftDown();
     }
 
     @Override
