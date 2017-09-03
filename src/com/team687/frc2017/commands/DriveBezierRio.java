@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Drive a path generated from Bezier curve based on 1241
+ * Drive a path generated from Bezier curve
  *
  * @author tedlin
  *
@@ -109,6 +109,11 @@ public class DriveBezierRio extends Command {
 		// also for soft landings
 		if (Math.abs(straightPower) > maxStraightPower) {
 		    straightPower = maxStraightPower * direction;
+		}
+
+		// make sure robot reaches end point
+		if (Math.abs(straightPower) < Constants.kMinStraightPower) {
+		    straightPower = Constants.kMinStraightPower * direction;
 		}
 
 		double leftPow = rotPower + straightPower;
