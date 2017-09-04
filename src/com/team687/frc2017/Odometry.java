@@ -3,7 +3,7 @@ package com.team687.frc2017;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Odometry of drivebase
+ * Odometry of drive
  * 
  * @author tedlin
  *

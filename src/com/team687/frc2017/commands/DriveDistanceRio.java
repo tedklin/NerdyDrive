@@ -2,7 +2,7 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.MotionProfileGenerator;
+import com.team687.frc2017.utilities.MotionProfile;
 import com.team687.frc2017.utilities.NerdyMath;
 import com.team687.frc2017.utilities.NerdyPID;
 
@@ -22,7 +22,7 @@ public class DriveDistanceRio extends Command {
 
     private double m_distance;
     private boolean m_isStraight;
-    private MotionProfileGenerator m_motionProfile;
+    private MotionProfile m_motionProfile;
 
     private double m_startTime;
     private double m_timestamp;
@@ -52,7 +52,7 @@ public class DriveDistanceRio extends Command {
 	m_leftError = 0;
 	m_rightError = 0;
 
-	m_motionProfile = new MotionProfileGenerator(Constants.kMaxVelocity, Constants.kMaxAcceleration,
+	m_motionProfile = new MotionProfile(Constants.kMaxVelocity, Constants.kMaxAcceleration,
 		-Constants.kMaxAcceleration);
 	m_motionProfile.generateProfile(m_distance);
 

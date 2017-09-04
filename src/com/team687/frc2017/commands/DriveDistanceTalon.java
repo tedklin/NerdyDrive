@@ -3,7 +3,7 @@ package com.team687.frc2017.commands;
 import com.ctre.CANTalon;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.MotionProfileGenerator;
+import com.team687.frc2017.utilities.MotionProfile;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveDistanceTalon extends Command {
 
     private double m_distance;
-    private MotionProfileGenerator m_motionProfile;
+    private MotionProfile m_motionProfile;
 
     class PeriodicRunnable implements java.lang.Runnable {
 	public void run() {
@@ -50,7 +50,7 @@ public class DriveDistanceTalon extends Command {
 	Robot.drive.changeMotionControlFramePeriod(5);
 	m_notifer.startPeriodic(0.005);
 
-	m_motionProfile = new MotionProfileGenerator(Constants.kMaxVelocity, Constants.kMaxAcceleration,
+	m_motionProfile = new MotionProfile(Constants.kMaxVelocity, Constants.kMaxAcceleration,
 		-Constants.kMaxAcceleration);
 	m_motionProfile.generateProfile(m_distance);
 

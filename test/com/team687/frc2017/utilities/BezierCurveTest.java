@@ -1,4 +1,4 @@
-package com.team687.test;
+package com.team687.frc2017.utilities;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

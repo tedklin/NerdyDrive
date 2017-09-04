@@ -1,4 +1,4 @@
-package com.team687.test;
+package com.team687.frc2017.utilities;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.team687.frc2017.utilities.*;
+import com.team687.frc2017.utilities.NerdyMath;
 
 /**
  * Test for normalizer
@@ -20,7 +20,7 @@ import com.team687.frc2017.utilities.*;
  */
 
 @RunWith(Parameterized.class)
-public class NormalizerTest {
+public class NerdyMathTest {
 
     @SuppressWarnings("rawtypes")
     @Parameters
@@ -31,7 +31,7 @@ public class NormalizerTest {
 
     private double[] m_rawVal;
 
-    public NormalizerTest(double[] rawVal) {
+    public NerdyMathTest(double[] rawVal) {
 	m_rawVal = rawVal;
     }
 

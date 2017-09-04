@@ -1,11 +1,12 @@
-package com.team687.test;
+package com.team687.frc2017.utilities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import com.team687.frc2017.utilities.*;
-
-import edu.wpi.first.wpilibj.util.BoundaryException;
+import com.team687.frc2017.utilities.NerdyPID;
 
 /**
  * NerdyPID unit testing
@@ -48,12 +49,6 @@ public class NerdyPIDTest {
 	assertEquals(-0.971, testPID.calculate(687), kEpsilon);
 	assertEquals(0.254, testPID.calculate(-0.001), kEpsilon);
 	assertEquals(-0.254, testPID.calculate(0.001), kEpsilon);
-    }
-
-    @Test(expected = BoundaryException.class)
-    public void testOutputRangeException() {
-	NerdyPID testPID = new NerdyPID(0, 0, 0);
-	testPID.setOutputRange(0.971, 0.254);
     }
 
 }

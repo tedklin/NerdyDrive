@@ -1,7 +1,5 @@
 package com.team687.frc2017.utilities;
 
-import edu.wpi.first.wpilibj.util.BoundaryException;
-
 /**
  * PID Controller
  * 
@@ -117,9 +115,6 @@ public class NerdyPID {
      * @param maximum
      */
     public void setOutputRange(double minimum, double maximum) {
-	if (minimum > maximum) {
-	    throw new BoundaryException("Lower bound is greater than upper bound");
-	}
 	m_minimumOutput = minimum;
 	m_maximumOutput = maximum;
     }

@@ -1,10 +1,10 @@
-package com.team687.test;
+package com.team687.frc2017.utilities;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.team687.frc2017.Constants;
-import com.team687.frc2017.utilities.*;
+import com.team687.frc2017.utilities.MotionProfile;
 
 /**
  * Tests for motion profile generation and integration
@@ -24,7 +24,7 @@ public class MotionProfileTest {
 
     @Test
     public void generateProfileTest() {
-	MotionProfileGenerator motionProfile = new MotionProfileGenerator(cruiseVelocity, maxAccel, maxDecel);
+	MotionProfile motionProfile = new MotionProfile(cruiseVelocity, maxAccel, maxDecel);
 	motionProfile.generateProfile(targetDistance);
 	double accelTime = cruiseVelocity / maxAccel;
 	assertEquals(accelTime, motionProfile.getAccelTime(), kEpsilon);

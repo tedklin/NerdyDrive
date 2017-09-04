@@ -2,7 +2,7 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.MotionProfileGenerator;
+import com.team687.frc2017.utilities.MotionProfile;
 import com.team687.frc2017.utilities.Waypoint;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class Sim2DProfile extends Command {
 
-    private MotionProfileGenerator m_motionProfile;
+    private MotionProfile m_motionProfile;
     private Waypoint[] m_path;
     private Waypoint point1;
     private Waypoint point2;
@@ -44,7 +44,7 @@ public class Sim2DProfile extends Command {
 
     @Override
     protected void initialize() {
-	m_motionProfile = new MotionProfileGenerator(Constants.kCruiseVelocity, Constants.kMaxAcceleration,
+	m_motionProfile = new MotionProfile(Constants.kCruiseVelocity, Constants.kMaxAcceleration,
 		-Constants.kMaxAcceleration);
 	m_motionProfile.generateProfile(getTotalPathDistance());
 	m_startTime = Timer.getFPGATimestamp();

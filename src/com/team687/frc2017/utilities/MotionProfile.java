@@ -11,7 +11,7 @@ import com.team687.frc2017.Constants;
  *
  */
 
-public class MotionProfileGenerator {
+public class MotionProfile {
 
     private double m_cruiseVelocity;
     private double m_accel;
@@ -40,7 +40,7 @@ public class MotionProfileGenerator {
      * @param deceleration
      *            in R/M^2
      */
-    public MotionProfileGenerator(double cruiseVelocity, double accel, double decel) {
+    public MotionProfile(double cruiseVelocity, double accel, double decel) {
 	m_cruiseVelocity = cruiseVelocity;
 	m_accel = accel;
 	m_decel = decel;
