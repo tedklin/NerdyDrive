@@ -1,5 +1,7 @@
 # NerdyDrive
 
+[![Build Status](https://travis-ci.org/tedklin/NerdyDrive.svg?branch=master)](https://travis-ci.org/tedklin/NerdyDrive)
+
 Offseason drive functionality testing/experimenting
 
 - Visual servoing
