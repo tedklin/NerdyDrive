@@ -78,7 +78,9 @@ public class Odometry {
 	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
 
 	m_sigmaVelocity = m_leftSpeed + m_rightSpeed;
-	if (m_diffVelocity != 0) {
+	if (m_diffVelocity == 0) {
+	    m_arcRadius = 0; // this is supposed to be infinity
+	} else {
 	    m_arcRadius = (Constants.kDrivetrainWidth * m_sigmaVelocity) / (2 * m_diffVelocity);
 	}
 	SmartDashboard.putNumber("Radius of Curvature", m_arcRadius);
