@@ -29,6 +29,10 @@ public class Matrix {
 	}
     }
 
+    public double[][] getData() {
+	return this.data;
+    }
+
     // copy constructor
     private Matrix(Matrix A) {
 	this(A.data);
@@ -119,7 +123,7 @@ public class Matrix {
     }
 
     // return C = A * B
-    public Matrix multiiplyBy(Matrix B) {
+    public Matrix multiplyBy(Matrix B) {
 	Matrix A = this;
 	if (A.N != B.M) {
 	    throw new RuntimeException("Illegal matrix dimensions.");
