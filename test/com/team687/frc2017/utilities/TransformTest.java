@@ -68,7 +68,14 @@ public class TransformTest {
 	double newX = (m_radius * Math.cos(m_theta) * Math.sin(m_angularVelocity * m_dt))
 		+ (m_radius * Math.sin(m_theta) * Math.cos(m_angularVelocity * m_dt)) + m_x
 		- (m_radius * Math.sin(m_theta));
+	double newY = (m_radius * Math.sin(m_theta) * Math.sin(m_angularVelocity * m_dt))
+		- (m_radius * Math.cos(m_theta) * Math.cos(m_angularVelocity * m_dt)) + m_y
+		+ (m_radius * Math.cos(m_theta));
+	double newTheta = m_theta + (m_angularVelocity * m_dt);
+
 	assertEquals(RT_N.getData()[0][4], newX, kEpsilon);
+	assertEquals(RT_N.getData()[1][4], newY, kEpsilon);
+	assertEquals(RT_N.getData()[2][4], newTheta, kEpsilon);
     }
 
 }
