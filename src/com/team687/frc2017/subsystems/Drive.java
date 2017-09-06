@@ -102,6 +102,10 @@ public class Drive extends Subsystem {
 	return m_nav.getYaw();
     }
 
+    public double getCurrentYawRadians() {
+	return NerdyMath.degToRads(m_nav.getYaw());
+    }
+
     public double getNavTimestamp() {
 	return m_nav.getLastSensorTimestamp();
     }
