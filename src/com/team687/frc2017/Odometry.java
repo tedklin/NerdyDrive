@@ -73,20 +73,21 @@ public class Odometry {
 	SmartDashboard.putNumber("Accel Z", Robot.drive.getCurrentAccelZ());
 
 	// calculations
-	m_diffDistance = m_leftDistance - m_rightDistance;
+	m_diffDistance = m_rightDistance - m_leftDistance;
+	m_diffVelocity = m_rightSpeed - m_leftSpeed;
+	m_sigmaVelocity = m_rightSpeed + m_leftSpeed;
+
 	m_derivedYaw = (Math.PI / 2) - (Math.acos(m_diffDistance / Constants.kDrivetrainWidth));
-	SmartDashboard.putNumber("Yaw derived from encoders (radians)", m_derivedYaw);
 
-	m_diffVelocity = m_leftSpeed - m_rightSpeed;
 	m_angularVelocity = m_diffVelocity / Constants.kDrivetrainWidth;
-	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
-
-	m_sigmaVelocity = m_leftSpeed + m_rightSpeed;
 	if (m_diffVelocity == 0) {
 	    m_arcRadius = Double.POSITIVE_INFINITY;
 	} else {
 	    m_arcRadius = (Constants.kDrivetrainWidth * m_sigmaVelocity) / (2 * m_diffVelocity);
 	}
+
+	SmartDashboard.putNumber("Yaw derived from encoders (radians)", m_derivedYaw);
+	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
 	SmartDashboard.putNumber("Radius of Curvature", m_arcRadius);
     }
 
