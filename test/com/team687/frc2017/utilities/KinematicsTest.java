@@ -20,15 +20,16 @@ import com.team687.frc2017.Constants;
  */
 
 @RunWith(Parameterized.class)
-public class TransformTest {
+public class KinematicsTest {
 
     private static final double kEpsilon = 1E-9;
 
     @SuppressWarnings("rawtypes")
     @Parameters
     public static Collection testCases() {
-	// consists of {x, y, theta (in radians), left speed, and right speed
-	return Arrays.asList(new double[][] { { 10, 10, 0.687 * Math.PI, 120, 90 } });
+	// consists of {x, y, theta (in radians), left speed, right speed, and dT
+	return Arrays.asList(new double[][] { { 10, 10, 0.687 * Math.PI, 120, 90, 0.02 },
+		{ 10, 10, 0.687 * Math.PI, 120, 90, 0 }, { 10, 10, 0, 120, 119.9, 0.02 } });
     }
 
     private double m_x;
@@ -41,14 +42,15 @@ public class TransformTest {
 
     private double m_angularVelocity;
     private double m_radius;
-    private double m_dt = 0.02; // in seconds
+    private double m_dt; // in seconds
 
-    public TransformTest(double[] rawVal) {
+    public KinematicsTest(double[] rawVal) {
 	m_x = rawVal[0];
 	m_y = rawVal[1];
 	m_theta = rawVal[2];
 	m_leftSpeed = rawVal[3];
 	m_rightSpeed = rawVal[4];
+	m_dt = rawVal[5];
 
 	m_diffVelocity = m_rightSpeed - m_leftSpeed;
 	m_sigmaVelocity = m_rightSpeed + m_leftSpeed;
@@ -109,9 +111,13 @@ public class TransformTest {
 	double newTheta = m_theta + (m_angularVelocity * m_dt);
 	System.out.println("New Theta: " + newTheta);
 
-	assertEquals(RT_N.getData()[0][3], newX, kEpsilon);
-	assertEquals(RT_N.getData()[1][3], newY, kEpsilon);
-	assertEquals(RT_N.getData()[2][3], newTheta, kEpsilon);
+	// these calculations assume that the instantaneous velocities of the two sides
+	// of the drive are not equal
+	if (Math.abs(m_radius) != Double.POSITIVE_INFINITY) {
+	    assertEquals(RT_N.getData()[0][3], newX, kEpsilon);
+	    assertEquals(RT_N.getData()[1][3], newY, kEpsilon);
+	    assertEquals(RT_N.getData()[2][3], newTheta, kEpsilon);
+	}
     }
 
 }
