@@ -43,4 +43,9 @@ public class Pose {
 	return m_theta;
     }
 
+    public Matrix getMatrix() {
+	double[][] A = { { m_x }, { m_y }, { m_theta } };
+	return new Matrix(A);
+    }
+
 }
