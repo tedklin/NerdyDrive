@@ -1,5 +1,7 @@
 package com.team687.frc2017;
 
+import com.team687.frc2017.utilities.Pose;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,6 +22,7 @@ public class Odometry {
     private double m_gyroYawDegrees;
     private double m_gyroYawRadians;
     private double m_derivedYaw;
+    private double m_derivedDeltaYaw;
     private double m_angularVelocity;
     private double m_arcRadius;
 
@@ -36,6 +39,8 @@ public class Odometry {
     private double m_lastTime;
     private double m_deltaTime;
 
+    private Pose m_pose;
+
     public static Odometry getInstance() {
 	if (m_instance == null) {
 	    m_instance = new Odometry();
@@ -45,6 +50,9 @@ public class Odometry {
 
     protected Odometry() {
 	m_lastTime = Timer.getFPGATimestamp();
+
+	// starting configuration
+	m_pose = new Pose(0, 0, Robot.drive.getCurrentYawRadians());
     }
 
     public void update() {
@@ -77,7 +85,10 @@ public class Odometry {
 	m_diffVelocity = m_rightSpeed - m_leftSpeed;
 	m_sigmaVelocity = m_rightSpeed + m_leftSpeed;
 
-	m_derivedYaw = (Math.PI / 2) - (Math.acos(m_diffDistance / Constants.kDrivetrainWidth));
+	m_derivedDeltaYaw = m_diffVelocity * m_deltaTime / Constants.kDrivetrainWidth;
+	m_derivedYaw += m_derivedDeltaYaw;
+	// m_derivedYaw = (Math.PI / 2) - (Math.acos(m_diffDistance /
+	// Constants.kDrivetrainWidth));
 
 	m_angularVelocity = m_diffVelocity / Constants.kDrivetrainWidth;
 	if (m_diffVelocity == 0) {
