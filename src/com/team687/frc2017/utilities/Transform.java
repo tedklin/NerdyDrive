@@ -27,4 +27,18 @@ public class Transform {
 		+ (m_radius * Math.sin(m_origPose.getTheta()) * Math.cos(m_angularVelocity * m_dt)) + m_origPose.getX()
 		- (m_radius * Math.sin(m_origPose.getTheta()));
     }
+
+    public double getNewY() {
+	return (m_radius * Math.sin(m_origPose.getTheta()) * Math.sin(m_angularVelocity * m_dt))
+		- (m_radius * Math.cos(m_origPose.getTheta()) * Math.cos(m_angularVelocity * m_dt)) + m_origPose.getY()
+		+ (m_radius * Math.cos(m_origPose.getTheta()));
+    }
+
+    public double getNewTheta() {
+	return m_origPose.getTheta() + (m_angularVelocity * m_dt);
+    }
+
+    public Pose getNewPose() {
+	return new Pose(getNewX(), getNewY(), getNewTheta());
+    }
 }
