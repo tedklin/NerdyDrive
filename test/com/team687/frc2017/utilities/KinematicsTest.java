@@ -94,12 +94,36 @@ public class KinematicsTest {
 
 	Pose lastPose = new Pose(m_x, m_y, m_theta);
 	Pose newPose = Kinematics.getNewPose(lastPose, m_rightSpeed, m_leftSpeed, m_dt);
+
+	Pose deltaPose = new Pose(m_radius * Math.sin(m_angularVelocity * m_dt),
+		-m_radius * Math.cos(m_angularVelocity * m_dt) + m_radius, newPose.getTheta());
+	double[][] RTC_data = { { 1, 0, 0, lastPose.getX() }, { 0, 1, 0, lastPose.getY() }, { 0, 0, 1, 0 },
+		{ 0, 0, 0, 1 } };
+	Matrix RTC = new Matrix(RTC_data);
+	double[][] transform_data = { { 1, 0, 0, deltaPose.getX() }, { 0, 1, 0, deltaPose.getY() },
+		{ 0, 0, 1, deltaPose.getTheta() }, { 0, 0, 0, 1 } };
+	Matrix transform = new Matrix(transform_data);
+	Matrix checkingNewPose = RTC.multiplyBy(transform);
+	Pose checkNewPose = new Pose(checkingNewPose.getData()[0][3], checkingNewPose.getData()[1][3],
+		checkingNewPose.getData()[2][3]);
+
 	double newX = newPose.getX();
 	System.out.println("New X: " + newX);
+	double checkNewX = checkNewPose.getX();
+	System.out.println("Check New X: " + checkNewX);
+	// assertEquals(newX, checkNewX, kEpsilon);
+
 	double newY = newPose.getY();
 	System.out.println("New Y: " + newY);
+	double checkNewY = checkNewPose.getY();
+	System.out.println("Check New Y: " + checkNewY);
+	// assertEquals(newY, checkNewY, kEpsilon);
+
 	double newTheta = newPose.getTheta();
 	System.out.println("New Theta: " + newTheta);
+	double checkNewTheta = checkNewPose.getTheta();
+	System.out.println("Check New Theta: " + checkNewTheta);
+	// assertEquals(newTheta, checkNewTheta, kEpsilon);
 
 	// these calculations assume that the instantaneous velocities of the two sides
 	// of the drive are not equal
