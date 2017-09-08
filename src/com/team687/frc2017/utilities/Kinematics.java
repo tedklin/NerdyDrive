@@ -85,4 +85,14 @@ public class Kinematics {
 	}
     }
 
+    /**
+     * @param rightVelocity
+     * @param leftVelocity
+     * @param deltaTime
+     */
+    public static double getDerivedDeltaYaw(double rightVelocity, double leftVelocity, double deltaTime) {
+	double diffVelocity = rightVelocity - leftVelocity;
+	return diffVelocity * deltaTime / Constants.kDrivetrainWidth;
+    }
+
 }

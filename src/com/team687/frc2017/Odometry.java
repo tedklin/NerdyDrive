@@ -1,12 +1,14 @@
 package com.team687.frc2017;
 
+import com.team687.frc2017.utilities.Kinematics;
 import com.team687.frc2017.utilities.Pose;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Odometry of drive
+ * Odometry of drivetrain. Keeps track of robot's pose (x, y, theta) over time
+ * using pose transformations and kinematics.
  * 
  * @author tedlin
  *
@@ -39,7 +41,8 @@ public class Odometry {
     private double m_lastTime;
     private double m_deltaTime;
 
-    private Pose m_pose;
+    private Pose m_lastPose;
+    private Pose m_newPose;
 
     public static Odometry getInstance() {
 	if (m_instance == null) {
@@ -52,7 +55,8 @@ public class Odometry {
 	m_lastTime = Timer.getFPGATimestamp();
 
 	// starting configuration
-	m_pose = new Pose(0, 0, Robot.drive.getCurrentYawRadians());
+	m_newPose = new Pose(0, 0, Robot.drive.getCurrentYawRadians());
+	m_derivedYaw = Robot.drive.getCurrentYawRadians();
     }
 
     public void update() {
@@ -81,21 +85,9 @@ public class Odometry {
 	SmartDashboard.putNumber("Accel Z", Robot.drive.getCurrentAccelZ());
 
 	// calculations
-	m_diffDistance = m_rightDistance - m_leftDistance;
-	m_diffVelocity = m_rightSpeed - m_leftSpeed;
-	m_sigmaVelocity = m_rightSpeed + m_leftSpeed;
-
-	m_derivedDeltaYaw = m_diffVelocity * m_deltaTime / Constants.kDrivetrainWidth;
-	m_derivedYaw += m_derivedDeltaYaw;
-	// m_derivedYaw = (Math.PI / 2) - (Math.acos(m_diffDistance /
-	// Constants.kDrivetrainWidth));
-
-	m_angularVelocity = m_diffVelocity / Constants.kDrivetrainWidth;
-	if (m_diffVelocity == 0) {
-	    m_arcRadius = Double.POSITIVE_INFINITY;
-	} else {
-	    m_arcRadius = (Constants.kDrivetrainWidth * m_sigmaVelocity) / (2 * m_diffVelocity);
-	}
+	m_derivedYaw += Kinematics.getDerivedDeltaYaw(m_rightSpeed, m_leftSpeed, m_deltaTime);
+	m_angularVelocity = Kinematics.getAngularVelocity(m_rightSpeed, m_leftSpeed);
+	m_arcRadius = Kinematics.getCurvatureRadius(m_rightSpeed, m_leftSpeed);
 
 	SmartDashboard.putNumber("Yaw derived from encoders (radians)", m_derivedYaw);
 	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
