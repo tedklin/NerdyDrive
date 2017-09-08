@@ -20,9 +20,15 @@ public class Kinematics {
     public static double getNewX(Pose origPose, double rightVelocity, double leftVelocity, double deltaTime) {
 	double angularVelocity = getAngularVelocity(rightVelocity, leftVelocity);
 	double arcRadius = getCurvatureRadius(rightVelocity, leftVelocity);
-	return (arcRadius * Math.cos(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
-		+ (arcRadius * Math.sin(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime)) + origPose.getX()
-		- (arcRadius * Math.sin(origPose.getTheta()));
+	double newX;
+	if (rightVelocity != leftVelocity) {
+	    newX = (arcRadius * Math.cos(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
+		    + (arcRadius * Math.sin(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime))
+		    + origPose.getX() - (arcRadius * Math.sin(origPose.getTheta()));
+	} else {
+	    newX = (Math.sin(origPose.getTheta()) * rightVelocity) * deltaTime;
+	}
+	return newX;
     }
 
     /**
@@ -34,9 +40,15 @@ public class Kinematics {
     public static double getNewY(Pose origPose, double rightVelocity, double leftVelocity, double deltaTime) {
 	double angularVelocity = getAngularVelocity(rightVelocity, leftVelocity);
 	double arcRadius = getCurvatureRadius(rightVelocity, leftVelocity);
-	return (arcRadius * Math.sin(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
-		- (arcRadius * Math.cos(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime)) + origPose.getY()
-		+ (arcRadius * Math.cos(origPose.getTheta()));
+	double newY;
+	if (rightVelocity != leftVelocity) {
+	    newY = (arcRadius * Math.sin(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
+		    - (arcRadius * Math.cos(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime))
+		    + origPose.getY() + (arcRadius * Math.cos(origPose.getTheta()));
+	} else {
+	    newY = (Math.cos(origPose.getTheta()) * rightVelocity) * deltaTime;
+	}
+	return newY;
     }
 
     /**

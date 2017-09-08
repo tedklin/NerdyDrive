@@ -57,6 +57,7 @@ public class KinematicsTest {
 	System.out.println("Angular Velocity: " + m_angularVelocity);
 	System.out.println("Radius: " + m_radius);
 
+	// these transformations assume that the robot isn't going perfectly straight
 	double[][] origPos = { { 1, 0, 0, m_x }, { 0, 1, 0, m_y }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 	double[][] currentPose = { { Math.cos(m_theta), -Math.sin(m_theta), 0, 0 },
 		{ Math.sin(m_theta), Math.cos(m_theta), 0, 0 }, { 0, 0, 1, m_theta }, { 0, 0, 0, 1 } };

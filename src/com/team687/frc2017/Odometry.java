@@ -26,8 +26,8 @@ public class Odometry {
 
     private double m_leftDistance;
     private double m_rightDistance;
-    private double m_leftSpeed;
-    private double m_rightSpeed;
+    private double m_leftVelocity;
+    private double m_rightVelocity;
 
     private double m_currentTime;
     private double m_lastTime;
@@ -47,7 +47,7 @@ public class Odometry {
 	m_lastTime = Timer.getFPGATimestamp();
 
 	// starting configuration
-	m_newPose = new Pose(0, 0, Robot.drive.getCurrentYawRadians());
+	m_lastPose = new Pose(0, 0, Robot.drive.getCurrentYawRadians());
 	m_derivedYaw = Robot.drive.getCurrentYawRadians();
     }
 
@@ -55,16 +55,16 @@ public class Odometry {
 	// raw sensor readings
 	m_leftDistance = Robot.drive.getLeftTicks();
 	m_rightDistance = Robot.drive.getRightTicks();
-	m_leftSpeed = Robot.drive.getLeftTicksSpeed();
-	m_rightSpeed = Robot.drive.getRightTicksSpeed();
+	m_leftVelocity = Robot.drive.getLeftTicksSpeed();
+	m_rightVelocity = Robot.drive.getRightTicksSpeed();
 	m_gyroYawDegrees = Robot.drive.getCurrentYaw();
 	m_gyroYawRadians = Robot.drive.getCurrentYawRadians();
 
 	SmartDashboard.putNumber("Left Position Ticks", m_leftDistance);
 	SmartDashboard.putNumber("Right Position Ticks", m_rightDistance);
 	SmartDashboard.putNumber("Drivetrain Position Ticks", Robot.drive.getDrivetrainTicks());
-	SmartDashboard.putNumber("Left Speed Ticks", m_leftSpeed);
-	SmartDashboard.putNumber("Right Speed Ticks", m_rightSpeed);
+	SmartDashboard.putNumber("Left Speed Ticks", m_leftVelocity);
+	SmartDashboard.putNumber("Right Speed Ticks", m_rightVelocity);
 
 	SmartDashboard.putNumber("Yaw (degrees)", m_gyroYawDegrees);
 	SmartDashboard.putNumber("Yaw (radians)", m_gyroYawRadians);
@@ -73,9 +73,9 @@ public class Odometry {
 	SmartDashboard.putNumber("Accel Z", Robot.drive.getCurrentAccelZ());
 
 	// calculations
-	m_derivedYaw += Kinematics.getDerivedDeltaYaw(m_rightSpeed, m_leftSpeed, m_deltaTime);
-	m_angularVelocity = Kinematics.getAngularVelocity(m_rightSpeed, m_leftSpeed);
-	m_arcRadius = Kinematics.getCurvatureRadius(m_rightSpeed, m_leftSpeed);
+	m_derivedYaw += Kinematics.getDerivedDeltaYaw(m_rightVelocity, m_leftVelocity, m_deltaTime);
+	m_angularVelocity = Kinematics.getAngularVelocity(m_rightVelocity, m_leftVelocity);
+	m_arcRadius = Kinematics.getCurvatureRadius(m_rightVelocity, m_leftVelocity);
 
 	SmartDashboard.putNumber("Yaw derived from encoders (radians)", m_derivedYaw);
 	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
@@ -85,12 +85,12 @@ public class Odometry {
 	m_deltaTime = m_currentTime - m_lastTime;
 	m_lastTime = m_currentTime;
 
-	m_newPose = Kinematics.getNewPose(m_lastPose, m_rightSpeed, m_leftSpeed, m_deltaTime);
+	m_newPose = Kinematics.getNewPose(m_lastPose, m_rightVelocity, m_leftVelocity, m_deltaTime);
 	m_lastPose = m_newPose;
 
 	SmartDashboard.putNumber("X", m_newPose.getX());
 	SmartDashboard.putNumber("Y", m_newPose.getY());
-	SmartDashboard.putNumber("Theta", m_newPose.getTheta());
+	SmartDashboard.putNumber("Theta (radians)", m_newPose.getTheta());
     }
 
 }
