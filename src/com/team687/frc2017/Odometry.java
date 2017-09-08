@@ -18,13 +18,9 @@ public class Odometry {
 
     private static Odometry m_instance = null;
 
-    private double m_x;
-    private double m_y;
-
     private double m_gyroYawDegrees;
     private double m_gyroYawRadians;
     private double m_derivedYaw;
-    private double m_derivedDeltaYaw;
     private double m_angularVelocity;
     private double m_arcRadius;
 
@@ -32,10 +28,6 @@ public class Odometry {
     private double m_rightDistance;
     private double m_leftSpeed;
     private double m_rightSpeed;
-
-    private double m_diffDistance;
-    private double m_diffVelocity;
-    private double m_sigmaVelocity;
 
     private double m_currentTime;
     private double m_lastTime;
@@ -60,10 +52,6 @@ public class Odometry {
     }
 
     public void update() {
-	m_currentTime = Timer.getFPGATimestamp();
-	m_deltaTime = m_currentTime - m_lastTime;
-	m_lastTime = m_currentTime;
-
 	// raw sensor readings
 	m_leftDistance = Robot.drive.getLeftTicks();
 	m_rightDistance = Robot.drive.getRightTicks();
@@ -92,6 +80,17 @@ public class Odometry {
 	SmartDashboard.putNumber("Yaw derived from encoders (radians)", m_derivedYaw);
 	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
 	SmartDashboard.putNumber("Radius of Curvature", m_arcRadius);
+
+	m_currentTime = Timer.getFPGATimestamp();
+	m_deltaTime = m_currentTime - m_lastTime;
+	m_lastTime = m_currentTime;
+
+	m_newPose = Kinematics.getNewPose(m_lastPose, m_rightSpeed, m_leftSpeed, m_deltaTime);
+	m_lastPose = m_newPose;
+
+	SmartDashboard.putNumber("X", m_newPose.getX());
+	SmartDashboard.putNumber("Y", m_newPose.getY());
+	SmartDashboard.putNumber("Theta", m_newPose.getTheta());
     }
 
 }
