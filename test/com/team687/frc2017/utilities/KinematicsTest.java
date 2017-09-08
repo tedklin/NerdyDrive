@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.team687.frc2017.Constants;
-
 /**
  * Pose transformation unit testing
  * 
@@ -37,8 +35,6 @@ public class KinematicsTest {
     private double m_theta;
     private double m_leftSpeed;
     private double m_rightSpeed;
-    private double m_diffVelocity;
-    private double m_sigmaVelocity;
 
     private double m_angularVelocity;
     private double m_radius;
@@ -51,21 +47,16 @@ public class KinematicsTest {
 	m_leftSpeed = rawVal[3];
 	m_rightSpeed = rawVal[4];
 	m_dt = rawVal[5];
-
-	m_diffVelocity = m_rightSpeed - m_leftSpeed;
-	m_sigmaVelocity = m_rightSpeed + m_leftSpeed;
-	m_angularVelocity = m_diffVelocity / Constants.kDrivetrainWidth;
-	if (m_diffVelocity == 0) {
-	    m_radius = Double.POSITIVE_INFINITY;
-	} else {
-	    m_radius = (Constants.kDrivetrainWidth * m_sigmaVelocity) / (2 * m_diffVelocity);
-	}
-	System.out.println("Curvature radius: " + m_radius);
-	System.out.println("Angular velocity: " + m_angularVelocity);
     }
 
     @Test
     public void findNewPoseTest() {
+	m_angularVelocity = Kinematics.getAngularVelocity(m_rightSpeed, m_leftSpeed);
+	m_radius = Kinematics.getCurvatureRadius(m_rightSpeed, m_leftSpeed);
+
+	System.out.println("Angular Velocity: " + m_angularVelocity);
+	System.out.println("Radius: " + m_radius);
+
 	double[][] origPos = { { 1, 0, 0, m_x }, { 0, 1, 0, m_y }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 	double[][] currentPose = { { Math.cos(m_theta), -Math.sin(m_theta), 0, 0 },
 		{ Math.sin(m_theta), Math.cos(m_theta), 0, 0 }, { 0, 0, 1, m_theta }, { 0, 0, 0, 1 } };
@@ -100,15 +91,13 @@ public class KinematicsTest {
 	System.out.println("RT_N");
 	RT_N.show();
 
-	double newX = (m_radius * Math.cos(m_theta) * Math.sin(m_angularVelocity * m_dt))
-		+ (m_radius * Math.sin(m_theta) * Math.cos(m_angularVelocity * m_dt)) + m_x
-		- (m_radius * Math.sin(m_theta));
+	Pose lastPose = new Pose(m_x, m_y, m_theta);
+	Pose newPose = Kinematics.getNewPose(lastPose, m_rightSpeed, m_leftSpeed, m_dt);
+	double newX = newPose.getX();
 	System.out.println("New X: " + newX);
-	double newY = (m_radius * Math.sin(m_theta) * Math.sin(m_angularVelocity * m_dt))
-		- (m_radius * Math.cos(m_theta) * Math.cos(m_angularVelocity * m_dt)) + m_y
-		+ (m_radius * Math.cos(m_theta));
+	double newY = newPose.getY();
 	System.out.println("New Y: " + newY);
-	double newTheta = m_theta + (m_angularVelocity * m_dt);
+	double newTheta = newPose.getTheta();
 	System.out.println("New Theta: " + newTheta);
 
 	// these calculations assume that the instantaneous velocities of the two sides
