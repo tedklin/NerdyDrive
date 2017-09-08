@@ -101,8 +101,7 @@ public class DriveBezierRio extends Command {
 		if (m_softStop) {
 		    double straightError = m_arcLength.get(m_arcLength.size() - 1) - Robot.drive.getDrivetrainTicks();
 		    double newMaxStraightPower = Constants.kDistPBezier * straightError;
-		    double sign = Math.signum(newMaxStraightPower);
-		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower)) * sign;
+		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower));
 		}
 
 		// limit straight power to maintain rotPower to straightPower ratio
