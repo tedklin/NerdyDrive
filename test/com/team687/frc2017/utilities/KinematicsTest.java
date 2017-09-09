@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Pose transformation unit testing
+ * Skid steer forward kinematics unit testing
  * 
  * @author tedlin
  *
@@ -27,7 +27,7 @@ public class KinematicsTest {
     public static Collection testCases() {
 	// consists of {x, y, theta (in radians), left speed, right speed, and dT
 	return Arrays.asList(new double[][] { { 10, 10, 0.687 * Math.PI, 120, 90, 0.02 },
-		{ 10, 10, 0.687 * Math.PI, 120, 90, 0 }, { 10, 10, 0, 120, 119.9, 0.02 } });
+		{ 10, 10, 0.687 * Math.PI, 120, 90, 0 }, { 10, 10, 0, 120, 119.99, 0.02 } });
     }
 
     private double m_x;
@@ -39,6 +39,7 @@ public class KinematicsTest {
     private double m_angularVelocity;
     private double m_radius;
     private double m_dt; // in seconds
+    private double m_time;
 
     public KinematicsTest(double[] rawVal) {
 	m_x = rawVal[0];
@@ -47,16 +48,16 @@ public class KinematicsTest {
 	m_leftSpeed = rawVal[3];
 	m_rightSpeed = rawVal[4];
 	m_dt = rawVal[5];
+
+	m_angularVelocity = Kinematics.getAngularVelocity(m_rightSpeed, m_leftSpeed);
+	m_radius = Kinematics.getCurvatureRadius(m_rightSpeed, m_leftSpeed);
+	System.out.println();
+	System.out.println("Angular Velocity: " + m_angularVelocity);
+	System.out.println("Radius: " + m_radius);
     }
 
     @Test
-    public void findNewPoseTest() {
-	m_angularVelocity = Kinematics.getAngularVelocity(m_rightSpeed, m_leftSpeed);
-	m_radius = Kinematics.getCurvatureRadius(m_rightSpeed, m_leftSpeed);
-
-	System.out.println("Angular Velocity: " + m_angularVelocity);
-	System.out.println("Radius: " + m_radius);
-
+    public void poseTransformationTest() {
 	// these transformations assume that the robot isn't going perfectly straight
 	double[][] origPos = { { 1, 0, 0, m_x }, { 0, 1, 0, m_y }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 	double[][] currentPose = { { Math.cos(m_theta), -Math.sin(m_theta), 0, 0 },
@@ -93,44 +94,61 @@ public class KinematicsTest {
 	RT_N.show();
 
 	Pose lastPose = new Pose(m_x, m_y, m_theta);
-	Pose newPose = Kinematics.getNewPose(lastPose, m_rightSpeed, m_leftSpeed, m_dt);
+	Pose newPose = new Pose(Kinematics.getNewX(lastPose, m_rightSpeed, m_leftSpeed, m_dt),
+		Kinematics.getNewY(lastPose, m_rightSpeed, m_leftSpeed, m_dt),
+		Kinematics.getNewTheta(lastPose, m_rightSpeed, m_leftSpeed, m_dt));
+
+	double newX = (m_radius * Math.cos(lastPose.getTheta()) * Math.sin(m_angularVelocity * m_dt))
+		+ (m_radius * Math.sin(lastPose.getTheta()) * Math.cos(m_angularVelocity * m_dt)) + lastPose.getX()
+		- (m_radius * Math.sin(lastPose.getTheta()));
+	System.out.println("New X: " + newX);
+
+	double newY = (m_radius * Math.sin(lastPose.getTheta()) * Math.sin(m_angularVelocity * m_dt))
+		- (m_radius * Math.cos(lastPose.getTheta()) * Math.cos(m_angularVelocity * m_dt)) + lastPose.getY()
+		+ (m_radius * Math.cos(lastPose.getTheta()));
+	System.out.println("New Y: " + newY);
+
+	double newTheta = newPose.getTheta();
+	System.out.println("New Theta: " + newTheta);
+
+	// these calculations assume that the instantaneous velocities of the two sides
+	// of the drive are not equal
+	if (Double.isFinite(m_radius)) {
+	    assertEquals(RT_N.getData()[0][3], newX, kEpsilon);
+	    assertEquals(RT_N.getData()[1][3], newY, kEpsilon);
+	    assertEquals(RT_N.getData()[2][3], newTheta, kEpsilon);
+	}
+    }
+
+    @Test
+    public void findNewPoseTest() {
+	Pose lastPose = new Pose(m_x, m_y, m_theta);
+	Pose newPose = new Pose(Kinematics.getNewX(lastPose, m_rightSpeed, m_leftSpeed, m_dt),
+		Kinematics.getNewY(lastPose, m_rightSpeed, m_leftSpeed, m_dt),
+		Kinematics.getNewTheta(lastPose, m_rightSpeed, m_leftSpeed, m_dt));
 
 	Pose deltaPose = new Pose(m_radius * Math.sin(m_angularVelocity * m_dt),
 		-m_radius * Math.cos(m_angularVelocity * m_dt) + m_radius, newPose.getTheta());
 	double[][] RTC_data = { { 1, 0, 0, lastPose.getX() }, { 0, 1, 0, lastPose.getY() }, { 0, 0, 1, 0 },
 		{ 0, 0, 0, 1 } };
-	Matrix RTC = new Matrix(RTC_data);
 	double[][] transform_data = { { 1, 0, 0, deltaPose.getX() }, { 0, 1, 0, deltaPose.getY() },
 		{ 0, 0, 1, deltaPose.getTheta() }, { 0, 0, 0, 1 } };
+	Matrix RTC = new Matrix(RTC_data);
+	System.out.println("RTC");
+	RTC.show();
 	Matrix transform = new Matrix(transform_data);
+	System.out.println("Transform");
+	transform.show();
 	Matrix checkingNewPose = RTC.multiplyBy(transform);
+	System.out.println("Checking New Pose");
+	checkingNewPose.show();
 	Pose checkNewPose = new Pose(checkingNewPose.getData()[0][3], checkingNewPose.getData()[1][3],
 		checkingNewPose.getData()[2][3]);
 
-	double newX = newPose.getX();
-	System.out.println("New X: " + newX);
-	double checkNewX = checkNewPose.getX();
-	System.out.println("Check New X: " + checkNewX);
-	// assertEquals(newX, checkNewX, kEpsilon);
-
-	double newY = newPose.getY();
-	System.out.println("New Y: " + newY);
-	double checkNewY = checkNewPose.getY();
-	System.out.println("Check New Y: " + checkNewY);
-	// assertEquals(newY, checkNewY, kEpsilon);
-
-	double newTheta = newPose.getTheta();
-	System.out.println("New Theta: " + newTheta);
-	double checkNewTheta = checkNewPose.getTheta();
-	System.out.println("Check New Theta: " + checkNewTheta);
-	// assertEquals(newTheta, checkNewTheta, kEpsilon);
-
-	// these calculations assume that the instantaneous velocities of the two sides
-	// of the drive are not equal
-	if (Math.abs(m_radius) != Double.POSITIVE_INFINITY) {
-	    assertEquals(RT_N.getData()[0][3], newX, kEpsilon);
-	    assertEquals(RT_N.getData()[1][3], newY, kEpsilon);
-	    assertEquals(RT_N.getData()[2][3], newTheta, kEpsilon);
+	if (Double.isFinite(m_radius)) {
+	    assertEquals(newPose.getX(), checkNewPose.getX(), kEpsilon);
+	    assertEquals(newPose.getY(), checkNewPose.getY(), kEpsilon);
+	    assertEquals(newPose.getTheta(), checkNewPose.getTheta(), kEpsilon);
 	}
     }
 

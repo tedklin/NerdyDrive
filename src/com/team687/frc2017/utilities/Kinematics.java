@@ -1,6 +1,7 @@
 package com.team687.frc2017.utilities;
 
 import com.team687.frc2017.Constants;
+import com.team687.frc2017.Robot;
 
 /**
  * Skid steer drive kinematic calculations
@@ -12,6 +13,8 @@ import com.team687.frc2017.Constants;
 public class Kinematics {
 
     /**
+     * Calculates new X by finding delta X and adding it to the original X
+     * 
      * @param origPose
      * @param rightVelocity
      * @param leftVelocity
@@ -22,16 +25,16 @@ public class Kinematics {
 	double arcRadius = getCurvatureRadius(rightVelocity, leftVelocity);
 	double newX;
 	if (rightVelocity != leftVelocity) {
-	    newX = (arcRadius * Math.cos(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
-		    + (arcRadius * Math.sin(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime))
-		    + origPose.getX() - (arcRadius * Math.sin(origPose.getTheta()));
+	    newX = (arcRadius * Math.sin(angularVelocity * deltaTime)) + origPose.getX();
 	} else {
-	    newX = (Math.sin(origPose.getTheta()) * rightVelocity) * deltaTime;
+	    newX = (Math.sin(origPose.getTheta()) * rightVelocity) * deltaTime + origPose.getX();
 	}
 	return newX;
     }
 
     /**
+     * Calculates new Y by finding delta Y and adding it to the original Y
+     * 
      * @param origPose
      * @param rightVelocity
      * @param leftVelocity
@@ -42,11 +45,9 @@ public class Kinematics {
 	double arcRadius = getCurvatureRadius(rightVelocity, leftVelocity);
 	double newY;
 	if (rightVelocity != leftVelocity) {
-	    newY = (arcRadius * Math.sin(origPose.getTheta()) * Math.sin(angularVelocity * deltaTime))
-		    - (arcRadius * Math.cos(origPose.getTheta()) * Math.cos(angularVelocity * deltaTime))
-		    + origPose.getY() + (arcRadius * Math.cos(origPose.getTheta()));
+	    newY = (-arcRadius * Math.cos(angularVelocity * deltaTime) + arcRadius) + origPose.getY();
 	} else {
-	    newY = (Math.cos(origPose.getTheta()) * rightVelocity) * deltaTime;
+	    newY = ((Math.cos(origPose.getTheta()) * rightVelocity) * deltaTime) + origPose.getY();
 	}
 	return newY;
     }
@@ -63,15 +64,21 @@ public class Kinematics {
     }
 
     /**
+     * Returns new pose of robot. Theta is based on gyro yaw (keep in mind this
+     * might throw null pointer exception when doing unit tests).
+     * 
      * @param origPose
      * @param rightVelocity
      * @param leftVelocity
      * @param deltaTime
      */
     public static Pose getNewPose(Pose origPose, double rightVelocity, double leftVelocity, double deltaTime) {
-	return new Pose(getNewX(origPose, rightVelocity, leftVelocity, deltaTime),
+	Pose deltaPose = new Pose(getNewX(origPose, rightVelocity, leftVelocity, deltaTime),
 		getNewY(origPose, rightVelocity, leftVelocity, deltaTime),
 		getNewTheta(origPose, rightVelocity, leftVelocity, deltaTime));
+	Pose newPose = new Pose(deltaPose.getX() + origPose.getX(), deltaPose.getY() + origPose.getX(),
+		Robot.drive.getCurrentYawRadians());
+	return newPose;
     }
 
     /**
