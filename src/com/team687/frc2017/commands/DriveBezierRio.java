@@ -29,6 +29,7 @@ public class DriveBezierRio extends Command {
 
     private int m_counter;
     private boolean m_pathIsFinished;
+    private double m_direction;
 
     public DriveBezierRio(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
 	    double straightPower, boolean straightPowerIsDynamic, boolean softStop) {
@@ -69,13 +70,13 @@ public class DriveBezierRio extends Command {
 
 	m_counter = 0;
 	m_pathIsFinished = false;
-	m_basePower = 1 * Math.signum(m_straightPower);
+	m_direction = Math.signum(m_straightPower);
     }
 
     @Override
     protected void execute() {
 	if (m_counter < m_arcLength.size()) {
-	    if (Robot.drive.getDrivetrainTicks() < m_arcLength.get(m_counter)) {
+	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		double error = -m_heading.get(m_counter) - robotAngle;
 		// double expectedDeltaHeading = 0;
@@ -90,16 +91,16 @@ public class DriveBezierRio extends Command {
 		double rotPower = Constants.kRotPBezier * error;
 		// default is specified straight power
 		double straightPower = m_straightPower;
-		double direction = Math.signum(m_straightPower);
 
 		// dynamic straight power
 		if (m_straightPowerIsDynamic) {
-		    straightPower = direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
+		    straightPower = m_direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
 		}
 
 		double maxStraightPower = Constants.kMaxStraightPower;
 		if (m_softStop) {
-		    double straightError = m_arcLength.get(m_arcLength.size() - 1) - Robot.drive.getDrivetrainTicks();
+		    double straightError = m_arcLength.get(m_arcLength.size() - 1)
+			    - Math.abs(Robot.drive.getDrivetrainTicks());
 		    double newMaxStraightPower = Constants.kDistPBezier * straightError;
 		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower));
 		}
@@ -107,12 +108,12 @@ public class DriveBezierRio extends Command {
 		// limit straight power to maintain rotPower to straightPower ratio
 		// also for soft landings
 		if (Math.abs(straightPower) > maxStraightPower) {
-		    straightPower = maxStraightPower * direction;
+		    straightPower = maxStraightPower * m_direction;
 		}
 
 		// make sure robot reaches end point
 		if (Math.abs(straightPower) < Constants.kMinStraightPower) {
-		    straightPower = Constants.kMinStraightPower * direction;
+		    straightPower = Constants.kMinStraightPower * m_direction;
 		}
 
 		double leftPow = rotPower + straightPower;
@@ -128,7 +129,8 @@ public class DriveBezierRio extends Command {
 
     @Override
     protected boolean isFinished() {
-	return m_pathIsFinished || Robot.drive.getDrivetrainTicks() >= m_arcLength.get(m_arcLength.size() - 1);
+	return m_pathIsFinished
+		|| Math.abs(Robot.drive.getDrivetrainTicks()) >= m_arcLength.get(m_arcLength.size() - 1);
     }
 
     @Override
