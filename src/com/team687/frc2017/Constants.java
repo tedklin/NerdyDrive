@@ -86,8 +86,9 @@ public class Constants {
     public final static double[] RedPathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double RedPathDistanceAlignWithHopper = 0;
 
-    public final static double[] BluePathWallToPeg = { 0, 0, 0, 81, 0, 81, 65.31, 118.5 };
-    public final static double[] BluePathPegToHopper = { 65.31, 118.5, 0, 76, 0, 174, -29.7, 103.24 };
+    public final static double[] BluePathWallToPeg = { 0, 0, 0, 92278.44, 0, 92278.44, 74403.76, 134999.94 };
+    public final static double[] BluePathPegToHopper = { 74403.7644, 134999.94, 0, 86582.24, 0, 198227.76, -33835.428,
+	    117615.1376 };
     public final static double BluePathHopperToBoilerAngle = 0;
 
     public final static double[] BluePathWallToHopper973 = { 0, 0, 0, 100300, 0, 100300, -48000, 100900 };
