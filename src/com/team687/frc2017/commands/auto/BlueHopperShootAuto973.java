@@ -36,7 +36,7 @@ public class BlueHopperShootAuto973 extends CommandGroup {
 	addSequential(new WaitTime(3));
 
 	// back up in one motion
-	addSequential(new ArcTurn(Constants.BlueHopperAngleToShoot, false, 0, false));
+	addSequential(new ArcTurn(Constants.BlueHopperToBoilerAngle, false, 0, false));
 
 	// aim and shoot
 	addParallel(new LiveVisionTracking());

@@ -23,7 +23,7 @@ public class RedGearHopperShootAuto254 extends CommandGroup {
 	// drive to hopper
 	// addParallel(new SetGearManipulatorUp());
 	addSequential(new DriveBezierRio(Constants.RedPathPegToHopper, 0.687, true, false));
-	addSequential(new ArcTurn(Constants.RedPathHopperToBoilerAngle, true, 0));
+	addSequential(new ArcTurn(Constants.RedHopperToBoilerCorrectingAngle, true, 0));
 
 	// shoot
 	// addParallel(new LiveVisionTracking());

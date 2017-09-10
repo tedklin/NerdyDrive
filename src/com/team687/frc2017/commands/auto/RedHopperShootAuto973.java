@@ -22,8 +22,8 @@ public class RedHopperShootAuto973 extends CommandGroup {
 	// addSequential(new DriveBezierRio(Constants.RedPathWallToHopper, 1));
 
 	// drive to hopper with continuous motion and arc turns
-	addSequential(new DriveStraightContinuous(Constants.RedPathWallToHopperInitialDistance, 0.687, true));
-	addSequential(new ArcTurn(Constants.RedPathWallToHopperArcTurnAngle, true, 0, true));
+	addSequential(new DriveStraightContinuous(Constants.RedWallToHopperInitialDistance, 0.687, true));
+	addSequential(new ArcTurn(Constants.RedWallToHopperArcTurnAngle, true, 0, true));
 	addSequential(new DriveUntilCollision(0.971, true, 1.95));
 
 	// back up in two motions
@@ -32,7 +32,7 @@ public class RedHopperShootAuto973 extends CommandGroup {
 	// addSequential(new TurnToAngle(Constants.BlueHopperAngleToShoot));
 
 	// back up in one motion
-	addSequential(new ArcTurn(Constants.RedHopperAngleToShoot, true, 0, false));
+	addSequential(new ArcTurn(Constants.RedHopperToBoilerAngle, true, 0, false));
 
 	// aim and shoot
 	addParallel(new LiveVisionTracking());
