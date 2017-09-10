@@ -2,6 +2,7 @@ package com.team687.frc2017;
 
 import com.team687.frc2017.commands.DriveUntilCollision;
 import com.team687.frc2017.commands.LiveVisionTracking;
+import com.team687.frc2017.commands.ResetEncoders;
 import com.team687.frc2017.commands.ResetGyro;
 import com.team687.frc2017.commands.ShiftDown;
 import com.team687.frc2017.commands.ShiftUp;
@@ -93,6 +94,7 @@ public class OI {
 	SmartDashboard.putData("Tank Drive", new TankDrive());
 
 	SmartDashboard.putData("Reset Gyro", new ResetGyro());
+	SmartDashboard.putData("Reset Encoders", new ResetEncoders());
 
 	SmartDashboard.putData("Shift Up", new ShiftUp());
 	SmartDashboard.putData("Shift Down", new ShiftDown());
