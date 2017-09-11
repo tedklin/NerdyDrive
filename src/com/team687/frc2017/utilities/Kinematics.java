@@ -27,7 +27,7 @@ public class Kinematics {
 	if (rightVelocity != leftVelocity) {
 	    newX = (arcRadius * Math.sin(angularVelocity * deltaTime)) + origPose.getX();
 	} else {
-	    newX = (Math.sin(origPose.getTheta()) * rightVelocity) * deltaTime + origPose.getX();
+	    newX = (Math.cos(origPose.getTheta()) * rightVelocity * deltaTime) + origPose.getX();
 	}
 	return newX;
     }
@@ -47,7 +47,7 @@ public class Kinematics {
 	if (rightVelocity != leftVelocity) {
 	    newY = (-arcRadius * Math.cos(angularVelocity * deltaTime) + arcRadius) + origPose.getY();
 	} else {
-	    newY = ((Math.cos(origPose.getTheta()) * rightVelocity) * deltaTime) + origPose.getY();
+	    newY = (Math.sin(origPose.getTheta()) * rightVelocity * deltaTime) + origPose.getY();
 	}
 	return newY;
     }
