@@ -4,6 +4,7 @@ package com.team687.frc2017;
  * Important constants
  * 
  * @author tedlin
+ * 
  */
 
 public class Constants {
@@ -85,6 +86,11 @@ public class Constants {
     public final static double[] RedPathWallToHopper1678 = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double[] RedPathWallToHopper2056 = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double RedPathDistanceAlignWithHopper = 0;
+
+    public final static double RedWallToCenterPegDistance = 0;
+    public final static double RedCenterPegBackUpDistance = 0;
+    public final static double RedWallToSecondGearAngle = 0;
+    public final static double RedWallToSecondGearDistance = 0;
 
     public final static double[] BluePathWallToPeg = { 0, 0, 0, 92278.44, 0, 92278.44, 74403.76, 134999.94 };
     public final static double[] BluePathPegToHopper = { 74403.7644, 134999.94, 0, 86582.24, 0, 198227.76, -33835.428,

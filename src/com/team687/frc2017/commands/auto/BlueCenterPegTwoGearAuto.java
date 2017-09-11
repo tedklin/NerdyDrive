@@ -16,18 +16,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 
-public class BlueCenterGearTwoGearAuto extends CommandGroup {
+public class BlueCenterPegTwoGearAuto extends CommandGroup {
 
-    public BlueCenterGearTwoGearAuto() {
+    public BlueCenterPegTwoGearAuto() {
 	addSequential(
 		new DriveDistancePID(Constants.BlueWallToCenterPegDistance, Constants.BlueWallToCenterPegDistance));
 	// addSequential(new DeployGear());
 	addSequential(
 		new DriveDistancePID(Constants.BlueCenterPegBackUpDistance, Constants.BlueCenterPegBackUpDistance));
 
-	addSequential(new WaitTime(0.4));
+	addSequential(new WaitTime(0.3));
 	addSequential(new TurnToAngle(Constants.BlueWallToSecondGearAngle, 4, true));
-	addSequential(new WaitTime(0.4));
+	addSequential(new WaitTime(0.3));
 	addSequential(
 		new DriveDistancePID(Constants.BlueWallToSecondGearDistance, Constants.BlueWallToSecondGearDistance));
 	// addParallel(new IntakeGear());
