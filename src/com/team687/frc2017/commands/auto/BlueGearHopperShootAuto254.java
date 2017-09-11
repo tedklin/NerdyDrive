@@ -17,7 +17,7 @@ public class BlueGearHopperShootAuto254 extends CommandGroup {
 
     public BlueGearHopperShootAuto254() {
 	// deploy gear
-	addSequential(new DriveBezierRio(Constants.BluePathWallToPeg, -0.687, true, true));
+	addSequential(new DriveBezierRio(Constants.BluePathWallToClosePeg, -0.687, true, true));
 	// addSequential(new SetGearManipulatorDown());
 
 	// drive to hopper

@@ -73,7 +73,9 @@ public class Constants {
 							     // go during a sharp turn
 
     // Paths
-    public final static double[] RedPathWallToPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    // Close peg is the peg closer to the hopper. Far peg is the peg farthest from
+    // the hopper.
+    public final static double[] RedPathWallToClosePeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double[] RedPathPegToHopper = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double RedHopperToBoilerCorrectingAngle = 0;
 
@@ -92,7 +94,7 @@ public class Constants {
     public final static double RedWallToSecondGearAngle = 0;
     public final static double RedWallToSecondGearDistance = 0;
 
-    public final static double[] BluePathWallToPeg = { 0, 0, 0, 92278.44, 0, 92278.44, 74403.76, 134999.94 };
+    public final static double[] BluePathWallToClosePeg = { 0, 0, 0, 92278.44, 0, 92278.44, 74403.76, 134999.94 };
     public final static double[] BluePathPegToHopper = { 74403.7644, 134999.94, 0, 86582.24, 0, 198227.76, -33835.428,
 	    117615.1376 };
     public final static double BlueHopperToBoilerCorrectingAngle = 0;
@@ -109,7 +111,16 @@ public class Constants {
 
     public final static double BlueWallToCenterPegDistance = -0;
     public final static double BlueCenterPegBackUpDistance = 0;
-    public final static double BlueWallToSecondGearAngle = 90;
-    public final static double BlueWallToSecondGearDistance = -0;
+    public final static double BlueWallCenterToSecondGearAngle = 90;
+    public final static double BlueWallCenterToSecondGearDistance = -0;
+
+    public final static double[] BluePathWallToFarPeg = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double[] BluePathFarPegBackUp = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double BlueWallFarToSecondGearAngle = -90;
+    public final static double BlueWallFarToSecondGearDistance = 0;
+
+    public final static double[] BluePathClosePegBackUp = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public final static double BlueWallCloseToSecondGearAngle = -90;
+    public final static double BlueWallCloseToSecondGearDistance = 0;
 
 }

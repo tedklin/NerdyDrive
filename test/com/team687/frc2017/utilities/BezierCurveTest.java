@@ -30,7 +30,7 @@ public class BezierCurveTest {
     @Parameters
     public static Collection testCases() {
 	return Arrays.asList(new double[][] { Constants.BluePathWallToHopper1678, Constants.BluePathWallToHopper2056,
-		Constants.BluePathWallToHopper973, Constants.BluePathWallToPeg, Constants.BluePathPegToHopper });
+		Constants.BluePathWallToHopper973, Constants.BluePathWallToClosePeg, Constants.BluePathPegToHopper });
     }
 
     private double[] m_path;
