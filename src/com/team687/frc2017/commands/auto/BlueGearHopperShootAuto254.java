@@ -3,6 +3,7 @@ package com.team687.frc2017.commands.auto;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.commands.ArcTurn;
 import com.team687.frc2017.commands.DriveBezierRio;
+import com.team687.frc2017.commands.TurnToAngle;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -19,6 +20,8 @@ public class BlueGearHopperShootAuto254 extends CommandGroup {
 	// deploy gear
 	addSequential(new DriveBezierRio(Constants.BluePathWallToClosePeg, -0.687, true, true));
 	// addSequential(new SetGearManipulatorDown());
+	addSequential(new TurnToAngle(-119.874248250844, 2, true)); // this is the first heading in the next path
+								    // segment
 
 	// drive to hopper
 	// addParallel(new SetGearManipulatorUp());
