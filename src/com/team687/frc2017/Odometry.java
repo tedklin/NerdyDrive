@@ -93,4 +93,8 @@ public class Odometry {
 	SmartDashboard.putNumber("Theta (radians)", m_newPose.getTheta()); // this is the same as yaw in radians
     }
 
+    public Pose getCurrentPose() {
+	return m_newPose;
+    }
+
 }
