@@ -95,7 +95,7 @@ public class Drive extends Subsystem {
     }
 
     public boolean isHighGear() {
-	return (m_shifter.get() == DoubleSolenoid.Value.kForward);
+	return m_shifter.get() == DoubleSolenoid.Value.kForward;
     }
 
     public double getCurrentYaw() {
