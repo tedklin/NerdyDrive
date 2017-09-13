@@ -1,7 +1,5 @@
 package com.team687.frc2017.utilities;
 
-import edu.wpi.first.wpilibj.Timer;
-
 /**
  * Pose of robot (x, y, theta)
  * 
@@ -20,7 +18,6 @@ public class Pose {
 	m_x = x;
 	m_y = y;
 	m_theta = theta;
-	m_timestamp = Timer.getFPGATimestamp();
     }
 
     public void setX(double x) {
@@ -33,6 +30,10 @@ public class Pose {
 
     public void setTheta(double theta) {
 	m_theta = theta;
+    }
+
+    public void setTimestamp(double timestamp) {
+	m_timestamp = timestamp;
     }
 
     public double getX() {
