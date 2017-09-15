@@ -81,14 +81,13 @@ public class DriveBezierRio extends Command {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		m_desiredHeading = m_heading.get(m_counter); // TOOD: figure out if we have to modify this value when
 							     // going reverse.
+		// proposed solution for going reverse
+		// if (m_direction < 0) {
+		// m_desiredHeading += 180;
+		// }
 		m_desiredHeading = -m_desiredHeading; // This is always necessary because of how our rotational PID is
 						      // structured.
 		double error = m_desiredHeading - robotAngle;
-		// double expectedDeltaHeading = 0;
-		// if (m_counter >= 1) {
-		// expectedDeltaHeading = Math.abs(m_heading.get(m_counter) -
-		// m_heading.get(m_counter - 1));
-		// }
 
 		error = (error > 180) ? error - 360 : error;
 		error = (error < -180) ? error + 360 : error;
