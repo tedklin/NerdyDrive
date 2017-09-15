@@ -20,7 +20,7 @@ public class Constants {
     public final static double kDistP = 0.001;
     public final static double kDistI = 0;
     public final static double kDistD = 0;
-    public final static double kMinDistPowerLowGear = 0;
+    public final static double kMinDistPowerLowGear = 0.25;
     public final static double kMaxDistPowerLowGear = 1.0;
     public final static double kDriveDistanceTolerance = 205.6;
     public final static double kDriveDistanceOscillationCount = 5;
@@ -64,10 +64,10 @@ public class Constants {
 
     // Bezier Curves
     public final static double kBezierStep = 60;
-    public final static double kRotPBezier = 0.03;
-    public final static double kDistPBezier = 0.001; // look at TODO on how to tune this
-						     // the higher this is, the less time to decelerate
-    public final static double kMaxStraightPower = 0.75;
+    public final static double kRotPBezier = 0.04;
+    public final static double kDistPBezier = 0.00005; // look at TODO on how to tune this
+						       // the higher this is, the less time to decelerate
+    public final static double kMaxStraightPower = 0.7;
     public final static double kMinStraightPower = 0.25; // ensure that the robot gets to end point with softStops
     public final static double kStraightPowerAdjuster = 0.5; // the higher this is, the slower the robot will
 							     // go during a sharp turn

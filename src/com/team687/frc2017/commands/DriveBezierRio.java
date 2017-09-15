@@ -101,7 +101,7 @@ public class DriveBezierRio extends Command {
 		    straightPower = m_direction * m_basePower / (Math.abs(error) * Constants.kStraightPowerAdjuster);
 		}
 
-		double maxStraightPower = Constants.kMaxStraightPower;
+		double maxStraightPower = Math.abs(m_straightPower);
 		if (m_softStop) {
 		    double straightError = m_arcLength.get(m_arcLength.size() - 1)
 			    - Math.abs(Robot.drive.getDrivetrainTicks());
