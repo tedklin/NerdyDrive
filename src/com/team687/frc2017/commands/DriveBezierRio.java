@@ -25,6 +25,7 @@ public class DriveBezierRio extends Command {
     private boolean m_softStop;
 
     private ArrayList<Double> m_heading;
+    private double m_desiredHeading;
     private ArrayList<Double> m_arcLength;
 
     private int m_counter;
@@ -78,7 +79,11 @@ public class DriveBezierRio extends Command {
 	if (m_counter < m_arcLength.size()) {
 	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		double error = -m_heading.get(m_counter) - robotAngle;
+		m_desiredHeading = m_heading.get(m_counter); // TOOD: figure out if we have to modify this value when
+							     // going reverse.
+		m_desiredHeading = -m_desiredHeading; // This is always necessary because of how our rotational PID is
+						      // structured.
+		double error = m_desiredHeading - robotAngle;
 		// double expectedDeltaHeading = 0;
 		// if (m_counter >= 1) {
 		// expectedDeltaHeading = Math.abs(m_heading.get(m_counter) -
