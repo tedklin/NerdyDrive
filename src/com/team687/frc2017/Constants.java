@@ -101,7 +101,7 @@ public class Constants {
 
     public final static double[] BluePathWallToHopper973 = { 0, 0, 0, 100300, 0, 100300, -48000, 100900 };
     public final static double BlueWallToHopperInitialDistance = 0;
-    public final static double BlueWallToHopperArcTurnAngle = 86;
+    public final static double BlueWallToHopperArcTurnAngle = 90;
     public final static double BlueHopperBackUpDistance = -20000;
     public final static double BlueHopperToBoilerAngle = 67;
 

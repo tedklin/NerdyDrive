@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * 254 style blue gear+hopper auto
  * 
  * @author tedlin
- *
+ * 
  */
 
 public class BlueGearHopperShootAuto254 extends CommandGroup {
@@ -19,9 +19,10 @@ public class BlueGearHopperShootAuto254 extends CommandGroup {
     public BlueGearHopperShootAuto254() {
 	// deploy gear
 	addSequential(new DriveBezierRio(Constants.BluePathWallToClosePeg, -0.687, true, true));
-	// addSequential(new SetGearManipulatorDown());
-	addSequential(new TurnToAngle(-119.874248250844, 2, true)); // this is the first heading in the next path
-								    // segment
+	addSequential(new TurnToAngle(60.126, 2, true)); // This is the first heading in the next path
+							 // segment. This solves a problem where robot starts spinning
+							 // to find correct heading between two path segments.
+	// addSequential(new DeployGear());
 
 	// drive to hopper
 	// addParallel(new SetGearManipulatorUp());
