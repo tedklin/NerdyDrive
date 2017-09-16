@@ -14,7 +14,6 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.team687.frc2017.Constants;
-import com.team687.frc2017.utilities.BezierCurve;
 
 /**
  * Bezier curve/path unit testing
@@ -92,8 +91,8 @@ public class BezierCurveTest {
 	    double leftPower = straightPower + rotPower;
 	    double rightPower = straightPower - rotPower;
 
-	    assertTrue(0.0 <= leftPower && leftPower <= 1.0);
-	    assertTrue(0.0 <= rightPower && rightPower <= 1.0);
+	    assertTrue(-0.5 <= leftPower && leftPower <= 1.0);
+	    assertTrue(-0.5 <= rightPower && rightPower <= 1.0);
 	}
     }
 
