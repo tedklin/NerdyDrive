@@ -20,7 +20,7 @@ public class BlueClosePegTwoGearAuto extends CommandGroup {
 
     public BlueClosePegTwoGearAuto() {
 	addSequential(new DriveBezierRio(Constants.BluePathWallToClosePeg, -0.687, true, true));
-	// addSequential(new DeployGear());
+	// addParallel(new DeployGear());
 	addSequential(new DriveBezierRio(Constants.BluePathClosePegBackUp, 0.687, true, true));
 	addSequential(new WaitTime(0.2));
 
@@ -38,7 +38,7 @@ public class BlueClosePegTwoGearAuto extends CommandGroup {
 	addSequential(new WaitTime(0.2));
 
 	addSequential(new DriveBezierRio(Constants.BluePathWallToClosePeg, -0.687, true, true));
-	// addSequential(new DeployGear());
+	// addParallel(new DeployGear());
 	addSequential(new DriveTime(0.5, 3, false));
     }
 

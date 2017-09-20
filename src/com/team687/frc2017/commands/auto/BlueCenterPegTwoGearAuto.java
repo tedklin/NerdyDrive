@@ -21,7 +21,7 @@ public class BlueCenterPegTwoGearAuto extends CommandGroup {
     public BlueCenterPegTwoGearAuto() {
 	addSequential(
 		new DriveDistancePID(Constants.BlueWallToCenterPegDistance, Constants.BlueWallToCenterPegDistance));
-	// addSequential(new DeployGear());
+	// addParallel(new DeployGear());
 	addSequential(
 		new DriveDistancePID(Constants.BlueCenterPegBackUpDistance, Constants.BlueCenterPegBackUpDistance));
 
@@ -42,7 +42,7 @@ public class BlueCenterPegTwoGearAuto extends CommandGroup {
 	addSequential(new WaitTime(0.4));
 	addSequential(
 		new DriveDistancePID(-Constants.BlueCenterPegBackUpDistance, -Constants.BlueCenterPegBackUpDistance));
-	// addSequential(new DeployGear());
+	// addParallel(new DeployGear());
 	addSequential(new DriveTime(0.5, 3, false));
     }
 
