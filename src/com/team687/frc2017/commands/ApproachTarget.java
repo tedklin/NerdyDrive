@@ -74,7 +74,7 @@ public class ApproachTarget extends Command {
 	double straightPower = m_straightPower; // default
 	double straightError = m_distance - Robot.drive.getDrivetrainTicks();
 	if (m_softStop) {
-	    straightPower = Constants.kDistP * straightError;
+	    straightPower = Constants.kDistPLowGear * straightError;
 	}
 	double sign = Math.signum(straightPower);
 	if (Math.abs(straightPower) < Constants.kMinDistPowerLowGear) {

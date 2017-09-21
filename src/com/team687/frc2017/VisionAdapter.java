@@ -35,12 +35,17 @@ public class VisionAdapter {
 	return m_visionTable.getNumber("ANGLE_TO_TURN", 0);
     }
 
+    public double getDistanceFromTarget() {
+	return m_visionTable.getNumber("DISTANCE_FROM_TARGET", 0);
+    }
+
     public double getProcessedTime() {
 	return m_visionTable.getNumber("PROCESSED_TIME", 0);
     }
 
     public void reportToSmartDashboard() {
 	SmartDashboard.putNumber("Angle to turn from NerdyVision", getAngleToTurn());
+	SmartDashboard.putNumber("Distance from target from NerdyVision", getDistanceFromTarget());
 	SmartDashboard.putNumber("Image processing time (seconds)", getProcessedTime());
 	SmartDashboard.putBoolean("Aligned to vision target", isAligned());
     }

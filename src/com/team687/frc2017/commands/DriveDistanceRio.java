@@ -91,9 +91,9 @@ public class DriveDistanceRio extends Command {
 	SmartDashboard.putNumber("Left error from setpoint", m_leftError);
 	SmartDashboard.putNumber("Right error from setpoint", m_rightError);
 
-	double leftPow = (Constants.kDistP * m_leftError)
+	double leftPow = (Constants.kDistPLowGear * m_leftError)
 		+ (Constants.kDistD * ((m_leftError - m_lastLeftError) / Constants.kDt - goalVelocity)) + feedforward;
-	double rightPow = (Constants.kDistP * m_rightError)
+	double rightPow = (Constants.kDistPLowGear * m_rightError)
 		+ (Constants.kDistD * ((m_rightError - m_lastRightError) / Constants.kDt - goalVelocity)) + feedforward;
 
 	if (m_isStraight) {

@@ -17,7 +17,7 @@ public class Constants {
 
     // Distance PID
     public final static double kDistF = 0;
-    public final static double kDistP = 0.001;
+    public final static double kDistPLowGear = 0.001;
     public final static double kDistI = 0;
     public final static double kDistD = 0;
     public final static double kMinDistPowerLowGear = 0.25;
@@ -41,7 +41,7 @@ public class Constants {
 
     public final static double kRotPHighGear = 0.05;
     public final static double kMinRotPowerHighGear = 0.254;
-    public final static double kMaxRotPowerHighGear = 1.0;
+    public final static double kMaxRotPowerHighGear = 0.971;
 
     // Motion Profiling
     public final static double kMaxVelocity = 0;
@@ -122,5 +122,7 @@ public class Constants {
     public final static double[] BluePathClosePegBackUp = { 0, 0, 0, 0, 0, 0, 0, 0 };
     public final static double BlueWallCloseToSecondGearAngle = -90;
     public final static double BlueWallCloseToSecondGearDistance = 0;
+
+    public final static double kShotDistanceFeet = 6.9028871; // in feet (direct from 1678's code)
 
 }

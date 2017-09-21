@@ -42,13 +42,13 @@ public class DriveDistancePID extends Command {
 	SmartDashboard.putString("Current Command", "DriveDistancePID");
 
 	m_leftDistPID = new NerdyPID();
-	m_leftDistPID.setPID(Constants.kDistP, Constants.kDistI, Constants.kDistD);
+	m_leftDistPID.setPID(Constants.kDistPLowGear, Constants.kDistI, Constants.kDistD);
 	m_leftDistPID.setOutputRange(Constants.kMinDistPowerLowGear, Constants.kMaxDistPowerLowGear);
 	m_leftDistPID.setGyro(false);
 	m_leftDistPID.setDesired(m_leftDistance);
 
 	m_rightDistPID = new NerdyPID();
-	m_rightDistPID.setPID(Constants.kDistP, Constants.kDistI, Constants.kDistD);
+	m_rightDistPID.setPID(Constants.kDistPLowGear, Constants.kDistI, Constants.kDistD);
 	m_rightDistPID.setOutputRange(Constants.kMinDistPowerLowGear, Constants.kMaxDistPowerLowGear);
 	m_rightDistPID.setGyro(false);
 	m_rightDistPID.setDesired(m_rightDistance);

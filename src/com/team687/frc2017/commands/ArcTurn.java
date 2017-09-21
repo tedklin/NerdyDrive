@@ -17,11 +17,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ArcTurn extends Command {
 
     private double m_kP;
+
     private double m_straightPower;
     private double m_desiredAngle;
     private boolean m_isRightPowered;
     private double m_timeout;
     private boolean m_isHighGear;
+
     private double m_startTime;
     private double m_error;
 
@@ -90,7 +92,7 @@ public class ArcTurn extends Command {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 	m_error = m_desiredAngle - robotAngle;
 	SmartDashboard.putNumber("Angle Error", m_error);
-	double power = m_kP * m_error * 1.95;
+	double power = m_kP * m_error * 1.95; // multiplied by 2 because only one side of the drivetrain is moving
 	if (m_isRightPowered) {
 	    Robot.drive.setPower(0 + m_straightPower, power - m_straightPower);
 	} else if (!m_isRightPowered) {

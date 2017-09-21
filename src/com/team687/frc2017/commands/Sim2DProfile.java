@@ -68,7 +68,7 @@ public class Sim2DProfile extends Command {
 
 	m_straightError = setpoint - Robot.drive.getDrivetrainTicks();
 
-	double straightPower = (Constants.kDistP * m_straightError)
+	double straightPower = (Constants.kDistPLowGear * m_straightError)
 		+ (Constants.kDistD * ((m_straightError - m_lastError) / Constants.kDt - goalVelocity)) + feedforward;
 
 	double heading = 0;
