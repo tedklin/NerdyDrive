@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ArcTurn extends Command {
 
     private double m_kP;
+    private double m_minRotPower;
+    private double m_maxRotPower;
 
     private double m_straightPower;
     private double m_desiredAngle;
@@ -81,9 +83,13 @@ public class ArcTurn extends Command {
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
 	    m_kP = Constants.kRotPHighGear;
+	    m_minRotPower = Constants.kMinRotPowerHighGear;
+	    m_maxRotPower = Constants.kMaxRotPowerHighGear;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
 	    m_kP = Constants.kRotPLowGear;
+	    m_minRotPower = Constants.kMinRotPowerLowGear;
+	    m_maxRotPower = Constants.kMaxRotPowerLowGear;
 	}
     }
 
@@ -92,17 +98,25 @@ public class ArcTurn extends Command {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 	m_error = m_desiredAngle - robotAngle;
 	SmartDashboard.putNumber("Angle Error", m_error);
-	double power = m_kP * m_error * 1.95; // multiplied by 2 because only one side of the drivetrain is moving
+	double rotPower = m_kP * m_error * 1.95; // multiplied by 2 because only one side of the drivetrain is moving
+
+	double sign = Math.signum(rotPower);
+	if (Math.abs(rotPower) > m_maxRotPower) {
+	    rotPower = m_maxRotPower * sign;
+	}
+	if (Math.abs(rotPower) < m_minRotPower) {
+	    rotPower = m_minRotPower * sign;
+	}
+
 	if (m_isRightPowered) {
-	    Robot.drive.setPower(0 + m_straightPower, power - m_straightPower);
+	    Robot.drive.setPower(0 + m_straightPower, rotPower - m_straightPower);
 	} else if (!m_isRightPowered) {
-	    Robot.drive.setPower(power + m_straightPower, 0 - m_straightPower);
+	    Robot.drive.setPower(rotPower + m_straightPower, 0 - m_straightPower);
 	}
     }
 
     @Override
     protected boolean isFinished() {
-	// TODO Auto-generated method stub
 	return Math.abs(m_error) < Constants.kDriveRotationTolerance
 		|| Timer.getFPGATimestamp() - m_startTime > m_timeout;
     }
