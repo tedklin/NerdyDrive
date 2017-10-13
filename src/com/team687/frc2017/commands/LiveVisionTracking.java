@@ -3,6 +3,8 @@ package com.team687.frc2017.commands;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.VisionAdapter;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,12 +18,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LiveVisionTracking extends Command {
 
-    // private NerdyPID m_rotPID;
+    private boolean m_isHighGear;
+    private PGains m_rotPGains;
 
     /**
-     * @param angle
+     * @param isHighGear
      */
-    public LiveVisionTracking() {
+    public LiveVisionTracking(boolean isHighGear) {
+	m_isHighGear = isHighGear;
+
 	// subsystem dependencies
 	requires(Robot.drive);
     }
@@ -29,13 +34,14 @@ public class LiveVisionTracking extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "LiveVisionTracking");
-	// m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
-	// m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-	// m_rotPID.setDesired(m_angleToTurn);
-	// m_rotPID.setGyro(true);
 
-	Robot.drive.stopDrive();
-	Robot.drive.shiftDown();
+	if (m_isHighGear) {
+	    Robot.drive.shiftUp();
+	    m_rotPGains = Constants.kRotHighGearPGains;
+	} else if (!m_isHighGear) {
+	    Robot.drive.shiftDown();
+	    m_rotPGains = Constants.kRotLowGearPGains;
+	}
     }
 
     @Override
@@ -45,16 +51,15 @@ public class LiveVisionTracking extends Command {
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
 	double error = absoluteDesiredAngle - robotAngle;
-	SmartDashboard.putNumber("Angle Error", error);
-	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	double power = Constants.kRotPLowGear * error;
-	double sign = Math.signum(power);
-	if (Math.abs(power) < Constants.kMinRotPowerLowGear) {
-	    power = sign * Constants.kMinRotPowerLowGear;
-	}
+	error = (error > 180) ? error - 360 : error;
+	error = (error < -180) ? error + 360 : error;
+
+	double power = m_rotPGains.getP() * error;
+	power = NerdyMath.threshold(power, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
 	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
 	    power = 0;
 	}
+
 	Robot.drive.setPower(power, power);
     }
 

@@ -3,6 +3,8 @@ package com.team687.frc2017.commands;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.VisionAdapter;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,13 +19,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SnapToTarget extends Command {
 
-    private double m_startTime;
-    private double m_timeout = 6.87;
+    private double m_startTime, m_timeout;
     private int m_counter;
     private boolean m_isAuto;
+    private boolean m_isHighGear;
 
-    public SnapToTarget(boolean isAuto) {
-	m_timeout = 2; // default timeout is 6.87 seconds
+    private PGains m_rotPGains;
+
+    public SnapToTarget(boolean isAuto, boolean isHighGear) {
+	m_timeout = 3.3;
+	m_isHighGear = isHighGear;
 	m_isAuto = isAuto;
 
 	// subsystem dependencies
@@ -31,11 +36,13 @@ public class SnapToTarget extends Command {
     }
 
     /**
-     * @param timeout
      * @param isAuto
+     * @param isHighGear
+     * @param timeout
      */
-    public SnapToTarget(boolean isAuto, double timeout) {
+    public SnapToTarget(boolean isAuto, boolean isHighGear, double timeout) {
 	m_timeout = timeout;
+	m_isHighGear = isHighGear;
 	m_isAuto = isAuto;
 
 	// subsystem dependencies
@@ -47,8 +54,15 @@ public class SnapToTarget extends Command {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
 
 	Robot.drive.stopDrive();
-	Robot.drive.shiftDown();
 	m_counter = 0;
+
+	if (m_isHighGear) {
+	    Robot.drive.shiftUp();
+	    m_rotPGains = Constants.kRotHighGearPGains;
+	} else if (!m_isHighGear) {
+	    Robot.drive.shiftDown();
+	    m_rotPGains = Constants.kRotLowGearPGains;
+	}
 
 	m_startTime = Timer.getFPGATimestamp();
     }
@@ -60,14 +74,18 @@ public class SnapToTarget extends Command {
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
 	double error = absoluteDesiredAngle - robotAngle;
-	SmartDashboard.putNumber("Angle Error", error);
-	double rotPower = Constants.kRotPLowGear * error;
+	error = (error > 180) ? error - 360 : error;
+	error = (error < -180) ? error + 360 : error;
+
+	double rotPower = m_rotPGains.getP() * error;
+	rotPower = NerdyMath.threshold(rotPower, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
 	if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
 	    rotPower = 0;
 	    m_counter++;
 	} else {
 	    m_counter = 0;
 	}
+
 	Robot.drive.setPower(rotPower, rotPower);
     }
 

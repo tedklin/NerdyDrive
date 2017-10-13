@@ -1,6 +1,7 @@
 package com.team687.frc2017.subsystems;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.RobotMap;
@@ -11,6 +12,7 @@ import com.team687.lib.kauailabs.sf2.frc.navXSensor;
 import com.team687.lib.kauailabs.sf2.orientation.OrientationHistory;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +38,8 @@ public class Drive extends Subsystem {
     private double m_initTime;
     private double m_currentTime;
 
+    private boolean m_brakeModeOn;
+
     public Drive() {
 	m_leftMaster = new CANTalon(RobotMap.kLeftMasterTalonID);
 	m_leftSlave1 = new CANTalon(RobotMap.kLeftSlaveTalon1ID);
@@ -44,10 +48,35 @@ public class Drive extends Subsystem {
 	m_rightSlave1 = new CANTalon(RobotMap.kRightSlaveTalon1ID);
 	m_rightSlave2 = new CANTalon(RobotMap.kRightSlaveTalon2ID);
 
+	m_leftMaster.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+	CANTalon.FeedbackDeviceStatus leftSensorPresent = m_leftMaster
+		.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+	if (leftSensorPresent != CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent) {
+	    DriverStation.reportError("Could not detect left encoder: " + leftSensorPresent, false);
+	}
 	m_leftMaster.reverseSensor(false);
 	m_leftMaster.reverseOutput(false);
+	m_leftSlave1.reverseOutput(false);
+	m_leftSlave2.reverseOutput(false);
+	m_leftMaster.enableBrakeMode(true);
+	m_leftSlave1.enableBrakeMode(true);
+	m_leftSlave2.enableBrakeMode(true);
+
+	m_rightMaster.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+	CANTalon.FeedbackDeviceStatus rightSensorPresent = m_rightMaster
+		.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+	if (rightSensorPresent != CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent) {
+	    DriverStation.reportError("Could not detect right encoder: " + rightSensorPresent, false);
+	}
 	m_rightMaster.reverseSensor(true);
 	m_rightMaster.reverseOutput(true);
+	m_rightSlave1.reverseOutput(true);
+	m_rightSlave2.reverseOutput(true);
+	m_rightMaster.enableBrakeMode(true);
+	m_rightSlave1.enableBrakeMode(true);
+	m_rightSlave2.enableBrakeMode(true);
+
+	m_brakeModeOn = true;
 
 	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
 
@@ -59,7 +88,45 @@ public class Drive extends Subsystem {
     @Override
     protected void initDefaultCommand() {
 	setDefaultCommand(new TankDrive());
-	// setDefaultCommand(new TestSensors());
+    }
+
+    /**
+     * Set drivetrain motor power to value between -1.0 and +1.0
+     * 
+     * @param leftPower
+     * @param rightPower
+     */
+    public void setPower(double leftPower, double rightPower) {
+	m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
+	m_leftSlave1.changeControlMode(TalonControlMode.PercentVbus);
+	m_leftSlave2.changeControlMode(TalonControlMode.PercentVbus);
+	m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
+	m_rightSlave1.changeControlMode(TalonControlMode.PercentVbus);
+	m_rightSlave2.changeControlMode(TalonControlMode.PercentVbus);
+
+	m_leftMaster.set(leftPower);
+	m_leftSlave1.set(leftPower);
+	m_leftSlave2.set(leftPower);
+
+	m_rightMaster.set(rightPower);
+	m_rightSlave1.set(rightPower);
+	m_rightSlave2.set(rightPower);
+    }
+
+    public void setBrakeMode(boolean enabled) {
+	m_leftMaster.enableBrakeMode(enabled);
+	m_leftSlave1.enableBrakeMode(enabled);
+	m_leftSlave2.enableBrakeMode(enabled);
+
+	m_rightMaster.enableBrakeMode(enabled);
+	m_rightSlave1.enableBrakeMode(enabled);
+	m_rightSlave2.enableBrakeMode(enabled);
+
+	m_brakeModeOn = enabled;
+    }
+
+    public boolean getBrakeMode() {
+	return m_brakeModeOn;
     }
 
     public double squareInput(double input) {
@@ -103,7 +170,7 @@ public class Drive extends Subsystem {
     }
 
     public double getCurrentYawRadians() {
-	return NerdyMath.degToRads(m_nav.getYaw());
+	return NerdyMath.degreesToRadians(m_nav.getYaw());
     }
 
     public double getNavTimestamp() {
@@ -195,25 +262,6 @@ public class Drive extends Subsystem {
 	m_rightMaster.setEncPosition(0);
     }
 
-    /**
-     * Set drivetrain motor power to value between -1.0 and +1.0
-     * 
-     * @param lPow
-     * @param rPow
-     */
-    public void setPower(double lPow, double rPow) {
-	m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
-	m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
-
-	m_leftMaster.set(lPow);
-	m_leftSlave1.set(lPow);
-	m_leftSlave2.set(lPow);
-
-	m_rightMaster.set(rPow);
-	m_rightSlave1.set(rPow);
-	m_rightSlave2.set(rPow);
-    }
-
     public void processMotionProfileBuffer() {
 	processLeftMotionProfileBuffer();
 	processRightMotionProfileBuffer();
@@ -280,7 +328,7 @@ public class Drive extends Subsystem {
     }
 
     public void stopDrive() {
-	setPower(0, 0);
+	setPower(0.0, 0.0);
     }
 
     public void reportToSmartDashboard() {
@@ -289,6 +337,15 @@ public class Drive extends Subsystem {
 	} else if (!isHighGear()) {
 	    SmartDashboard.putString("Gear Shift", "Low");
 	}
+
+	SmartDashboard.putBoolean("Brake Mode On", m_brakeModeOn);
+
+	SmartDashboard.putNumber("Left Master PercentVbus", m_leftMaster.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Left Slave 1 PercentVbus", m_leftSlave1.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Left Slave 2 PercentVbus", m_leftSlave2.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Right Master PercentVbus", m_rightMaster.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Right Slave 1 PercentVbus", m_rightSlave1.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Right Slave 2 PercentVbus", m_rightSlave2.getOutputVoltage() / 12);
 
 	// m_currentTime = Timer.getFPGATimestamp() - m_initTime;
 	// m_table.putNumber("CURRENT_TIME", m_currentTime);

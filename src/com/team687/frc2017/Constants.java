@@ -1,5 +1,7 @@
 package com.team687.frc2017;
 
+import com.team687.frc2017.utilities.PGains;
+
 /**
  * Important constants
  * 
@@ -16,32 +18,23 @@ public class Constants {
     public final static double kDrivetrainWidth = 36; // in inches
 
     // Distance PID
-    public final static double kDistF = 0;
-    public final static double kDistPLowGear = 0.001;
-    public final static double kDistI = 0;
+    public final static PGains kDistLowGearRightPGains = new PGains(0.001, 0.25, 1.0);
+    public final static PGains kDistLowGearLeftPGains = new PGains(0.001, 0.25, 1.0);
     public final static double kDistD = 0;
-    public final static double kMinDistPowerLowGear = 0.25;
-    public final static double kMaxDistPowerLowGear = 1.0;
+
+    public final static PGains kDistHighGearRightPGains = new PGains(0.001, 0, 1.0);
+    public final static PGains kDistHighGearLeftPGains = new PGains(0.001, 0, 1.0);
+
     public final static double kDriveDistanceTolerance = 205.6;
     public final static double kDriveDistanceOscillationCount = 5;
 
-    public final static double kDistPHighGear = 0.001;
-    public final static double kMinDistPowerHighGear = 0;
-    public final static double kMaxDistPowerHighGear = 1.0;
-
     // Rotation PID
-    public final static double kRotPLowGear = 0.015;
-    public final static double kRotI = 0;
-    public final static double kRotD = 0;
-    public final static double kMinRotPowerLowGear = 0.12;
-    public final static double kMaxRotPowerLowGear = 1.0;
+    public final static PGains kRotLowGearPGains = new PGains(0.014, 0.12, 1.0);
+    public final static PGains kRotHighGearPGains = new PGains(0.05, 0.254, 0.971);
+
     public final static double kDriveRotationTolerance = 0.5;
     public final static double kDriveRotationDeadband = 0.5;
     public final static int kDriveRotationCounter = 3;
-
-    public final static double kRotPHighGear = 0.05;
-    public final static double kMinRotPowerHighGear = 0.254;
-    public final static double kMaxRotPowerHighGear = 0.971;
 
     // Motion Profiling
     public final static double kMaxVelocity = 0;
@@ -54,7 +47,7 @@ public class Constants {
     public final static double kCruiseVelocity = 0;
 
     // Collision Detection
-    public final static double kCollisionThreshold = 0;
+    public final static double kCollisionThreshold = 100000;
 
     // Teleop
     public final static double kSensitivityHigh = 0.85;
@@ -64,11 +57,14 @@ public class Constants {
 
     // Bezier Curves
     public final static double kBezierStep = 60;
-    public final static double kRotPBezier = 0.04;
-    public final static double kDistPBezier = 0.00005; // look at TODO on how to tune this
-						       // the higher this is, the less time to decelerate
-    public final static double kMaxStraightPower = 0.7;
-    public final static double kMinStraightPower = 0.25; // ensure that the robot gets to end point with softStops
+    public final static PGains kBezierRotLowGearPGains = new PGains(0, 0, 1.0);
+    public final static PGains kBezierRotHighGearPGains = new PGains(0.04, 0, 1.0);
+
+    public final static PGains kBezierDistLowGearPGains = new PGains(0, 0, 1.0);
+    public final static PGains kBezierDistHighGearPGains = new PGains(0.00005, 0.25, 0.7); // look at TODO at how to
+											   // tune this; the higher this
+											   // is, the less time to
+											   // declerate
     public final static double kStraightPowerAdjuster = 0.5; // the higher this is, the slower the robot will
 							     // go during a sharp turn
 

@@ -12,13 +12,11 @@ import com.team687.frc2017.Constants;
 
 public class NerdyMath {
 
-    public static double radsToDeg(double deg) {
-	// Native algorithm
+    public static double radiansToDegrees(double deg) {
 	return deg * 360 / (2 * Math.PI);
     }
 
-    public static double degToRads(double rads) {
-	// Native algorithm
+    public static double degreesToRadians(double rads) {
 	return rads * (2 * Math.PI) / 360;
     }
 
@@ -62,8 +60,28 @@ public class NerdyMath {
      *            value limit
      * @return thresholded value
      */
-    public static double limit(double v, double limit) {
-	return (Math.abs(v) < limit) ? v : limit * (v < 0 ? -1 : 1);
+    public static double limit(double value, double limit) {
+	return (Math.abs(value) < limit) ? value : limit * (value < 0 ? -1 : 1);
+    }
+
+    /**
+     * Thresholds given input to given range
+     * 
+     * @param value
+     * @param minimum
+     *            (absolute value)
+     * @param maximum
+     *            (absolute value)
+     * @return thresholded value
+     */
+    public static double threshold(double value, double minimum, double maximum) {
+	double sign = Math.signum(value);
+	if (Math.abs(value) < minimum) {
+	    value = minimum * sign;
+	} else if (Math.abs(value) > maximum) {
+	    value = maximum * sign;
+	}
+	return value;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,20 +19,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TurnToAngle extends Command {
 
     private double m_angleToTurn;
-    private double m_startTime;
-    private double m_timeout;
-    private double error;
+    private double m_startTime, m_timeout;
+    private double m_error;
 
-    private double m_kP;
-    private double m_minRotPower;
     private boolean m_isHighGear;
 
-    // private NerdyPID m_rotPID;
+    private PGains m_rotPGains;
 
-    public TurnToAngle(double angle) {
+    public TurnToAngle(double angle, boolean isHighGear) {
 	m_angleToTurn = angle;
 	m_timeout = 10; // default timeout is 10 seconds
-	m_isHighGear = false;
+	m_isHighGear = isHighGear;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -38,23 +37,10 @@ public class TurnToAngle extends Command {
 
     /**
      * @param angle
-     * @param timeout
-     */
-    public TurnToAngle(double angle, double timeout) {
-	m_angleToTurn = angle;
-	m_timeout = timeout;
-	m_isHighGear = false;
-
-	// subsystem dependencies
-	requires(Robot.drive);
-    }
-
-    /**
-     * @param angle
-     * @param timeout
      * @param isHighGear
+     * @param timeout
      */
-    public TurnToAngle(double angle, double timeout, boolean isHighGear) {
+    public TurnToAngle(double angle, boolean isHighGear, double timeout) {
 	m_angleToTurn = angle;
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
@@ -67,39 +53,32 @@ public class TurnToAngle extends Command {
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "TurnToAngle");
 	m_startTime = Timer.getFPGATimestamp();
-	// m_rotPID = new NerdyPID(Constants.kRotP, Constants.kRotI, Constants.kRotD);
-	// m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-	// m_rotPID.setDesired(m_angleToTurn);
-	// m_rotPID.setGyro(true);
 
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	    m_kP = Constants.kRotPHighGear;
-	    m_minRotPower = Constants.kMinRotPowerHighGear;
+	    m_rotPGains = Constants.kRotHighGearPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
-	    m_kP = Constants.kRotPLowGear;
-	    m_minRotPower = Constants.kMinRotPowerLowGear;
+	    m_rotPGains = Constants.kRotLowGearPGains;
 	}
     }
 
     @Override
     protected void execute() {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-	error = m_angleToTurn - robotAngle;
-	SmartDashboard.putNumber("Angle Error", error);
-	// double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	double power = m_kP * error;
-	double sign = Math.signum(power);
-	if (Math.abs(power) < m_minRotPower) {
-	    power = sign * m_minRotPower;
-	}
+	m_error = m_angleToTurn - robotAngle;
+	m_error = (m_error > 180) ? m_error - 360 : m_error;
+	m_error = (m_error < -180) ? m_error + 360 : m_error;
+
+	double power = m_rotPGains.getP() * m_error;
+	power = NerdyMath.threshold(power, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
+
 	Robot.drive.setPower(power, power);
     }
 
     @Override
     protected boolean isFinished() {
-	return Math.abs(error) <= Constants.kDriveRotationTolerance
+	return Math.abs(m_error) <= Constants.kDriveRotationTolerance
 		|| Timer.getFPGATimestamp() - m_startTime > m_timeout;
     }
 

@@ -2,7 +2,7 @@ package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyPID;
+import com.team687.frc2017.utilities.NerdyMath;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TestRotPID extends Command {
 
-    private NerdyPID m_rotPID;
-
     public TestRotPID() {
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -28,13 +26,9 @@ public class TestRotPID extends Command {
 	SmartDashboard.putString("Current Command", "TestRotPID");
 
 	SmartDashboard.putNumber("Desired Yaw (test, editable)", 0);
-	SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotPLowGear);
-	SmartDashboard.putNumber("Rot I (test, editable)", Constants.kRotI);
-	SmartDashboard.putNumber("Rot D (test, editable)", Constants.kRotD);
-	SmartDashboard.putNumber("Rot Min Power (test, editable)", Constants.kMinRotPowerLowGear);
-	SmartDashboard.putNumber("Rot Max Power (test, editable)", Constants.kMaxRotPowerLowGear);
-	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPowerLowGear, Constants.kMaxRotPowerLowGear);
+	SmartDashboard.putNumber("Rot P (test, editable)", Constants.kRotLowGearPGains.getP());
+	SmartDashboard.putNumber("Rot Min Power (test, editable)", Constants.kRotLowGearPGains.getMinPower());
+	SmartDashboard.putNumber("Rot Max Power (test, editable)", Constants.kRotLowGearPGains.getMaxPower());
 
 	Robot.drive.stopDrive();
 	Robot.drive.shiftUp();
@@ -46,20 +40,19 @@ public class TestRotPID extends Command {
 	double actualAngle = Robot.drive.getCurrentYaw();
 	SmartDashboard.putNumber("Actual Yaw (test)", actualAngle);
 	double desiredAngle = SmartDashboard.getNumber("Desired Yaw (test, editable)");
-	double angleError = desiredAngle - actualAngle;
-	SmartDashboard.putNumber("Error Yaw (test)", angleError);
 
 	double kP = SmartDashboard.getNumber("Rot P (test, editable)");
-	double kI = SmartDashboard.getNumber("Rot I (test, editable)");
-	double kD = SmartDashboard.getNumber("Rot D (test, editable)");
 	double kMinRotPower = SmartDashboard.getNumber("Rot Min Power (test, editable)");
 	double kMaxRotPower = SmartDashboard.getNumber("Rot Max Power (test, editable)");
 
-	m_rotPID = new NerdyPID(kP, kI, kD);
-	m_rotPID.setOutputRange(kMinRotPower, kMaxRotPower);
+	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
+	double error = desiredAngle - robotAngle;
+	error = (error > 180) ? error - 360 : error;
+	error = (error < -180) ? error + 360 : error;
+	SmartDashboard.putNumber("Rot PID Error (test)", error);
 
-	m_rotPID.setDesired(desiredAngle);
-	double power = m_rotPID.calculate(actualAngle);
+	double power = kP * error;
+	power = NerdyMath.threshold(power, kMinRotPower, kMaxRotPower);
 	SmartDashboard.putNumber("Rot PID output (test)", power);
 
 	Robot.drive.stopDrive();

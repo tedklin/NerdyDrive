@@ -3,13 +3,15 @@ package com.team687.frc2017.commands;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.VisionAdapter;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Approach a target based on vision and gyro. Used with NerdyVision
+ * Approach a target based on vision and gyro. Used with NerdyVision.
  *
  * @author tedlin
  *
@@ -19,15 +21,18 @@ public class ApproachTarget extends Command {
 
     private double m_distance;
     private double m_straightPower;
-    private double m_startTime;
-    private double m_timeout = 6.87;
+    private double m_startTime, m_timeout;
     private boolean m_softStop;
+    private boolean m_isHighGear;
 
-    public ApproachTarget(double distance, double straightPower, boolean softStop) {
+    private PGains m_leftPGains, m_rightPGains;
+
+    public ApproachTarget(double distance, double straightPower, boolean softStop, boolean isHighGear) {
 	m_distance = distance;
 	m_straightPower = straightPower;
-	m_timeout = 6.87; // default timeout is 5 seconds
+	m_timeout = 6.87;
 	m_softStop = softStop;
+	m_isHighGear = isHighGear;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -37,13 +42,15 @@ public class ApproachTarget extends Command {
      * @param distance
      * @param straightPower
      * @param softStop
+     * @param isHighGear
      * @param timeout
      */
-    public ApproachTarget(double distance, double straightPower, boolean softStop, double timeout) {
+    public ApproachTarget(double distance, double straightPower, boolean softStop, boolean isHighGear, double timeout) {
 	m_distance = distance;
 	m_straightPower = straightPower;
 	m_timeout = timeout;
 	m_softStop = softStop;
+	m_isHighGear = isHighGear;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -54,7 +61,16 @@ public class ApproachTarget extends Command {
 	SmartDashboard.putString("Current Command", "ApproachTarget");
 
 	Robot.drive.stopDrive();
-	Robot.drive.shiftDown();
+
+	if (m_isHighGear) {
+	    Robot.drive.shiftUp();
+	    m_rightPGains = Constants.kDistHighGearRightPGains;
+	    m_leftPGains = Constants.kDistHighGearLeftPGains;
+	} else if (!m_isHighGear) {
+	    Robot.drive.shiftDown();
+	    m_rightPGains = Constants.kDistLowGearRightPGains;
+	    m_leftPGains = Constants.kDistLowGearLeftPGains;
+	}
 
 	m_startTime = Timer.getFPGATimestamp();
     }
@@ -66,22 +82,26 @@ public class ApproachTarget extends Command {
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
 	double rotError = absoluteDesiredAngle - robotAngle;
-	double rotPower = Constants.kRotPLowGear * rotError;
+	double rotPower = Constants.kRotLowGearPGains.getP() * rotError;
 	if (Math.abs(rotError) <= Constants.kDriveRotationDeadband) {
 	    rotPower = 0;
 	}
 
-	double straightPower = m_straightPower; // default
-	double straightError = m_distance - Robot.drive.getDrivetrainTicks();
-	if (m_softStop) {
-	    straightPower = Constants.kDistPLowGear * straightError;
-	}
-	double sign = Math.signum(straightPower);
-	if (Math.abs(straightPower) < Constants.kMinDistPowerLowGear) {
-	    straightPower = Constants.kMinDistPowerLowGear * sign;
-	}
+	double straightRightPower = m_straightPower; // default
+	double straightLeftPower = m_straightPower;
+	double straightRightError = m_distance - Robot.drive.getRightTicks();
+	double straightLeftError = m_distance - Robot.drive.getLeftTicks();
 
-	Robot.drive.setPower(rotPower + straightPower, rotPower - straightPower);
+	if (m_softStop) {
+	    straightRightPower = m_rightPGains.getP() * straightRightError;
+	    straightLeftPower = m_leftPGains.getP() * straightLeftError;
+	}
+	straightRightPower = NerdyMath.threshold(straightRightPower, m_rightPGains.getMinPower(),
+		m_rightPGains.getMaxPower());
+	straightLeftPower = NerdyMath.threshold(straightLeftPower, m_leftPGains.getMinPower(),
+		m_rightPGains.getMaxPower());
+
+	Robot.drive.setPower(rotPower + straightLeftPower, rotPower - straightRightPower);
     }
 
     @Override

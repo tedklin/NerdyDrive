@@ -3,13 +3,14 @@ package com.team687.frc2017.commands;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Aligns the distance from target using vision
+ * Aligns the distance from a target using vision.
  * 
  * @author tedlin
  *
@@ -17,35 +18,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlignDistanceToTarget extends Command {
 
+    private double m_distanceFromTargetInFeet;
     private double m_error;
     private boolean m_isHighGear;
 
-    private double m_kP;
-    private double m_maxDistPower;
-    private double m_minDistPower;
+    private PGains m_rightPGains, m_leftPGains;
 
-    private double m_startTime;
-    private double m_timeout;
+    private double m_startTime, m_timeout;
 
-    public AlignDistanceToTarget() {
-	m_timeout = 1.678;
+    public AlignDistanceToTarget(double distanceFromTargetInFeet) {
+	m_distanceFromTargetInFeet = distanceFromTargetInFeet;
 	m_isHighGear = false;
+	m_timeout = 6.87;
 
 	// subsystem dependencies
 	requires(Robot.drive);
     }
 
-    public AlignDistanceToTarget(double timeout) {
-	m_timeout = timeout;
-	m_isHighGear = true;
-
-	// subsystem dependencies
-	requires(Robot.drive);
-    }
-
-    public AlignDistanceToTarget(double timeout, boolean isHighGear) {
-	m_timeout = timeout;
+    /**
+     * @param distanceFromTargetInFeet
+     * @param isHighGear
+     * @param timeout
+     */
+    public AlignDistanceToTarget(double distanceFromTargetInFeet, boolean isHighGear, double timeout) {
+	m_distanceFromTargetInFeet = distanceFromTargetInFeet;
 	m_isHighGear = isHighGear;
+	m_timeout = timeout;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -54,18 +52,16 @@ public class AlignDistanceToTarget extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "AlignDistanceToTarget");
-
 	Robot.drive.stopDrive();
+
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	    m_kP = Constants.kRotPHighGear;
-	    m_maxDistPower = Constants.kMaxDistPowerHighGear;
-	    m_minDistPower = Constants.kMinDistPowerHighGear;
+	    m_rightPGains = Constants.kDistHighGearRightPGains;
+	    m_leftPGains = Constants.kDistHighGearLeftPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
-	    m_kP = Constants.kRotPHighGear;
-	    m_maxDistPower = Constants.kMaxDistPowerLowGear;
-	    m_minDistPower = Constants.kMinDistPowerLowGear;
+	    m_rightPGains = Constants.kDistLowGearRightPGains;
+	    m_leftPGains = Constants.kDistLowGearLeftPGains;
 	}
 
 	m_startTime = Timer.getFPGATimestamp();
@@ -74,19 +70,16 @@ public class AlignDistanceToTarget extends Command {
     @Override
     protected void execute() {
 	double robotInchesFromTarget = Robot.visionAdapter.getDistanceFromTarget();
-	m_error = NerdyMath.feetToInches(Constants.kShotDistanceFeet) - robotInchesFromTarget;
+	m_error = NerdyMath.inchesToTicks(NerdyMath.feetToInches(m_distanceFromTargetInFeet) - robotInchesFromTarget);
 
-	double straightPower = m_kP * m_error;
-	double sign = Math.signum(straightPower);
-	if (Math.abs(straightPower) > m_maxDistPower) {
-	    straightPower = m_maxDistPower * sign;
-	}
+	double straightRightPower = m_rightPGains.getP() * m_error;
+	straightRightPower = NerdyMath.threshold(straightRightPower, m_rightPGains.getMinPower(),
+		m_rightPGains.getMaxPower());
+	double straightLeftPower = m_leftPGains.getP() * m_error;
+	straightLeftPower = NerdyMath.threshold(straightLeftPower, m_leftPGains.getMinPower(),
+		m_leftPGains.getMaxPower());
 
-	if (Math.abs(straightPower) < m_minDistPower) {
-	    straightPower = m_minDistPower * sign;
-	}
-
-	Robot.drive.setPower(straightPower, -straightPower);
+	Robot.drive.setPower(straightLeftPower, -straightRightPower);
     }
 
     @Override

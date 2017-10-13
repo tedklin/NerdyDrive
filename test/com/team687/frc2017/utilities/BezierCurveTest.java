@@ -79,17 +79,20 @@ public class BezierCurveTest {
 	double baseStraightPower = 1; // always equal to 1
 	for (counter = 1; counter < heading.size(); counter++) {
 	    double headingError = heading.get(counter) - heading.get(counter - 1);
-	    double rotPower = Constants.kRotPBezier * headingError;
+	    double rotPower = Constants.kBezierRotHighGearPGains.getP() * headingError;
 	    double straightPower = baseStraightPower / (Math.abs(headingError) * Constants.kStraightPowerAdjuster);
 
 	    double sign = Math.signum(straightPower);
-	    if (Math.abs(straightPower) > Constants.kMaxStraightPower) {
-		straightPower = Constants.kMaxStraightPower * sign;
+	    if (Math.abs(straightPower) > Constants.kBezierDistHighGearPGains.getMaxPower()) {
+		straightPower = Constants.kBezierDistHighGearPGains.getMaxPower() * sign;
 	    }
 
 	    // concept: straight power is base, rot power is added as adjustment for heading
 	    double leftPower = straightPower + rotPower;
 	    double rightPower = straightPower - rotPower;
+
+	    System.out.println("Left Power: " + leftPower);
+	    System.out.println("Right Power: " + rightPower);
 
 	    assertTrue(-0.5 <= leftPower && leftPower <= 1.0);
 	    assertTrue(-0.5 <= rightPower && rightPower <= 1.0);

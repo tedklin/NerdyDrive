@@ -2,7 +2,8 @@ package com.team687.frc2017.commands.tests;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
-import com.team687.frc2017.utilities.NerdyPID;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TestVisionAlign extends Command {
 
-    private NerdyPID m_rotPID;
+    private PGains m_rotPGains;
 
     public TestVisionAlign() {
 	// subsystem dependencies
@@ -26,11 +27,10 @@ public class TestVisionAlign extends Command {
     @Override
     protected void initialize() {
 	SmartDashboard.putString("Current Command", "SnapToTarget");
-	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	m_rotPID.setOutputRange(Constants.kMinRotPowerLowGear, Constants.kMaxRotPowerLowGear);
 
 	Robot.drive.stopDrive();
 	Robot.drive.shiftUp();
+	m_rotPGains = Constants.kRotHighGearPGains;
     }
 
     @Override
@@ -42,12 +42,15 @@ public class TestVisionAlign extends Command {
 	double desiredAngle = angleToTurn + historicalAngle;
 	SmartDashboard.putNumber("Desired angle (absolute) from vision (test)", desiredAngle);
 
-	m_rotPID.setDesired(desiredAngle);
-	double error = desiredAngle - Robot.drive.getCurrentYaw();
-	SmartDashboard.putNumber("Angle error from vision (test)", error);
+	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
+	double error = desiredAngle - robotAngle;
+	error = (error > 180) ? error - 360 : error;
+	error = (error < -180) ? error + 360 : error;
 
-	double power = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	SmartDashboard.putNumber("Vision Rotational PID output (test)", power);
+	double rotPower = m_rotPGains.getP() * error;
+	rotPower = NerdyMath.threshold(rotPower, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
+	SmartDashboard.putNumber("Angle error from vision (test)", error);
+	SmartDashboard.putNumber("Vision Rotational P output (test)", rotPower);
     }
 
     @Override

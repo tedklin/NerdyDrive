@@ -4,7 +4,7 @@ import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.MotionProfile;
 import com.team687.frc2017.utilities.NerdyMath;
-import com.team687.frc2017.utilities.NerdyPID;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,25 +22,27 @@ public class DriveDistanceRio extends Command {
 
     private double m_distance;
     private boolean m_isStraight;
+    private boolean m_isHighGear;
+    private double m_heading;
     private MotionProfile m_motionProfile;
 
-    private double m_startTime;
-    private double m_timestamp;
+    private double m_startTime, m_timestamp;
 
-    private NerdyPID m_rotPID;
+    private PGains m_leftPGains, m_rightPGains;
+    private PGains m_rotPGains;
 
-    private double m_leftError;
-    private double m_rightError;
-    private double m_lastLeftError;
-    private double m_lastRightError;
+    private double m_leftError, m_rightError;
+    private double m_lastLeftError, m_lastRightError;
 
     /**
      * @param distance
+     * @param isHighGear
      * @param isStraight
      */
-    public DriveDistanceRio(double distance, boolean straight) {
+    public DriveDistanceRio(double distance, boolean isHighGear, boolean isStraight) {
 	m_distance = distance;
-	m_isStraight = straight;
+	m_isHighGear = isHighGear;
+	m_isStraight = isStraight;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -56,14 +58,22 @@ public class DriveDistanceRio extends Command {
 		-Constants.kMaxAcceleration);
 	m_motionProfile.generateProfile(m_distance);
 
-	Robot.drive.stopDrive();
+	if (m_isHighGear) {
+	    Robot.drive.shiftUp();
+	    m_rightPGains = Constants.kDistHighGearRightPGains;
+	    m_leftPGains = Constants.kDistHighGearLeftPGains;
+	    m_rotPGains = Constants.kRotHighGearPGains;
+	} else if (!m_isHighGear) {
+	    Robot.drive.shiftDown();
+	    m_rightPGains = Constants.kDistLowGearRightPGains;
+	    m_leftPGains = Constants.kDistLowGearLeftPGains;
+	    m_rotPGains = Constants.kRotLowGearPGains;
+	}
+
 	Robot.drive.resetEncoders();
 	Robot.drive.shiftDown();
 
-	m_rotPID = new NerdyPID(Constants.kRotPLowGear, Constants.kRotI, Constants.kRotD);
-	// m_rotPID.setOutputRange(Constants.kMinRotPower, Constants.kMaxRotPower);
-	m_rotPID.setGyro(true);
-	m_rotPID.setDesired(Robot.drive.getCurrentYaw());
+	m_heading = Robot.drive.getCurrentYaw();
 
 	SmartDashboard.putNumber("Desired Distance", m_distance);
 	m_startTime = Timer.getFPGATimestamp();
@@ -91,21 +101,27 @@ public class DriveDistanceRio extends Command {
 	SmartDashboard.putNumber("Left error from setpoint", m_leftError);
 	SmartDashboard.putNumber("Right error from setpoint", m_rightError);
 
-	double leftPow = (Constants.kDistPLowGear * m_leftError)
+	double leftPow = (m_leftPGains.getP() * m_leftError)
 		+ (Constants.kDistD * ((m_leftError - m_lastLeftError) / Constants.kDt - goalVelocity)) + feedforward;
-	double rightPow = (Constants.kDistPLowGear * m_rightError)
+	double rightPow = (m_rightPGains.getP() * m_rightError)
 		+ (Constants.kDistD * ((m_rightError - m_lastRightError) / Constants.kDt - goalVelocity)) + feedforward;
 
+	double rotPow = 0;
 	if (m_isStraight) {
-	    double angularPow = m_rotPID.calculate(Robot.drive.getCurrentYaw());
-	    leftPow += angularPow;
-	    rightPow -= angularPow;
+	    double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
+	    double error = m_heading - robotAngle;
+	    error = (error > 180) ? error - 360 : error;
+	    error = (error < -180) ? error + 360 : error;
+
+	    rotPow = m_rotPGains.getP() * error;
+	    leftPow += rotPow;
+	    rightPow -= rotPow;
 	}
 
-	double[] pow = { leftPow, rightPow };
+	double[] pow = { rotPow + leftPow, rotPow - rightPow };
 	NerdyMath.normalize(pow, false);
 
-	Robot.drive.setPower(pow[0], pow[1]);
+	Robot.drive.setPower(pow[0], -pow[1]);
     }
 
     @Override

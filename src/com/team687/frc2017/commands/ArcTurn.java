@@ -2,6 +2,8 @@ package com.team687.frc2017.commands;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
+import com.team687.frc2017.utilities.NerdyMath;
+import com.team687.frc2017.utilities.PGains;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,35 +18,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcTurn extends Command {
 
-    private double m_kP;
-    private double m_minRotPower;
-    private double m_maxRotPower;
-
     private double m_straightPower;
     private double m_desiredAngle;
     private boolean m_isRightPowered;
-    private double m_timeout;
     private boolean m_isHighGear;
 
-    private double m_startTime;
+    private PGains m_rotPGains;
+
+    private double m_startTime, m_timeout;
     private double m_error;
 
-    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower) {
-	m_desiredAngle = desiredAngle;
-	m_isRightPowered = isRightPowered;
-	m_straightPower = straightPower;
-	m_timeout = 10;
-	m_isHighGear = false;
-
-	requires(Robot.drive);
-    }
-
-    /**
-     * @param desiredAngle
-     * @param isRightPowered
-     * @param straightPower
-     * @param isHighGear
-     */
     public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower, boolean isHighGear) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
@@ -82,14 +65,10 @@ public class ArcTurn extends Command {
 	m_startTime = Timer.getFPGATimestamp();
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	    m_kP = Constants.kRotPHighGear;
-	    m_minRotPower = Constants.kMinRotPowerHighGear;
-	    m_maxRotPower = Constants.kMaxRotPowerHighGear;
+	    m_rotPGains = Constants.kRotHighGearPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
-	    m_kP = Constants.kRotPLowGear;
-	    m_minRotPower = Constants.kMinRotPowerLowGear;
-	    m_maxRotPower = Constants.kMaxRotPowerLowGear;
+	    m_rotPGains = Constants.kRotLowGearPGains;
 	}
     }
 
@@ -98,15 +77,9 @@ public class ArcTurn extends Command {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 	m_error = m_desiredAngle - robotAngle;
 	SmartDashboard.putNumber("Angle Error", m_error);
-	double rotPower = m_kP * m_error * 1.95; // multiplied by 2 because only one side of the drivetrain is moving
-
-	double sign = Math.signum(rotPower);
-	if (Math.abs(rotPower) > m_maxRotPower) {
-	    rotPower = m_maxRotPower * sign;
-	}
-	if (Math.abs(rotPower) < m_minRotPower) {
-	    rotPower = m_minRotPower * sign;
-	}
+	double rotPower = m_rotPGains.getP() * m_error * 1.95; // multiplied by 2 because only one side of the
+							       // drivetrain is moving
+	rotPower = NerdyMath.threshold(rotPower, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
 
 	if (m_isRightPowered) {
 	    Robot.drive.setPower(0 + m_straightPower, rotPower - m_straightPower);

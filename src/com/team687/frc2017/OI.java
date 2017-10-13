@@ -8,10 +8,6 @@ import com.team687.frc2017.commands.ShiftDown;
 import com.team687.frc2017.commands.ShiftUp;
 import com.team687.frc2017.commands.SnapToTarget;
 import com.team687.frc2017.commands.TankDrive;
-import com.team687.frc2017.commands.auto.BlueGearHopperShootAuto254;
-import com.team687.frc2017.commands.auto.BlueHopperShootAuto1678;
-import com.team687.frc2017.commands.auto.BlueHopperShootAuto2056;
-import com.team687.frc2017.commands.auto.BlueHopperShootAuto973;
 import com.team687.frc2017.commands.tests.TestCollisionDetection;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -82,8 +78,8 @@ public class OI {
 	// testSensors_9.whenPressed(new TestSensors());
 	// testMinRotPower_7 = new JoystickButton(driveJoyLeft, 7);
 	// testMinRotPower_7.whenPressed(new TestMinRotPower());
-	liveVisionTrack_1 = new JoystickButton(driveJoyLeft, 1);
-	liveVisionTrack_1.whenPressed(new LiveVisionTracking());
+	// liveVisionTrack_1 = new JoystickButton(driveJoyLeft, 1);
+	// liveVisionTrack_1.whenPressed(new LiveVisionTracking());
 
 	// tankDrive_10 = new JoystickButton(driveJoyLeft, 10);
 	// tankDrive_10.whenPressed(new TankDrive());
@@ -102,18 +98,8 @@ public class OI {
 	SmartDashboard.putData("Test Collision Detection", new TestCollisionDetection());
 	SmartDashboard.putData("Drive until Collision", new DriveUntilCollision(0.687, true));
 
-	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking());
-	SmartDashboard.putData("Snap To Target Auto", new SnapToTarget(true));
-
-	SmartDashboard.putData("Blue 973 Hopper Auto", new BlueHopperShootAuto973());
-	SmartDashboard.putData("Blue 1678 Hopper Auto", new BlueHopperShootAuto1678());
-	SmartDashboard.putData("Blue 2056 Hopper Auto", new BlueHopperShootAuto2056());
-	SmartDashboard.putData("Blue 254 Gear + Hopper Auto", new BlueGearHopperShootAuto254());
-	// SmartDashboard.putData("Red 973 Hopper Auto", new RedHopperShootAuto973());
-	// SmartDashboard.putData("Red 1678 Hopper Auto", new RedHopperShootAuto1678());
-	// SmartDashboard.putData("Red 2056 Hopper Auto", new RedHopperShootAuto2056());
-	// SmartDashboard.putData("Red 254 Gear + Hopper Auto", new
-	// RedGearHopperShootAuto254());
+	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking(false));
+	SmartDashboard.putData("Snap To Target Auto", new SnapToTarget(true, false, 5));
 
 	// SmartDashboard.putData("Test Sensors", new TestSensors());
 	// SmartDashboard.putData("Test Min Rot Power", new TestMinRotPower());

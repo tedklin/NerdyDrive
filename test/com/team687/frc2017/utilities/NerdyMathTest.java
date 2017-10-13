@@ -1,6 +1,7 @@
 package com.team687.frc2017.utilities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,8 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import com.team687.frc2017.utilities.NerdyMath;
 
 /**
  * Test for normalizer
@@ -21,6 +20,10 @@ import com.team687.frc2017.utilities.NerdyMath;
 
 @RunWith(Parameterized.class)
 public class NerdyMathTest {
+
+    enum Type {
+	NORMALIZE, THRESHOLD
+    };
 
     @SuppressWarnings("rawtypes")
     @Parameters
