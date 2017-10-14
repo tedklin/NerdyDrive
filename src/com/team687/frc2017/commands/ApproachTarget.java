@@ -26,6 +26,7 @@ public class ApproachTarget extends Command {
     private boolean m_isHighGear;
 
     private PGains m_leftPGains, m_rightPGains;
+    private PGains m_rotPGains;
 
     public ApproachTarget(double distance, double straightPower, boolean softStop, boolean isHighGear) {
 	m_distance = distance;
@@ -66,10 +67,12 @@ public class ApproachTarget extends Command {
 	    Robot.drive.shiftUp();
 	    m_rightPGains = Constants.kDistHighGearRightPGains;
 	    m_leftPGains = Constants.kDistHighGearLeftPGains;
+	    m_rotPGains = Constants.kRotHighGearPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
 	    m_rightPGains = Constants.kDistLowGearRightPGains;
 	    m_leftPGains = Constants.kDistLowGearLeftPGains;
+	    m_rotPGains = Constants.kRotLowGearPGains;
 	}
 
 	m_startTime = Timer.getFPGATimestamp();
@@ -82,7 +85,9 @@ public class ApproachTarget extends Command {
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
 	double rotError = absoluteDesiredAngle - robotAngle;
-	double rotPower = Constants.kRotLowGearPGains.getP() * rotError;
+	rotError = (rotError > 180) ? rotError - 360 : rotError;
+	rotError = (rotError < -180) ? rotError + 360 : rotError;
+	double rotPower = m_rotPGains.getP() * rotError;
 	if (Math.abs(rotError) <= Constants.kDriveRotationDeadband) {
 	    rotPower = 0;
 	}

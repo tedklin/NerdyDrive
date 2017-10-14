@@ -48,6 +48,7 @@ public class DriveBezierRio extends Command {
     /**
      * 
      * @param path
+     *            (double[])
      * @param straightPower
      *            (postive if going forward (forward is side with climber), negative
      *            if going backwards)
@@ -139,7 +140,7 @@ public class DriveBezierRio extends Command {
 		}
 
 		// limit straight power to maintain rotPower to straightPower ratio
-		// also for soft landings
+		// also for soft stops
 		if (Math.abs(straightRightPower) > maxStraightRightPower) {
 		    straightRightPower = maxStraightRightPower * m_direction;
 		}

@@ -28,7 +28,6 @@ public class NerdyMathTest {
 	NORMALIZE, THRESHOLD
     };
 
-    @SuppressWarnings("rawtypes")
     @Parameters
     public static Collection<Object[]> testCases() {
 	return Arrays.asList(new Object[][] { { Type.NORMALIZE, 0.971, 0.987, 1 }, { Type.NORMALIZE, 0.971, 1.678, 1 },

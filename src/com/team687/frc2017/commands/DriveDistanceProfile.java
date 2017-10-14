@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 
-public class DriveDistanceRio extends Command {
+public class DriveDistanceProfile extends Command {
 
     private double m_distance;
     private boolean m_isStraight;
@@ -39,7 +39,7 @@ public class DriveDistanceRio extends Command {
      * @param isHighGear
      * @param isStraight
      */
-    public DriveDistanceRio(double distance, boolean isHighGear, boolean isStraight) {
+    public DriveDistanceProfile(double distance, boolean isHighGear, boolean isStraight) {
 	m_distance = distance;
 	m_isHighGear = isHighGear;
 	m_isStraight = isStraight;

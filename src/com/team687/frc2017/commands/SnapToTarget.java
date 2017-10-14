@@ -21,15 +21,13 @@ public class SnapToTarget extends Command {
 
     private double m_startTime, m_timeout;
     private int m_counter;
-    private boolean m_isAuto;
     private boolean m_isHighGear;
 
     private PGains m_rotPGains;
 
-    public SnapToTarget(boolean isAuto, boolean isHighGear) {
+    public SnapToTarget(boolean isHighGear) {
 	m_timeout = 3.3;
 	m_isHighGear = isHighGear;
-	m_isAuto = isAuto;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -40,10 +38,9 @@ public class SnapToTarget extends Command {
      * @param isHighGear
      * @param timeout
      */
-    public SnapToTarget(boolean isAuto, boolean isHighGear, double timeout) {
+    public SnapToTarget(boolean isHighGear, double timeout) {
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
-	m_isAuto = isAuto;
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -91,14 +88,7 @@ public class SnapToTarget extends Command {
 
     @Override
     protected boolean isFinished() {
-	boolean isFinished = false;
-	if (!m_isAuto) {
-	    isFinished = Timer.getFPGATimestamp() - m_startTime > m_timeout || !Robot.oi.wantToShoot();
-	} else if (m_isAuto) {
-	    isFinished = Timer.getFPGATimestamp() - m_startTime > m_timeout
-		    || m_counter > Constants.kDriveRotationCounter;
-	}
-	return isFinished;
+	return Timer.getFPGATimestamp() - m_startTime > m_timeout || m_counter > Constants.kDriveRotationCounter;
     }
 
     @Override
