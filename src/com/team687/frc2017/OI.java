@@ -1,7 +1,7 @@
 package com.team687.frc2017;
 
 import com.team687.frc2017.commands.DriveUntilCollision;
-import com.team687.frc2017.commands.LiveVisionTracking;
+import com.team687.frc2017.commands.LiveTargetTracking;
 import com.team687.frc2017.commands.ResetEncoders;
 import com.team687.frc2017.commands.ResetGyro;
 import com.team687.frc2017.commands.ShiftDown;
@@ -47,7 +47,7 @@ public class OI {
 	SmartDashboard.putData("Test Collision Detection", new TestCollisionDetection());
 	SmartDashboard.putData("Drive until Collision", new DriveUntilCollision(0.687, true));
 
-	SmartDashboard.putData("Live Vision Tracking", new LiveVisionTracking(false));
+	SmartDashboard.putData("Live Target Tracking", new LiveTargetTracking(false));
 	SmartDashboard.putData("Snap To Target", new SnapToTarget(false, 5));
 
 	SmartDashboard.putData("Test Sensors", new TestSensors());

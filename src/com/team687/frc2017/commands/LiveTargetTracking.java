@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Live vision tracking (follows target around, no end)
+ * Live vision tracking (follows vision target around, no end)
  * 
  * @author tedlin
  *
  */
 
-public class LiveVisionTracking extends Command {
+public class LiveTargetTracking extends Command {
 
     private boolean m_isHighGear;
     private PGains m_rotPGains;
@@ -24,7 +24,7 @@ public class LiveVisionTracking extends Command {
     /**
      * @param isHighGear
      */
-    public LiveVisionTracking(boolean isHighGear) {
+    public LiveTargetTracking(boolean isHighGear) {
 	m_isHighGear = isHighGear;
 
 	// subsystem dependencies
@@ -33,7 +33,7 @@ public class LiveVisionTracking extends Command {
 
     @Override
     protected void initialize() {
-	SmartDashboard.putString("Current Command", "LiveVisionTracking");
+	SmartDashboard.putString("Current Command", "LiveTargetTracking");
 
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();

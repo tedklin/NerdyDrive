@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 
-public class DriveBezierRio extends Command {
+public class DriveBezierPath extends Command {
 
     private BezierCurve m_path;
     private double m_basePower = 1; // always equal to 1
@@ -36,7 +36,7 @@ public class DriveBezierRio extends Command {
     private boolean m_pathIsFinished;
     private double m_direction;
 
-    public DriveBezierRio(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
+    public DriveBezierPath(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3,
 	    double straightPower, boolean straightPowerIsDynamic, boolean softStop, boolean isHighGear) {
 	m_path = new BezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
 	m_straightPower = straightPower;
@@ -59,7 +59,7 @@ public class DriveBezierRio extends Command {
      * @param isHighGear
      * 
      */
-    public DriveBezierRio(double[] path, double straightPower, boolean straightPowerIsDynamic, boolean softStop,
+    public DriveBezierPath(double[] path, double straightPower, boolean straightPowerIsDynamic, boolean softStop,
 	    boolean isHighGear) {
 	m_path = new BezierCurve(path[0], path[1], path[2], path[3], path[4], path[5], path[6], path[7]);
 	m_straightPower = straightPower;
@@ -70,7 +70,7 @@ public class DriveBezierRio extends Command {
 
     @Override
     protected void initialize() {
-	SmartDashboard.putString("Current Command", "DriveBezierRio");
+	SmartDashboard.putString("Current Command", "DriveBezierPath");
 	Robot.drive.stopDrive();
 	Robot.drive.resetEncoders();
 
@@ -100,7 +100,7 @@ public class DriveBezierRio extends Command {
 	if (m_counter < m_arcLength.size()) {
 	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLength.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		m_desiredHeading = m_heading.get(m_counter); // TOOD: figure out if we have to modify this value when
+		m_desiredHeading = m_heading.get(m_counter); // TODO: figure out if we have to modify this value when
 							     // going reverse.
 		// proposed solution for going reverse
 		// if (m_direction < 0) {
@@ -149,11 +149,11 @@ public class DriveBezierRio extends Command {
 		}
 
 		// make sure robot reaches end point
-		if (Math.abs(straightRightPower) < m_rightPGains.getMaxPower()) {
-		    straightRightPower = m_rightPGains.getMaxPower() * m_direction;
+		if (Math.abs(straightRightPower) < m_rightPGains.getMinPower()) {
+		    straightRightPower = m_rightPGains.getMinPower() * m_direction;
 		}
-		if (Math.abs(straightLeftPower) < m_leftPGains.getMaxPower()) {
-		    straightLeftPower = m_leftPGains.getMaxPower() * m_direction;
+		if (Math.abs(straightLeftPower) < m_leftPGains.getMinPower()) {
+		    straightLeftPower = m_leftPGains.getMinPower() * m_direction;
 		}
 
 		double leftPow = rotPower + straightLeftPower;
