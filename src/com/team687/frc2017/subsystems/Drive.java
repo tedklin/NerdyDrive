@@ -347,6 +347,13 @@ public class Drive extends Subsystem {
 	SmartDashboard.putNumber("Right Slave 1 PercentVbus", m_rightSlave1.getOutputVoltage() / 12);
 	SmartDashboard.putNumber("Right Slave 2 PercentVbus", m_rightSlave2.getOutputVoltage() / 12);
 
+	SmartDashboard.putNumber("Left Master Current", m_leftMaster.getOutputCurrent());
+	SmartDashboard.putNumber("Left Slave 1 Current", m_leftSlave1.getOutputCurrent());
+	SmartDashboard.putNumber("Left Slave 2 Current", m_leftSlave2.getOutputCurrent());
+	SmartDashboard.putNumber("Right Master Current", m_rightMaster.getOutputCurrent());
+	SmartDashboard.putNumber("Right Slave 1 Current", m_rightSlave1.getOutputCurrent());
+	SmartDashboard.putNumber("Right Slave 2 Current", m_rightSlave2.getOutputCurrent());
+
 	// m_currentTime = Timer.getFPGATimestamp() - m_initTime;
 	// m_table.putNumber("CURRENT_TIME", m_currentTime);
 	// SmartDashboard.putNumber("Current Time", m_currentTime);
