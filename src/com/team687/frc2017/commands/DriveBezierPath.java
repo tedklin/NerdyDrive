@@ -26,7 +26,7 @@ public class DriveBezierPath extends Command {
     private boolean m_softStop;
     private boolean m_isHighGear;
 
-    private PGains m_rightPGains, m_leftPGains;
+    private PGains m_straightPGains;
     private PGains m_rotPGains;
 
     private ArrayList<Double> m_heading, m_arcLength;
@@ -76,13 +76,11 @@ public class DriveBezierPath extends Command {
 
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	    m_rightPGains = Constants.kBezierDistHighGearPGains;
-	    m_leftPGains = Constants.kBezierDistHighGearPGains;
+	    m_straightPGains = Constants.kBezierDistHighGearPGains;
 	    m_rotPGains = Constants.kRotHighGearPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
-	    m_rightPGains = Constants.kBezierDistLowGearPGains;
-	    m_leftPGains = Constants.kBezierDistLowGearPGains;
+	    m_straightPGains = Constants.kBezierDistLowGearPGains;
 	    m_rotPGains = Constants.kRotLowGearPGains;
 	}
 
@@ -114,50 +112,34 @@ public class DriveBezierPath extends Command {
 
 		double rotPower = m_rotPGains.getP() * rotError;
 		// default is specified straight power
-		double straightRightPower = m_straightPower;
-		double straightLeftPower = m_straightPower;
+		double straightPower = m_straightPower;
 
 		// dynamic straight power
 		if (m_straightPowerIsDynamic) {
-		    straightRightPower = m_direction * m_basePower
-			    / (Math.abs(rotError) * Constants.kStraightPowerAdjuster);
-		    straightLeftPower = m_direction * m_basePower
-			    / (Math.abs(rotError) * Constants.kStraightPowerAdjuster);
+		    straightPower = m_direction * m_basePower / (Math.abs(rotError) * Constants.kStraightPowerAdjuster);
 		}
 
-		double maxStraightRightPower = Math.abs(m_straightPower);
-		double maxStraightLeftPower = Math.abs(m_straightPower);
+		double maxStraightPower = Math.abs(m_straightPower);
 		if (m_softStop) {
-		    double straightRightError = m_arcLength.get(m_arcLength.size() - 1)
-			    - Math.abs(Robot.drive.getRightTicks());
-		    double straightLeftError = m_arcLength.get(m_arcLength.size() - 1)
-			    - Math.abs(Robot.drive.getLeftTicks());
-		    double newMaxStraightRightPower = m_rightPGains.getP() * straightRightError;
-		    double newMaxStraightLeftPower = m_leftPGains.getP() * straightLeftError;
-		    maxStraightRightPower = Math.min(Math.abs(maxStraightRightPower),
-			    Math.abs(newMaxStraightRightPower));
-		    maxStraightLeftPower = Math.min(Math.abs(maxStraightLeftPower), Math.abs(newMaxStraightLeftPower));
+		    double straightError = m_arcLength.get(m_arcLength.size() - 1)
+			    - Math.abs(Robot.drive.getDrivetrainTicks());
+		    double newMaxStraightPower = m_straightPGains.getP() * straightError;
+		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower));
 		}
 
 		// limit straight power to maintain rotPower to straightPower ratio
 		// also for soft stops
-		if (Math.abs(straightRightPower) > maxStraightRightPower) {
-		    straightRightPower = maxStraightRightPower * m_direction;
-		}
-		if (Math.abs(straightLeftPower) > maxStraightLeftPower) {
-		    straightLeftPower = maxStraightLeftPower * m_direction;
+		if (Math.abs(straightPower) > maxStraightPower) {
+		    straightPower = maxStraightPower * m_direction;
 		}
 
 		// make sure robot reaches end point
-		if (Math.abs(straightRightPower) < m_rightPGains.getMinPower()) {
-		    straightRightPower = m_rightPGains.getMinPower() * m_direction;
-		}
-		if (Math.abs(straightLeftPower) < m_leftPGains.getMinPower()) {
-		    straightLeftPower = m_leftPGains.getMinPower() * m_direction;
+		if (Math.abs(straightPower) < m_straightPGains.getMinPower()) {
+		    straightPower = m_straightPGains.getMinPower() * m_direction;
 		}
 
-		double leftPow = rotPower + straightLeftPower;
-		double rightPow = rotPower - straightRightPower;
+		double leftPow = rotPower + straightPower;
+		double rightPow = rotPower - straightPower;
 		Robot.drive.setPower(leftPow, rightPow);
 	    } else {
 		m_counter++;
