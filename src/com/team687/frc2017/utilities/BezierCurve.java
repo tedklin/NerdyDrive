@@ -18,8 +18,8 @@ public class BezierCurve {
 
     private ArrayList<Double> m_xPoints = new ArrayList<Double>();
     private ArrayList<Double> m_yPoints = new ArrayList<Double>();
-    private ArrayList<Double> m_heading = new ArrayList<Double>();
-    private ArrayList<Double> m_arcLength = new ArrayList<Double>();
+    private ArrayList<Double> m_headingList = new ArrayList<Double>();
+    private ArrayList<Double> m_arcLengthList = new ArrayList<Double>();
     private double m_distance;
 
     private double m_ax;
@@ -84,8 +84,8 @@ public class BezierCurve {
 	calculateParams();
 	calculatePoints();
 
-	m_heading.clear();
-	m_arcLength.clear();
+	m_headingList.clear();
+	m_arcLengthList.clear();
 	for (int i = 0; i < m_xPoints.size() - 1; i++) {
 	    double xDelta = m_xPoints.get(i + 1) - m_xPoints.get(i);
 	    double yDelta = m_yPoints.get(i + 1) - m_yPoints.get(i);
@@ -104,25 +104,25 @@ public class BezierCurve {
 	    double hypotenuse = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
 	    m_distance += hypotenuse;
 
-	    m_heading.add(i, heading);
-	    m_arcLength.add(i, m_distance);
+	    m_headingList.add(i, heading);
+	    m_arcLengthList.add(i, m_distance);
 	}
     }
 
-    public ArrayList<Double> getXPoints() {
+    public ArrayList<Double> getXPointList() {
 	return m_xPoints;
     }
 
-    public ArrayList<Double> getYPoints() {
+    public ArrayList<Double> getYPointList() {
 	return m_yPoints;
     }
 
-    public ArrayList<Double> getArcLength() {
-	return m_arcLength;
+    public ArrayList<Double> getArcLengthList() {
+	return m_arcLengthList;
     }
 
-    public ArrayList<Double> getHeading() {
-	return m_heading;
+    public ArrayList<Double> getHeadingList() {
+	return m_headingList;
     }
 
     public double[] getXParam() {
@@ -136,7 +136,7 @@ public class BezierCurve {
     public void clearAll() {
 	m_xPoints.clear();
 	m_yPoints.clear();
-	m_arcLength.clear();
-	m_heading.clear();
+	m_arcLengthList.clear();
+	m_headingList.clear();
     }
 }

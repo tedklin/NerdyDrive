@@ -29,7 +29,7 @@ public class DriveBezierPath extends Command {
     private PGains m_straightPGains;
     private PGains m_rotPGains;
 
-    private ArrayList<Double> m_heading, m_arcLength;
+    private ArrayList<Double> m_headingList, m_arcLengthList;
     private double m_desiredHeading;
 
     private int m_counter;
@@ -85,8 +85,8 @@ public class DriveBezierPath extends Command {
 	}
 
 	m_path.calculateBezier();
-	m_heading = m_path.getHeading();
-	m_arcLength = m_path.getArcLength();
+	m_headingList = m_path.getHeadingList();
+	m_arcLengthList = m_path.getArcLengthList();
 
 	m_counter = 0;
 	m_pathIsFinished = false;
@@ -95,10 +95,10 @@ public class DriveBezierPath extends Command {
 
     @Override
     protected void execute() {
-	if (m_counter < m_arcLength.size()) {
-	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLength.get(m_counter)) {
+	if (m_counter < m_arcLengthList.size()) {
+	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLengthList.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		m_desiredHeading = m_heading.get(m_counter); // TODO: figure out if we have to modify this value when
+		m_desiredHeading = m_headingList.get(m_counter); // TODO: figure out if we have to modify this value when
 							     // going reverse.
 		// proposed solution for going reverse
 		// if (m_direction < 0) {
@@ -121,7 +121,7 @@ public class DriveBezierPath extends Command {
 
 		double maxStraightPower = Math.abs(m_straightPower);
 		if (m_softStop) {
-		    double straightError = m_arcLength.get(m_arcLength.size() - 1)
+		    double straightError = m_arcLengthList.get(m_arcLengthList.size() - 1)
 			    - Math.abs(Robot.drive.getDrivetrainTicks());
 		    double newMaxStraightPower = m_straightPGains.getP() * straightError;
 		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower));
@@ -152,7 +152,7 @@ public class DriveBezierPath extends Command {
     @Override
     protected boolean isFinished() {
 	return m_pathIsFinished
-		|| Math.abs(Robot.drive.getDrivetrainTicks()) >= m_arcLength.get(m_arcLength.size() - 1);
+		|| Math.abs(Robot.drive.getDrivetrainTicks()) >= m_arcLengthList.get(m_arcLengthList.size() - 1);
     }
 
     @Override

@@ -59,20 +59,20 @@ public class BezierCurveTest {
     public void testBezierSize() {
 	BezierCurve bezierCurve = new BezierCurve(m_path);
 	bezierCurve.calculateBezier();
-	assertEquals(Constants.kBezierStep + 1, bezierCurve.getXPoints().size(), 1);
-	assertEquals(Constants.kBezierStep + 1, bezierCurve.getYPoints().size(), 1);
-	assertEquals(Constants.kBezierStep + 1, bezierCurve.getArcLength().size(), 1);
-	assertEquals(Constants.kBezierStep + 1, bezierCurve.getHeading().size(), 1);
+	assertEquals(Constants.kBezierStep + 1, bezierCurve.getXPointList().size(), 1);
+	assertEquals(Constants.kBezierStep + 1, bezierCurve.getYPointList().size(), 1);
+	assertEquals(Constants.kBezierStep + 1, bezierCurve.getArcLengthList().size(), 1);
+	assertEquals(Constants.kBezierStep + 1, bezierCurve.getHeadingList().size(), 1);
     }
 
     @Test
     public void testEndPoints() {
 	BezierCurve bezierCurve = new BezierCurve(0, 0, 0, 100300, 0, 100300, -48000, 100300);
 	bezierCurve.calculateBezier();
-	assertEquals(0, bezierCurve.getXPoints().get(0), kEpsilon);
-	assertEquals(0, bezierCurve.getYPoints().get(0), kEpsilon);
-	assertEquals(-48000, bezierCurve.getXPoints().get(bezierCurve.getXPoints().size() - 1), kEpsilon);
-	assertEquals(100300, bezierCurve.getYPoints().get(bezierCurve.getYPoints().size() - 1), kEpsilon);
+	assertEquals(0, bezierCurve.getXPointList().get(0), kEpsilon);
+	assertEquals(0, bezierCurve.getYPointList().get(0), kEpsilon);
+	assertEquals(-48000, bezierCurve.getXPointList().get(bezierCurve.getXPointList().size() - 1), kEpsilon);
+	assertEquals(100300, bezierCurve.getYPointList().get(bezierCurve.getYPointList().size() - 1), kEpsilon);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class BezierCurveTest {
 	BezierCurve bezierCurve = new BezierCurve(m_path);
 	bezierCurve.calculateBezier();
 
-	ArrayList<Double> heading = bezierCurve.getHeading();
+	ArrayList<Double> heading = bezierCurve.getHeadingList();
 	int counter = 1;
 	double baseStraightPower = 1; // always equal to 1
 	for (counter = 1; counter < heading.size(); counter++) {
