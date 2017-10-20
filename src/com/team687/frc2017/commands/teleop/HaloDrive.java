@@ -29,6 +29,8 @@ public class HaloDrive extends Command {
     protected void execute() {
 	double throttle = Robot.oi.getDriveJoyLeftY();
 	double wheel = Robot.oi.getDriveJoyRightX();
+	double sign = Math.signum(wheel);
+	// wheel = Math.pow(wheel, 2) * sign; // sensitivity
 
 	SmartDashboard.putNumber("Halo Wheel", wheel);
 	SmartDashboard.putNumber("Halo Throttle", throttle);

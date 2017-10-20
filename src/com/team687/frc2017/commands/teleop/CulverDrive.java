@@ -42,6 +42,7 @@ public class CulverDrive extends Command {
 	}
 
 	double wheel = radiusMagnitude * theta / 90 * sign;
+	// wheel = Math.pow(wheel, 2) * sign; // sensitivity
 	double throttle = Robot.oi.getDriveJoyLeftY();
 
 	SmartDashboard.putNumber("Culver Wheel", wheel);
