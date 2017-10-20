@@ -29,9 +29,9 @@ public class CulverDrive extends Command {
     @Override
     protected void execute() {
 	double wheelX = Robot.oi.getDriveJoyRightX();
-	double wheelY = Robot.oi.getDriveJoyLeftY();
+	double wheelY = Robot.oi.getDriveJoyRightY();
 
-	double theta = Math.abs(Math.atan(wheelY / wheelX)) * 59.29577;
+	double theta = Math.abs(Math.atan(wheelX / wheelY)) * 57.29578;
 	double sign = Math.signum(Robot.oi.getDriveJoyRightX());
 
 	double radiusMagnitude = Math.abs(Math.sqrt(Math.pow(wheelX, 2) + Math.pow(wheelY, 2)));
@@ -51,7 +51,10 @@ public class CulverDrive extends Command {
 	double leftPower = wheel + throttle;
 	double rightPower = wheel - throttle;
 
-	Robot.drive.setPower(leftPower, rightPower);
+	SmartDashboard.putNumber("Left power", leftPower);
+	SmartDashboard.putNumber("Right power", rightPower);
+
+	// Robot.drive.setPower(leftPower, rightPower);
     }
 
     @Override

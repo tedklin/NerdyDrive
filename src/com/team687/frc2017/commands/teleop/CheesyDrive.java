@@ -65,7 +65,7 @@ public class CheesyDrive extends Command {
 
 	double[] pow = { leftPower, rightPower };
 	pow = NerdyMath.normalize(pow, false);
-	Robot.drive.setPower(pow[0], pow[1]);
+	// Robot.drive.setPower(pow[0], pow[1]);
     }
 
     @Override

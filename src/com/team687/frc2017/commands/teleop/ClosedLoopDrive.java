@@ -1,5 +1,6 @@
 package com.team687.frc2017.commands.teleop;
 
+import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,28 +13,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 
-public class HaloDrive extends Command {
+public class ClosedLoopDrive extends Command {
 
-    public HaloDrive() {
+    public ClosedLoopDrive() {
 	// subsystem dependencies
 	requires(Robot.drive);
     }
 
     @Override
     protected void initialize() {
-	SmartDashboard.putString("Current Command", "HaloDrive");
+	SmartDashboard.putString("Current Command", "ClosedLoopDrive");
 	Robot.drive.stopDrive();
     }
 
     @Override
     protected void execute() {
-	double throttle = Robot.oi.getDriveJoyLeftY();
-	double wheel = Robot.oi.getDriveJoyRightX();
-	double sign = Math.signum(wheel);
-	// wheel = Math.pow(wheel, 2) * sign; // sensitivity
+	double wheelX = Robot.oi.getDriveJoyRightX();
+	double wheelY = Robot.oi.getDriveJoyRightY();
 
-	SmartDashboard.putNumber("Halo Wheel", wheel);
-	SmartDashboard.putNumber("Halo Throttle", throttle);
+	double theta = Math.atan(wheelX / wheelY) * 57.29578;
+	if (wheelY < 0 && wheelX < 0) {
+	    theta = -180 + theta;
+	} else if (wheelY < 0 && wheelX > 0) {
+	    theta = 180 + theta;
+	}
+	SmartDashboard.putNumber("Closed loop theta", theta);
+
+	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
+	double error = theta - robotAngle;
+	error = (error > 180) ? error - 360 : error;
+	error = (error < -180) ? error + 360 : error;
+
+	double wheel = Constants.kRotHighGearPGains.getP();
+
+	// wheel = Math.pow(wheel, 2) * sign; // sensitivity
+	double throttle = Robot.oi.getDriveJoyLeftY();
+
+	SmartDashboard.putNumber("Closed Loop Wheel", wheel);
+	SmartDashboard.putNumber("Closed Loop Throttle", throttle);
 
 	double leftPower = wheel + throttle;
 	double rightPower = wheel - throttle;

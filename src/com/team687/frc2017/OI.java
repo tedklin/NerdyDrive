@@ -7,6 +7,7 @@ import com.team687.frc2017.commands.ShiftDown;
 import com.team687.frc2017.commands.ShiftUp;
 import com.team687.frc2017.commands.SnapToTarget;
 import com.team687.frc2017.commands.teleop.CheesyDrive;
+import com.team687.frc2017.commands.teleop.ClosedLoopDrive;
 import com.team687.frc2017.commands.teleop.CulverDrive;
 import com.team687.frc2017.commands.teleop.HaloDrive;
 import com.team687.frc2017.commands.teleop.TankDrive;
@@ -36,13 +37,14 @@ public class OI {
     public JoystickButton quickTurn_1;
 
     public OI() {
-	quickTurn_1 = new JoystickButton(driveJoyRight, 1);
+	// quickTurn_1 = new JoystickButton(driveJoyRight, 1);
 
 	// Smart Dashboard buttons
 	SmartDashboard.putData("Tank Drive", new TankDrive());
 	SmartDashboard.putData("Halo Drive", new HaloDrive());
 	SmartDashboard.putData("Culver Drive", new CulverDrive());
 	SmartDashboard.putData("Cheesy Drive", new CheesyDrive());
+	SmartDashboard.putData("Closed Loop Drive", new ClosedLoopDrive());
 
 	SmartDashboard.putData("Reset Gyro", new ResetGyro());
 	SmartDashboard.putData("Reset Encoders", new ResetEncoders());
