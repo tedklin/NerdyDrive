@@ -77,7 +77,7 @@ public class OI {
      * @return input power from right drive joystick Y (-1.0 to +1.0)
      */
     public double getDriveJoyRightY() {
-	return gamepadJoy.getRawAxis(5);
+	return gamepadJoy.getRawAxis(4);
 	// return driveJoyRight.getY();
     }
 
@@ -93,7 +93,7 @@ public class OI {
      * @return input power from right drive joystick X (-1.0 to +1.0)
      */
     public double getDriveJoyRightX() {
-	return gamepadJoy.getRawAxis(4);
+	return gamepadJoy.getRawAxis(3);
 	// return driveJoyRight.getX();
     }
 
