@@ -1,4 +1,4 @@
-package com.team687.frc2017.commands;
+package com.team687.frc2017.commands.teleop;
 
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
@@ -28,13 +28,13 @@ public class CheesyDrive extends Command {
 
     @Override
     protected void execute() {
-	double rightPow, leftPow;
+	double rightPower, leftPower;
 	boolean isQuickTurn = Robot.oi.getQuickTurn();
 
 	double wheel = Robot.drive.handleDeadband(Robot.oi.driveJoyRight.getX(), Constants.kJoystickDeadband);
 	double throttle = -Robot.drive.handleDeadband(Robot.oi.driveJoyLeft.getY(), Constants.kJoystickDeadband);
 
-	rightPow = leftPow = throttle;
+	rightPower = leftPower = throttle;
 
 	double sensitivity;
 	if (Robot.drive.isHighGear()) {
@@ -60,10 +60,10 @@ public class CheesyDrive extends Command {
 	    }
 	}
 
-	leftPow += angularPow;
-	rightPow -= angularPow;
+	leftPower = angularPow + leftPower;
+	rightPower = angularPow - rightPower;
 
-	double[] pow = { leftPow, rightPow };
+	double[] pow = { leftPower, rightPower };
 	pow = NerdyMath.normalize(pow, false);
 	Robot.drive.setPower(pow[0], pow[1]);
     }
