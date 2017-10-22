@@ -133,13 +133,13 @@ public class Drive extends Subsystem {
 	return Math.pow(input, 2) * (input / Math.abs(input));
     }
 
-    public double addLeftSensitivity(double input) {
-	return NerdyMath.addSensitivity(input, Robot.oi.getThrottleL());
-    }
-
-    public double addRightSensitivity(double input) {
-	return NerdyMath.addSensitivity(input, Robot.oi.getThrottleR());
-    }
+    // public double addLeftSensitivity(double input) {
+    // return NerdyMath.addSensitivity(input, Robot.oi.getThrottleL());
+    // }
+    //
+    // public double addRightSensitivity(double input) {
+    // return NerdyMath.addSensitivity(input, Robot.oi.getThrottleR());
+    // }
 
     /**
      * Handles when the joystick moves slightly when you actually don't want it to

@@ -38,10 +38,7 @@ public class HaloDrive extends Command {
 	double leftPower = wheel + throttle;
 	double rightPower = wheel - throttle;
 
-	SmartDashboard.putNumber("Left power", leftPower);
-	SmartDashboard.putNumber("Right power", rightPower);
-
-	// Robot.drive.setPower(leftPower, rightPower);
+	Robot.drive.setPower(leftPower, rightPower);
     }
 
     @Override
