@@ -31,7 +31,7 @@ public class ClosedLoopDrive extends Command {
 	double wheelX = Robot.oi.getDriveJoyRightX();
 	double wheelY = Robot.oi.getDriveJoyRightY();
 
-	double theta = Math.atan(wheelX / wheelY) * 57.29578;
+	double theta = Math.atan(wheelX / wheelY) * 180 / Math.PI;
 	if (wheelY < 0 && wheelX < 0) {
 	    theta = -180 + theta;
 	} else if (wheelY < 0 && wheelX > 0) {

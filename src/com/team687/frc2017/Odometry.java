@@ -96,6 +96,7 @@ public class Odometry {
 	m_lastTime = m_currentTime;
 
 	m_newPose = Kinematics.getNewPose(m_lastPose, m_rightVelocity, m_leftVelocity, m_deltaTime);
+	m_newPose.setTimestamp(m_currentTime);
 	m_lastPose = m_newPose;
     }
 
@@ -109,6 +110,7 @@ public class Odometry {
 	m_newPose.setX(m_lastPose.getX() + deltaDistance * Math.sin(m_gyroYawRadians));
 	m_newPose.setY(m_lastPose.getY() + deltaDistance * Math.cos(m_gyroYawRadians));
 	m_newPose.setTheta(m_gyroYawRadians);
+	m_newPose.setTimestamp(Timer.getFPGATimestamp());
 
 	m_lastPose = m_newPose;
     }

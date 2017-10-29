@@ -101,9 +101,9 @@ public class DriveBezierPath extends Command {
 		m_desiredHeading = m_headingList.get(m_counter); // TODO: figure out if we have to modify this value
 								 // when going reverse.
 		// proposed solution for going reverse
-		// if (m_direction < 0) {
-		// m_desiredHeading += 180;
-		// }
+		if (m_direction > 0) {
+		    m_desiredHeading += 180;
+		}
 		m_desiredHeading = -m_desiredHeading; // This is always necessary because of how our rotational PID is
 						      // structured.
 		double rotError = m_desiredHeading - robotAngle;
