@@ -98,9 +98,9 @@ public class DriveBezierPath extends Command {
 	if (m_counter < m_arcLengthList.size()) {
 	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLengthList.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		m_desiredHeading = m_headingList.get(m_counter); // TODO: figure out if we have to modify this value
-								 // when going reverse.
-		// proposed solution for going reverse
+		m_desiredHeading = m_headingList.get(m_counter);
+
+		// going reverse
 		if (m_direction > 0) {
 		    m_desiredHeading += 180;
 		}

@@ -3,7 +3,6 @@ package com.team687.frc2017.subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
-import com.team687.frc2017.Robot;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.teleop.TankDrive;
 import com.team687.frc2017.utilities.NerdyMath;
@@ -169,8 +168,24 @@ public class Drive extends Subsystem {
 	return m_nav.getYaw();
     }
 
+    public double getCurrentPitch() {
+	return m_nav.getPitch();
+    }
+
+    public double getCurrentRoll() {
+	return m_nav.getRoll();
+    }
+
     public double getCurrentYawRadians() {
 	return NerdyMath.degreesToRadians(m_nav.getYaw());
+    }
+
+    public double getCurrentPitchRadians() {
+	return NerdyMath.degreesToRadians(m_nav.getPitch());
+    }
+
+    public double getCurrentRollRadians() {
+	return NerdyMath.degreesToRadians(m_nav.getRoll());
     }
 
     public double getNavTimestamp() {
@@ -353,11 +368,6 @@ public class Drive extends Subsystem {
 	SmartDashboard.putNumber("Right Master Current", m_rightMaster.getOutputCurrent());
 	SmartDashboard.putNumber("Right Slave 1 Current", m_rightSlave1.getOutputCurrent());
 	SmartDashboard.putNumber("Right Slave 2 Current", m_rightSlave2.getOutputCurrent());
-
-	SmartDashboard.putNumber("Right Y", Robot.oi.getDriveJoyRightY());
-	SmartDashboard.putNumber("Right X", Robot.oi.getDriveJoyRightX());
-	SmartDashboard.putNumber("Left Y", Robot.oi.getDriveJoyLeftY());
-	SmartDashboard.putNumber("Left X", Robot.oi.getDriveJoyLeftX());
 
 	// m_currentTime = Timer.getFPGATimestamp() - m_initTime;
 	// m_table.putNumber("CURRENT_TIME", m_currentTime);

@@ -1,7 +1,7 @@
 package com.team687.frc2017.utilities;
 
 /**
- * Pose of robot (x, y, theta)
+ * 2D Pose of robot (x, y, theta)
  * 
  * @author tedlin
  *
