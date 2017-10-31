@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveBezierPath extends Command {
 
     private BezierCurve m_path;
-    private double m_basePower = 1; // always equal to 1
     private double m_straightPower;
     private boolean m_straightPowerIsDynamic;
     private boolean m_softStop;
@@ -104,19 +103,23 @@ public class DriveBezierPath extends Command {
 		if (m_direction > 0) {
 		    m_desiredHeading += 180;
 		}
-		m_desiredHeading = -m_desiredHeading; // This is always necessary because of how our rotational PID is
-						      // structured.
+		// change in sign is necessary because of how P loop is structured
+		m_desiredHeading = -m_desiredHeading;
+
 		double rotError = m_desiredHeading - robotAngle;
 		rotError = (rotError > 180) ? rotError - 360 : rotError;
 		rotError = (rotError < -180) ? rotError + 360 : rotError;
 
 		double rotPower = m_rotPGains.getP() * rotError;
+
 		// default is specified straight power
 		double straightPower = m_straightPower;
 
 		// dynamic straight power
+		double deltaSegmentLength = m_arcLengthList.get(m_counter) - Robot.drive.getDrivetrainTicks();
+		double curvature = Math.abs(rotError / deltaSegmentLength);
 		if (m_straightPowerIsDynamic) {
-		    straightPower = m_direction * m_basePower / (Math.abs(rotError) * Constants.kStraightPowerAdjuster);
+		    straightPower = m_straightPower - (Constants.kCurvatureFunction * curvature);
 		}
 
 		double maxStraightPower = Math.abs(m_straightPower);

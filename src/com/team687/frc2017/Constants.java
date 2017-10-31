@@ -65,8 +65,8 @@ public class Constants {
 											   // tune this; the higher this
 											   // is, the less time to
 											   // declerate
-    public final static double kStraightPowerAdjuster = 0.5; // the higher this is, the slower the robot will
-							     // go during a sharp turn
+    public final static double kCurvatureFunction = 100; // the higher this is, the slower the robot will
+							 // go during a sharp turn
 
     public final static double kShotDistanceFeet = 6.9028871; // in feet (direct from 1678's code)
 

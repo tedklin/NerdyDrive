@@ -25,7 +25,6 @@ import com.team687.frc2017.Constants;
 @RunWith(Parameterized.class)
 public class BezierCurveTest {
 
-    private final static double[] EmptyPath = { 0, 0, 0, 0, 0, 0, 0, 0 };
     private final static double[] ExamplePath1 = { 0, 0, -39000, 40000, -39000, 64000, -39000, 101000 };
     private final static double[] ExamplePath2 = { 0, 0, 0, 100300, 0, 100300, -48000, 100900 };
     private final static double[] ExamplePath3 = { 0, 0, 0, 92278.44, 0, 92278.44, 74403.76, 134999.94 };
@@ -35,7 +34,7 @@ public class BezierCurveTest {
     @SuppressWarnings("rawtypes")
     @Parameters
     public static Collection testCases() {
-	return Arrays.asList(new double[][] { EmptyPath, ExamplePath1, ExamplePath2, ExamplePath3, ExamplePath4 });
+	return Arrays.asList(new double[][] { ExamplePath1, ExamplePath2, ExamplePath3, ExamplePath4 });
     }
 
     private double[] m_path;
@@ -79,18 +78,25 @@ public class BezierCurveTest {
     public void testPathFollower() {
 	BezierCurve bezierCurve = new BezierCurve(m_path);
 	bezierCurve.calculateBezier();
+	ArrayList<Double> headingList = bezierCurve.getHeadingList();
+	ArrayList<Double> arcLengthList = bezierCurve.getArcLengthList();
 
-	ArrayList<Double> heading = bezierCurve.getHeadingList();
+	double m_straightPower = 0.7;
+	double direction = Math.signum(m_straightPower);
 	int counter = 1;
-	double baseStraightPower = 1; // always equal to 1
-	for (counter = 1; counter < heading.size(); counter++) {
-	    double headingError = heading.get(counter) - heading.get(counter - 1);
+	for (counter = 1; counter < headingList.size(); counter++) {
+	    double headingError = headingList.get(counter) - headingList.get(counter - 1);
 	    double rotPower = Constants.kBezierRotHighGearPGains.getP() * headingError;
-	    double straightPower = baseStraightPower / (Math.abs(headingError) * Constants.kStraightPowerAdjuster);
+	    double deltaSegmentLength = arcLengthList.get(counter) - arcLengthList.get(counter - 1);
+	    double curvature = Math.abs(headingError / deltaSegmentLength);
+	    double straightPower = 0.7 - (Constants.kCurvatureFunction * curvature);
 
 	    double sign = Math.signum(straightPower);
 	    if (Math.abs(straightPower) > Constants.kBezierDistHighGearPGains.getMaxPower()) {
 		straightPower = Constants.kBezierDistHighGearPGains.getMaxPower() * sign;
+	    }
+	    if (Math.abs(straightPower) < Constants.kBezierDistHighGearPGains.getMinPower()) {
+		straightPower = Constants.kBezierDistHighGearPGains.getMinPower() * direction;
 	    }
 
 	    double leftPower = straightPower + rotPower;
