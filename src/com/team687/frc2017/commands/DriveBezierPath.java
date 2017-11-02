@@ -119,7 +119,7 @@ public class DriveBezierPath extends Command {
 		double deltaSegmentLength = m_arcLengthList.get(m_counter) - Robot.drive.getDrivetrainTicks();
 		double curvature = Math.abs(rotError / deltaSegmentLength);
 		if (m_straightPowerIsDynamic) {
-		    straightPower = m_straightPower - (Constants.kCurvatureFunction * curvature);
+		    straightPower = (m_straightPower - (Constants.kCurvatureFunction * curvature)) * m_direction;
 		}
 
 		double maxStraightPower = Math.abs(m_straightPower);

@@ -60,14 +60,16 @@ public class Constants {
     public final static PGains kBezierRotLowGearPGains = new PGains(0, 0, 1.0);
     public final static PGains kBezierRotHighGearPGains = new PGains(0.04, 0, 1.0);
 
+    // the higher the distance kP is, the less time to declerate
     public final static PGains kBezierDistLowGearPGains = new PGains(0, 0, 1.0);
-    public final static PGains kBezierDistHighGearPGains = new PGains(0.00005, 0.25, 0.7); // look at TODO at how to
-											   // tune this; the higher this
-											   // is, the less time to
-											   // declerate
-    public final static double kCurvatureFunction = 100; // the higher this is, the slower the robot will
-							 // go during a sharp turn
+    public final static PGains kBezierDistHighGearPGains = new PGains(0.00005, 0.25, 0.7);
 
-    public final static double kShotDistanceFeet = 6.9028871; // in feet (direct from 1678's code)
+    // the higher the curvature function is, the slower the robot will go during a
+    // sharp turn; keep this value under 148 to be safe; if it is zero, the straight
+    // power will be static even if dynamic straight power is enabled
+    public final static double kCurvatureFunction = 85;
+
+    // in feet (direct from 1678's code)
+    public final static double kShotDistanceFeet = 6.9028871;
 
 }

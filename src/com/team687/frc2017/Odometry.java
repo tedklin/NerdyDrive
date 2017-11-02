@@ -78,8 +78,8 @@ public class Odometry {
 	SmartDashboard.putNumber("Angular Velocity", m_angularVelocity);
 	SmartDashboard.putNumber("Radius of Curvature", m_arcRadius);
 
-	estimatePoseVelocity();
-	// estimatePosePosition();
+	// estimatePoseVelocity();
+	estimatePosePosition();
 
 	SmartDashboard.putNumber("X", m_newPose.getX());
 	SmartDashboard.putNumber("Y", m_newPose.getY());
