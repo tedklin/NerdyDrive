@@ -267,8 +267,8 @@ public class Drive extends Subsystem {
     }
 
     public void resetEncoders() {
-	m_leftMaster.reset();
-	m_rightMaster.reset();
+	// m_leftMaster.reset();
+	// m_rightMaster.reset();
 
 	// m_leftMaster.setPosition(0);
 	// m_rightMaster.setPosition(0);
