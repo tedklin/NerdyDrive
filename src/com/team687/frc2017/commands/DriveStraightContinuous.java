@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Drive straight without setting power to 0 when it reaches goal
+ * Drive straight without setting power to 0 when it reaches goal. No heading
+ * adjustment, all open loop.
  * 
  * @author tedlin
  *
