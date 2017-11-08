@@ -75,7 +75,7 @@ public class ArcTurn extends Command {
     @Override
     protected void execute() {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-	m_error = m_desiredAngle - robotAngle;
+	m_error = -m_desiredAngle - robotAngle;
 	m_error = (m_error > 180) ? m_error - 360 : m_error;
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
 	double rotPower = m_rotPGains.getP() * m_error * 1.95; // multiplied by 2 because the rotational component is

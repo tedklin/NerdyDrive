@@ -66,7 +66,7 @@ public class TurnToAngle extends Command {
     @Override
     protected void execute() {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-	m_error = m_angleToTurn - robotAngle;
+	m_error = -m_angleToTurn - robotAngle;
 	m_error = (m_error > 180) ? m_error - 360 : m_error;
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
 

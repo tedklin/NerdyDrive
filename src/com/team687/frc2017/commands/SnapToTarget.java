@@ -70,7 +70,7 @@ public class SnapToTarget extends Command {
 	double relativeAngleError = VisionAdapter.getInstance().getAngleToTurn();
 	double processingTime = VisionAdapter.getInstance().getProcessedTime();
 	double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime);
-	double error = absoluteDesiredAngle - robotAngle;
+	double error = -absoluteDesiredAngle - robotAngle;
 	error = (error > 180) ? error - 360 : error;
 	error = (error < -180) ? error + 360 : error;
 

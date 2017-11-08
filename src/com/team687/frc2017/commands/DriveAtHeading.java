@@ -55,7 +55,7 @@ public class DriveAtHeading extends Command {
     @Override
     protected void execute() {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-	double rotError = m_heading - robotAngle;
+	double rotError = -m_heading - robotAngle;
 	rotError = (rotError > 180) ? rotError - 360 : rotError;
 	rotError = (rotError < -180) ? rotError + 360 : rotError;
 	double rotPower = m_rotPGains.getP() * rotError;
