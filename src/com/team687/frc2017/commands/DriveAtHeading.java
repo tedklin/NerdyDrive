@@ -1,6 +1,5 @@
 package com.team687.frc2017.commands;
 
-import com.team687.frc2017.Constants;
 import com.team687.frc2017.Robot;
 import com.team687.frc2017.utilities.PGains;
 
@@ -29,11 +28,13 @@ public class DriveAtHeading extends Command {
      * @param distance
      *            (absolute value)
      * @param isHighGear
+     * @param kRotP
      */
-    public DriveAtHeading(double straightPower, double heading, double distance, boolean isHighGear) {
+    public DriveAtHeading(double straightPower, double heading, double distance, boolean isHighGear, double kRotP) {
 	m_straightPower = straightPower;
 	m_heading = heading;
 	m_distance = distance;
+	m_rotPGains.setP(kRotP);
 
 	// subsystem dependencies
 	requires(Robot.drive);
@@ -45,10 +46,8 @@ public class DriveAtHeading extends Command {
 
 	if (m_isHighGear) {
 	    Robot.drive.shiftUp();
-	    m_rotPGains = Constants.kRotHighGearPGains;
 	} else if (!m_isHighGear) {
 	    Robot.drive.shiftDown();
-	    m_rotPGains = Constants.kRotLowGearPGains;
 	}
     }
 
