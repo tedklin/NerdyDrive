@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcTurn extends Command {
 
-    private double m_straightPower;
     private double m_desiredAngle;
     private boolean m_isRightPowered;
     private boolean m_isHighGear;
@@ -28,10 +27,9 @@ public class ArcTurn extends Command {
     private double m_startTime, m_timeout;
     private double m_error;
 
-    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower, boolean isHighGear) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, boolean isHighGear) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
-	m_straightPower = straightPower;
 	m_timeout = 10;
 	m_isHighGear = isHighGear;
 
@@ -43,15 +41,12 @@ public class ArcTurn extends Command {
      * 
      * @param desiredAngle
      * @param isRightPowered
-     * @param striaghtPower
      * @param isHighGear
      * @param timeout
      */
-    public ArcTurn(double desiredAngle, boolean isRightPowered, double straightPower, boolean isHighGear,
-	    double timeout) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, boolean isHighGear, double timeout) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
-	m_straightPower = straightPower;
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
 
@@ -83,9 +78,9 @@ public class ArcTurn extends Command {
 	rotPower = NerdyMath.threshold(rotPower, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
 
 	if (m_isRightPowered) {
-	    Robot.drive.setPower(0 + m_straightPower, rotPower - m_straightPower);
+	    Robot.drive.setPower(0, rotPower);
 	} else if (!m_isRightPowered) {
-	    Robot.drive.setPower(rotPower + m_straightPower, 0 - m_straightPower);
+	    Robot.drive.setPower(rotPower, 0);
 	}
     }
 
