@@ -1,10 +1,11 @@
 package com.team687.frc2017.utilities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.team687.frc2017.Constants;
-import com.team687.frc2017.utilities.MotionProfile;
 
 /**
  * Tests for motion profile generation and integration
@@ -21,6 +22,9 @@ public class MotionProfileTest {
     private static double maxAccel = 51.56 * 3600;
     private static double maxDecel = -maxAccel;
     private static double targetDistance = 30.93;
+
+    private double velocityIntegral = 0;
+    private double cumulativeTolerance = 0.0971;
 
     @Test
     public void generateProfileTest() {
@@ -48,6 +52,9 @@ public class MotionProfileTest {
 	    if (index > 0) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertTrue(velocity > motionProfile.readVelocity(index - 1));
+
+		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
+		assertEquals(velocityIntegral, position, cumulativeTolerance);
 	    }
 	}
 	for (double time = accelTime; time < (accelTime + cruiseTime); time += Constants.kDtInMinutes) {
@@ -60,6 +67,9 @@ public class MotionProfileTest {
 	    if (index > (int) (accelTime / Constants.kDtInMinutes) + 1) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertEquals(velocity, motionProfile.readVelocity(index - 1), kEpsilon);
+
+		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
+		assertEquals(velocityIntegral, position, 2 * cumulativeTolerance);
 	    }
 	}
 	for (double time = (accelTime + cruiseTime); time < totalTime; time += Constants.kDtInMinutes) {
@@ -72,6 +82,9 @@ public class MotionProfileTest {
 	    if (index > ((int) ((accelTime + cruiseTime) / Constants.kDtInMinutes)) + 2) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertTrue(velocity < motionProfile.readVelocity(index - 1));
+
+		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
+		assertEquals(velocityIntegral, position, 3 * cumulativeTolerance);
 	    }
 	}
     }
