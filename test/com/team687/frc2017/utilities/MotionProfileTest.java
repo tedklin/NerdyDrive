@@ -24,7 +24,9 @@ public class MotionProfileTest {
     private static double targetDistance = 30.93;
 
     private double velocityIntegral = 0;
-    private double cumulativeTolerance = 0.0971;
+    private double accelerationIntegral = 0;
+    private double cumulativePositionTolerance = 0.0971;
+    private double cumulativeVelocityTolerance = 33;
 
     @Test
     public void generateProfileTest() {
@@ -46,45 +48,63 @@ public class MotionProfileTest {
 	    int index = (int) (time / Constants.kDtInMinutes);
 	    double position = motionProfile.readPosition(index);
 	    double velocity = motionProfile.readVelocity(index);
+	    double acceleration = motionProfile.readAcceleration(index);
 
 	    assertTrue(position < targetDistance);
 	    assertTrue(velocity < cruiseVelocity);
+	    assertEquals(acceleration, maxAccel, kEpsilon);
 	    if (index > 0) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertTrue(velocity > motionProfile.readVelocity(index - 1));
 
+		accelerationIntegral += (acceleration + motionProfile.readAcceleration(index - 1)) / 2
+			* Constants.kDtInMinutes;
+		assertEquals(accelerationIntegral, velocity, cumulativeVelocityTolerance);
+
 		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
-		assertEquals(velocityIntegral, position, cumulativeTolerance);
+		assertEquals(velocityIntegral, position, cumulativePositionTolerance);
 	    }
 	}
 	for (double time = accelTime; time < (accelTime + cruiseTime); time += Constants.kDtInMinutes) {
 	    int index = (int) (time / Constants.kDtInMinutes) + 1;
 	    double position = motionProfile.readPosition(index);
 	    double velocity = motionProfile.readVelocity(index);
+	    double acceleration = motionProfile.readAcceleration(index);
 
 	    assertTrue(position < targetDistance);
 	    assertEquals(cruiseVelocity, velocity, kEpsilon);
+	    assertEquals(acceleration, 0, kEpsilon);
 	    if (index > (int) (accelTime / Constants.kDtInMinutes) + 1) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertEquals(velocity, motionProfile.readVelocity(index - 1), kEpsilon);
 
+		accelerationIntegral += (acceleration + motionProfile.readAcceleration(index - 1)) / 2
+			* Constants.kDtInMinutes;
+		assertEquals(accelerationIntegral, velocity, 2 * cumulativeVelocityTolerance);
+
 		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
-		assertEquals(velocityIntegral, position, 2 * cumulativeTolerance);
+		assertEquals(velocityIntegral, position, 2 * cumulativePositionTolerance);
 	    }
 	}
 	for (double time = (accelTime + cruiseTime); time < totalTime; time += Constants.kDtInMinutes) {
 	    int index = (int) (time / Constants.kDtInMinutes) + 2;
 	    double position = motionProfile.readPosition(index);
 	    double velocity = motionProfile.readVelocity(index);
+	    double acceleration = motionProfile.readAcceleration(index);
 
 	    assertTrue(position < targetDistance);
 	    assertTrue(velocity <= cruiseVelocity);
+	    assertEquals(acceleration, maxDecel, kEpsilon);
 	    if (index > ((int) ((accelTime + cruiseTime) / Constants.kDtInMinutes)) + 2) {
 		assertTrue(position > motionProfile.readPosition(index - 1));
 		assertTrue(velocity < motionProfile.readVelocity(index - 1));
 
+		accelerationIntegral += (acceleration + motionProfile.readAcceleration(index - 1)) / 2
+			* Constants.kDtInMinutes;
+		assertEquals(accelerationIntegral, velocity, 3 * cumulativeVelocityTolerance);
+
 		velocityIntegral += (velocity + motionProfile.readVelocity(index - 1)) / 2 * Constants.kDtInMinutes;
-		assertEquals(velocityIntegral, position, 3 * cumulativeTolerance);
+		assertEquals(velocityIntegral, position, 3 * cumulativePositionTolerance);
 	    }
 	}
     }
