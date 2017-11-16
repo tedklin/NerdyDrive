@@ -24,7 +24,6 @@ public class WaitTime extends Command {
     public WaitTime(double time) {
 	m_time = time;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

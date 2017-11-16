@@ -30,7 +30,6 @@ public class DriveTime extends Command {
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

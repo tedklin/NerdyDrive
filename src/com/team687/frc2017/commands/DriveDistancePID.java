@@ -38,7 +38,6 @@ public class DriveDistancePID extends Command {
 	m_leftDistance = leftDistance;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

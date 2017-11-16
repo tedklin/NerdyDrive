@@ -35,7 +35,6 @@ public class ApproachTarget extends Command {
 	m_softStop = softStop;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
@@ -53,7 +52,6 @@ public class ApproachTarget extends Command {
 	m_softStop = softStop;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

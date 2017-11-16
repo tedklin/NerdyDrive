@@ -31,7 +31,6 @@ public class DriveUntilCollision extends Command {
 	m_isHighGear = isHighGear;
 	m_timeout = 3.3;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
@@ -45,7 +44,6 @@ public class DriveUntilCollision extends Command {
 	m_isHighGear = isHighGear;
 	m_timeout = timeout;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

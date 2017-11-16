@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ResetGyro extends Command {
 
     public ResetGyro() {
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

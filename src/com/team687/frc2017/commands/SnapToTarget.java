@@ -29,7 +29,6 @@ public class SnapToTarget extends Command {
 	m_timeout = 3.3;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
@@ -42,7 +41,6 @@ public class SnapToTarget extends Command {
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

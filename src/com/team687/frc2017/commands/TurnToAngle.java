@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnToAngle extends Command {
 
-    private double m_angleToTurn;
+    private double m_desiredAngle;
     private double m_startTime, m_timeout;
     private double m_error;
 
@@ -27,11 +27,10 @@ public class TurnToAngle extends Command {
     private PGains m_rotPGains;
 
     public TurnToAngle(double angle, boolean isHighGear) {
-	m_angleToTurn = angle;
+	m_desiredAngle = angle;
 	m_timeout = 10; // default timeout is 10 seconds
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
@@ -41,7 +40,7 @@ public class TurnToAngle extends Command {
      * @param timeout
      */
     public TurnToAngle(double angle, boolean isHighGear, double timeout) {
-	m_angleToTurn = angle;
+	m_desiredAngle = angle;
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
 
@@ -66,7 +65,7 @@ public class TurnToAngle extends Command {
     @Override
     protected void execute() {
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-	m_error = -m_angleToTurn - robotAngle;
+	m_error = -m_desiredAngle - robotAngle;
 	m_error = (m_error > 180) ? m_error - 360 : m_error;
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
 

@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ResetEncoders extends Command {
 
     public ResetEncoders() {
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

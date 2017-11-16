@@ -31,7 +31,6 @@ public class AlignDistanceToTarget extends Command {
 	m_isHighGear = false;
 	m_timeout = 6.87;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
@@ -45,7 +44,6 @@ public class AlignDistanceToTarget extends Command {
 	m_isHighGear = isHighGear;
 	m_timeout = timeout;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

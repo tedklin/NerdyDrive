@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class CommandTemplate extends Command {
 
     public CommandTemplate() {
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

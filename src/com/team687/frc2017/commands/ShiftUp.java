@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ShiftUp extends Command {
 
     public ShiftUp() {
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

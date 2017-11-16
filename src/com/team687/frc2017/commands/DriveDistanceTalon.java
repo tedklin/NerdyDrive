@@ -35,7 +35,6 @@ public class DriveDistanceTalon extends Command {
     public DriveDistanceTalon(double distance) {
 	m_distance = distance;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

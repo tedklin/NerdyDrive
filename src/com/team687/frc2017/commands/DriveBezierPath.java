@@ -42,6 +42,8 @@ public class DriveBezierPath extends Command {
 	m_straightPowerIsDynamic = straightPowerIsDynamic;
 	m_softStop = softStop;
 	m_isHighGear = isHighGear;
+
+	requires(Robot.drive);
     }
 
     /**
@@ -65,6 +67,8 @@ public class DriveBezierPath extends Command {
 	m_straightPowerIsDynamic = straightPowerIsDynamic;
 	m_softStop = softStop;
 	m_isHighGear = isHighGear;
+
+	requires(Robot.drive);
     }
 
     @Override

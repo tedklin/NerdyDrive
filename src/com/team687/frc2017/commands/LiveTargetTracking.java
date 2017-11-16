@@ -27,7 +27,6 @@ public class LiveTargetTracking extends Command {
     public LiveTargetTracking(boolean isHighGear) {
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

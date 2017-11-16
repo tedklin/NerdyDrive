@@ -29,7 +29,6 @@ public class DriveStraightContinuous extends Command {
 	m_straightPower = straightPower;
 	m_isHighGear = isHighGear;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

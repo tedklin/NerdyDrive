@@ -44,7 +44,6 @@ public class DriveDistanceProfile extends Command {
 	m_isHighGear = isHighGear;
 	m_isStraight = isStraight;
 
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 

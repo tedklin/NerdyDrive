@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ShiftDown extends Command {
 
     public ShiftDown() {
-	// subsystem dependencies
 	requires(Robot.drive);
     }
 
