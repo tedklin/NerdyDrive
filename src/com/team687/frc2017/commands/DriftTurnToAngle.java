@@ -56,13 +56,12 @@ public class DriftTurnToAngle extends Command {
     protected void execute() {
 	double doneness = Math.abs(Robot.drive.getDrivetrainTicks() / m_distance);
 	// doneness = Math.sqrt(doneness); // this makes the arc turn more gradual
-	m_desiredAngle *= doneness;
 
 	double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 	double rotError = -m_desiredAngle - robotAngle;
 	rotError = (rotError > 180) ? rotError - 360 : rotError;
 	rotError = (rotError < -180) ? rotError + 360 : rotError;
-	double rotPower = m_rotPGains.getP() * rotError;
+	double rotPower = m_rotPGains.getP() * rotError * doneness;
 
 	Robot.drive.setPower(rotPower + m_straightPower, rotPower - m_straightPower);
     }
