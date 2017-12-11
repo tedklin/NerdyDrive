@@ -24,19 +24,20 @@ public class LinearInterpolator {
 
     public double estimate(double input) {
 	double output = 0;
+	int maxLength = Math.max(m_key.length, m_value.length);
 
 	// put a hard limit on the minimum value
 	if (input < m_key[0]) {
 	    output = m_value[0];
 	}
 	// extrapolation (try to avoid this)
-	if (input > m_key[m_key.length - 1]) {
-	    double slope = (m_value[m_value.length - 1] - m_value[0]) / (m_key[m_key.length - 1] - m_key[0]);
+	if (input > m_key[maxLength - 1]) {
+	    double slope = (m_value[maxLength - 1] - m_value[0]) / (m_key[maxLength - 1] - m_key[0]);
 	    double intercept = m_value[0] - slope * m_key[0];
 	    output = slope * input + intercept;
 	}
 	// interpolation
-	for (int i = 0; i < m_value.length - 2; i++) {
+	for (int i = 0; i < maxLength - 2; i++) {
 	    if (input > m_key[i] && input < m_key[i + 1]) {
 		output = (m_value[i] * (m_key[i + 1] - input) + m_value[i + 1] * (input - m_key[i]))
 			/ (m_key[i + 1] - m_key[i]);
