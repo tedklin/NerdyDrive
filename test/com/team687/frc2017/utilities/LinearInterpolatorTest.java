@@ -34,10 +34,16 @@ public class LinearInterpolatorTest {
     private final static double[] InputValues4 = { 3, 6, 1, 4, 5, 2, 3 };
     private final static double[] OutputValues4 = { 1, 6, 2, 6, 2, 7, 3 };
 
+    private final static double[] InputValues5 = { 6, -2, 4, -7, 1, 4 };
+    private final static double[] OutputValues5 = { 50, 71, -33, 67, -47, 95 };
+
+    private final static double[] InputValues6 = { -33, -27, -67, -47, -48, -95, -16 };
+    private final static double[] OutputValues6 = { -4, -2, -6, -7, -1, -5, 0 };
+
     @Parameters
     public static Collection<Object[]> testCases() {
 	return Arrays.asList(new Object[][] { { InputValues1, OutputValues1 }, { InputValues2, OutputValues2 },
-		{ InputValues3, OutputValues3 }, { InputValues4, OutputValues4 } });
+		{ InputValues3, OutputValues3 }, { InputValues4, OutputValues4 }, { InputValues5, OutputValues5 } });
     }
 
     private double[] m_sortedInputValues;
