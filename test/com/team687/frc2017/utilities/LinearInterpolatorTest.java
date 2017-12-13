@@ -86,8 +86,19 @@ public class LinearInterpolatorTest {
 	    double output = m_estimator.estimate(input);
 	    double expectedSlope = (m_sortedOutputValues[i + 1] - m_sortedOutputValues[i])
 		    / (m_sortedInputValues[i + 1] - m_sortedInputValues[i]);
-	    double calculatedSlope = (m_sortedOutputValues[i + 1] - output) / (m_sortedInputValues[i + 1] - input);
-	    assertEquals(expectedSlope, calculatedSlope, kEpsilon);
+	    double estimatedSlope = (m_sortedOutputValues[i + 1] - output) / (m_sortedInputValues[i + 1] - input);
+	    assertEquals(expectedSlope, estimatedSlope, kEpsilon);
 	}
+    }
+
+    @Test
+    public void testExtrapolatedSlope() {
+	double input = 3 * m_sortedInputValues[m_estimator.getMaxLength() - 1] / 2;
+	double output = m_estimator.estimate(input);
+	double expectedSlope = (m_sortedOutputValues[m_estimator.getMaxLength() - 1] - m_sortedOutputValues[0])
+		/ (m_sortedInputValues[m_estimator.getMaxLength() - 1] - m_sortedInputValues[0]);
+	double estimatedSlope = (m_sortedOutputValues[m_estimator.getMaxLength() - 1] - output)
+		/ (m_sortedInputValues[m_estimator.getMaxLength() - 1] - input);
+	assertEquals(expectedSlope, estimatedSlope, kEpsilon);
     }
 }
