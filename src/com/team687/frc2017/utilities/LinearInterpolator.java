@@ -6,6 +6,8 @@ import java.util.Arrays;
  * Linear interpolation (and extrapolation if needed). Intended to use for
  * determining distance from the area of contour(s) from vision.
  * 
+ * Negative numbers not supported.
+ * 
  * @author tedlin
  *
  */
