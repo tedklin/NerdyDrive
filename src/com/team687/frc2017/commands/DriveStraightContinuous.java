@@ -50,7 +50,7 @@ public class DriveStraightContinuous extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Robot.drive.getDrivetrainTicks() > m_distance;
+	return Robot.drive.getDrivetrainPosition() > m_distance;
     }
 
     @Override

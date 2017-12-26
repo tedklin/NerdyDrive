@@ -51,16 +51,16 @@ public class Odometry {
      * Update raw sensor readings and inherent calculations
      */
     public void update() {
-	m_leftDistance = Robot.drive.getLeftTicks();
-	m_rightDistance = Robot.drive.getRightTicks();
-	m_leftVelocity = Robot.drive.getLeftTicksSpeed();
-	m_rightVelocity = Robot.drive.getRightTicksSpeed();
+	m_leftDistance = Robot.drive.getLeftPosition();
+	m_rightDistance = Robot.drive.getRightPosition();
+	m_leftVelocity = Robot.drive.getLeftSpeed();
+	m_rightVelocity = Robot.drive.getRightSpeed();
 	m_gyroYawDegrees = Robot.drive.getCurrentYaw();
 	m_gyroYawRadians = Robot.drive.getCurrentYawRadians();
 
 	SmartDashboard.putNumber("Left Position Ticks", m_leftDistance);
 	SmartDashboard.putNumber("Right Position Ticks", m_rightDistance);
-	SmartDashboard.putNumber("Drivetrain Position Ticks", Robot.drive.getDrivetrainTicks());
+	SmartDashboard.putNumber("Drivetrain Position Ticks", Robot.drive.getDrivetrainPosition());
 	SmartDashboard.putNumber("Left Speed Ticks", m_leftVelocity);
 	SmartDashboard.putNumber("Right Speed Ticks", m_rightVelocity);
 

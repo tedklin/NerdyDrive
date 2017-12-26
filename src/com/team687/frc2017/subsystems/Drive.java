@@ -234,20 +234,8 @@ public class Drive extends Subsystem {
 	return m_rightMaster.getPosition();
     }
 
-    public int getLeftTicks() {
-	return m_leftMaster.getEncPosition();
-    }
-
-    public int getRightTicks() {
-	return m_rightMaster.getEncPosition();
-    }
-
     public double getDrivetrainPosition() {
 	return (getLeftPosition() + getRightPosition() / 2);
-    }
-
-    public int getDrivetrainTicks() {
-	return (int) (getLeftTicks() + getRightTicks() / 2);
     }
 
     public double getLeftSpeed() {
@@ -258,23 +246,15 @@ public class Drive extends Subsystem {
 	return m_rightMaster.getSpeed();
     }
 
-    public double getLeftTicksSpeed() {
-	return m_leftMaster.getEncVelocity();
-    }
-
-    public double getRightTicksSpeed() {
-	return m_rightMaster.getEncVelocity();
-    }
-
     public void resetEncoders() {
 	// m_leftMaster.reset();
 	// m_rightMaster.reset();
 
-	// m_leftMaster.setPosition(0);
-	// m_rightMaster.setPosition(0);
+	m_leftMaster.setPosition(0);
+	m_rightMaster.setPosition(0);
 
-	m_leftMaster.setEncPosition(0);
-	m_rightMaster.setEncPosition(0);
+	// m_leftMaster.setEncPosition(0);
+	// m_rightMaster.setEncPosition(0);
     }
 
     public void processMotionProfileBuffer() {
@@ -345,6 +325,10 @@ public class Drive extends Subsystem {
     public void stopDrive() {
 	setPower(0.0, 0.0);
     }
+    
+    public void testDriveSubsystem() {
+	
+    }
 
     public void reportToSmartDashboard() {
 	if (isHighGear()) {
@@ -368,10 +352,6 @@ public class Drive extends Subsystem {
 	SmartDashboard.putNumber("Right Master Current", m_rightMaster.getOutputCurrent());
 	SmartDashboard.putNumber("Right Slave 1 Current", m_rightSlave1.getOutputCurrent());
 	SmartDashboard.putNumber("Right Slave 2 Current", m_rightSlave2.getOutputCurrent());
-
-	// m_currentTime = Timer.getFPGATimestamp() - m_initTime;
-	// m_table.putNumber("CURRENT_TIME", m_currentTime);
-	// SmartDashboard.putNumber("Current Time", m_currentTime);
     }
 
 }

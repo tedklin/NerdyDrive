@@ -62,8 +62,8 @@ public class DriveDistancePID extends Command {
 
     @Override
     protected void execute() {
-	m_rightError = m_rightDistance - Robot.drive.getRightTicks();
-	m_leftError = m_leftDistance - Robot.drive.getLeftTicks();
+	m_rightError = m_rightDistance - Robot.drive.getRightPosition();
+	m_leftError = m_leftDistance - Robot.drive.getLeftPosition();
 
 	double straightRightPower = m_rightPGains.getP() * m_rightError;
 	double straightLeftPower = m_leftPGains.getP() * m_leftError;

@@ -63,7 +63,7 @@ public class DriveAtHeading extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Math.abs(Robot.drive.getDrivetrainTicks()) >= m_distance;
+	return Math.abs(Robot.drive.getDrivetrainPosition()) >= m_distance;
     }
 
     @Override

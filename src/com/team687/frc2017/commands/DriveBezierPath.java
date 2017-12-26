@@ -99,7 +99,7 @@ public class DriveBezierPath extends Command {
     @Override
     protected void execute() {
 	if (m_counter < m_arcLengthList.size()) {
-	    if (Math.abs(Robot.drive.getDrivetrainTicks()) < m_arcLengthList.get(m_counter)) {
+	    if (Math.abs(Robot.drive.getDrivetrainPosition()) < m_arcLengthList.get(m_counter)) {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
 		m_desiredHeading = m_headingList.get(m_counter);
 
@@ -120,7 +120,7 @@ public class DriveBezierPath extends Command {
 		double straightPower = m_straightPower;
 
 		// dynamic straight power
-		double deltaSegmentLength = m_arcLengthList.get(m_counter) - Robot.drive.getDrivetrainTicks();
+		double deltaSegmentLength = m_arcLengthList.get(m_counter) - Robot.drive.getDrivetrainPosition();
 		double curvature = Math.abs(rotError / deltaSegmentLength);
 		if (m_straightPowerIsDynamic) {
 		    straightPower = (m_straightPower - (Constants.kCurvatureFunction * curvature)) * m_direction;
@@ -129,7 +129,7 @@ public class DriveBezierPath extends Command {
 		double maxStraightPower = Math.abs(m_straightPower);
 		if (m_softStop) {
 		    double straightError = m_arcLengthList.get(m_arcLengthList.size() - 1)
-			    - Math.abs(Robot.drive.getDrivetrainTicks());
+			    - Math.abs(Robot.drive.getDrivetrainPosition());
 		    double newMaxStraightPower = m_straightPGains.getP() * straightError;
 		    maxStraightPower = Math.min(Math.abs(maxStraightPower), Math.abs(newMaxStraightPower));
 		}
@@ -159,7 +159,7 @@ public class DriveBezierPath extends Command {
     @Override
     protected boolean isFinished() {
 	return m_pathIsFinished
-		|| Math.abs(Robot.drive.getDrivetrainTicks()) >= m_arcLengthList.get(m_arcLengthList.size() - 1);
+		|| Math.abs(Robot.drive.getDrivetrainPosition()) >= m_arcLengthList.get(m_arcLengthList.size() - 1);
     }
 
     @Override

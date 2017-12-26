@@ -92,8 +92,8 @@ public class ApproachTarget extends Command {
 
 	double straightRightPower = m_straightPower; // default
 	double straightLeftPower = m_straightPower;
-	double straightRightError = m_distance - Robot.drive.getRightTicks();
-	double straightLeftError = m_distance - Robot.drive.getLeftTicks();
+	double straightRightError = m_distance - Robot.drive.getRightPosition();
+	double straightLeftError = m_distance - Robot.drive.getLeftPosition();
 
 	if (m_softStop) {
 	    straightRightPower = m_rightPGains.getP() * straightRightError;
@@ -109,7 +109,7 @@ public class ApproachTarget extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Timer.getFPGATimestamp() - m_startTime > m_timeout || Robot.drive.getDrivetrainTicks() > m_distance;
+	return Timer.getFPGATimestamp() - m_startTime > m_timeout || Robot.drive.getDrivetrainPosition() > m_distance;
     }
 
     @Override

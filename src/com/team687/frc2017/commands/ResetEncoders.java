@@ -30,7 +30,7 @@ public class ResetEncoders extends Command {
 
     @Override
     protected boolean isFinished() {
-	return Robot.drive.getRightTicks() == 0 && Robot.drive.getLeftTicks() == 0;
+	return Robot.drive.getRightPosition() == 0 && Robot.drive.getLeftPosition() == 0;
     }
 
     @Override

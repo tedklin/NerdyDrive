@@ -74,8 +74,8 @@ public class TestSensors extends Command {
 	adjustedAngleError = (adjustedAngleError < -180) ? adjustedAngleError + 360 : adjustedAngleError;
 	double leftPosError = desiredLeftPos - Robot.drive.getLeftPosition();
 	double rightPosError = desiredRightPos - Robot.drive.getRightPosition();
-	double leftTicksError = desiredLeftPos - Robot.drive.getLeftTicks();
-	double rightTicksError = desiredRightPos - Robot.drive.getRightTicks();
+	double leftTicksError = desiredLeftPos - Robot.drive.getLeftPosition();
+	double rightTicksError = desiredRightPos - Robot.drive.getRightPosition();
 
 	SmartDashboard.putNumber("Error Yaw (test)", angleError);
 	SmartDashboard.putNumber("Adjusted Error Yaw (test)", adjustedAngleError);
