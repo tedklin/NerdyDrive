@@ -71,5 +71,8 @@ public class Constants {
 
     // in feet (direct from 1678's code)
     public final static double kShotDistanceFeet = 6.9028871;
+    
+    // subsystem testing
+    public final static double rpmEpsilon = 254;
 
 }

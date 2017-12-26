@@ -3,6 +3,7 @@ package com.team687.frc2017.subsystems;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.FeedbackDevice;
 import com.ctre.CANTalon.TalonControlMode;
+import com.team687.frc2017.Constants;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.teleop.TankDrive;
 import com.team687.frc2017.utilities.NerdyMath;
@@ -326,8 +327,38 @@ public class Drive extends Subsystem {
 	setPower(0.0, 0.0);
     }
     
-    public void testDriveSubsystem() {
+    public boolean testDriveSubsystem() {
+	boolean failed = false;
 	
+	double expectedSpeed = getRightSpeed();
+	if (Math.abs(getLeftSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
+	    failed = true;
+	    DriverStation.reportError("Left Master Speed != Right Master Speed (Drive subsystem test)", false);
+	    System.out.println("Left Master Speed != Right Master Speed (Drive subsystem test)");
+	}
+	
+	if (Math.abs(m_rightSlave1.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
+	    failed = true;
+	    DriverStation.reportError("Right Slave 1 Speed != Right Master Speed (Drive subsystem test)", false);
+	    System.out.println("Right Slave 1 != Right Speed (Drive subsystem test)");
+	}
+	if (Math.abs(m_rightSlave2.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
+	    failed = true;
+	    DriverStation.reportError("Right Slave 2 Speed != Right Master Speed (Drive subsystem test)", false);
+	    System.out.println("Right Slave 2 != Right Speed (Drive subsystem test)");
+	}
+	if (Math.abs(m_leftSlave1.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
+	    failed = true;
+	    DriverStation.reportError("Left Slave 1 Speed != Right Master Speed (Drive subsystem test)", false);
+	    System.out.println("Left Slave 1 != Right Speed (Drive subsystem test)");
+	}
+	if (Math.abs(m_leftSlave2.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
+	    failed = true;
+	    DriverStation.reportError("Left Slave 2 Speed != Right Master Speed (Drive subsystem test)", false);
+	    System.out.println("Left Slave 2 != Right Speed (Drive subsystem test)");
+	}
+	
+	return failed;
     }
 
     public void reportToSmartDashboard() {
