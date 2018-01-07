@@ -70,7 +70,9 @@ public class TurnToAngle extends Command {
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
 
 	double power = m_rotPGains.getP() * m_error;
-	power = NerdyMath.threshold(power, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
+	double rawSign = Math.signum(power);
+	power = NerdyMath.threshold(Math.abs(power), m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
+	power = Math.abs(power) * rawSign;
 
 	Robot.drive.setPower(power, power);
     }
