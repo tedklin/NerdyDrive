@@ -27,14 +27,7 @@ public class ArcTurn extends Command {
     private double m_startTime, m_timeout;
     private double m_error;
 
-    public ArcTurn(double desiredAngle, boolean isRightPowered, boolean isHighGear) {
-	m_desiredAngle = desiredAngle;
-	m_isRightPowered = isRightPowered;
-	m_timeout = 10;
-	m_isHighGear = isHighGear;
-
-	requires(Robot.drive);
-    }
+    private double m_sign;
 
     /**
      * Arc Turn
@@ -43,12 +36,15 @@ public class ArcTurn extends Command {
      * @param isRightPowered
      * @param isHighGear
      * @param timeout
+     * @param sign
+     *            (+1.0 or -1.0)
      */
-    public ArcTurn(double desiredAngle, boolean isRightPowered, boolean isHighGear, double timeout) {
+    public ArcTurn(double desiredAngle, boolean isRightPowered, boolean isHighGear, double timeout, double sign) {
 	m_desiredAngle = desiredAngle;
 	m_isRightPowered = isRightPowered;
 	m_timeout = timeout;
 	m_isHighGear = isHighGear;
+	m_sign = Math.signum(sign);
 
 	requires(Robot.drive);
     }
@@ -75,7 +71,11 @@ public class ArcTurn extends Command {
 	m_error = (m_error < -180) ? m_error + 360 : m_error;
 	double rotPower = m_rotPGains.getP() * m_error * 1.95; // multiplied by 2 because the rotational component is
 							       // only added to one side of the drivetrain
-	rotPower = NerdyMath.threshold(rotPower, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
+
+	double rawSign = Math.signum(rotPower);
+	rotPower = NerdyMath.threshold(Math.abs(rotPower), m_rotPGains.getMinPower(), m_rotPGains.getMaxPower())
+		* rawSign;
+	rotPower = Math.abs(rotPower) * m_sign;
 
 	if (m_isRightPowered) {
 	    Robot.drive.setPower(0, rotPower);
