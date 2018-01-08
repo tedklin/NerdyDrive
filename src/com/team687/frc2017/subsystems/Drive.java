@@ -1,8 +1,9 @@
 package com.team687.frc2017.subsystems;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.FeedbackDevice;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.team687.frc2017.Constants;
 import com.team687.frc2017.RobotMap;
 import com.team687.frc2017.commands.teleop.TankDrive;
@@ -26,8 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Subsystem {
 
-    private final CANTalon m_leftMaster, m_leftSlave1, m_leftSlave2;
-    private final CANTalon m_rightMaster, m_rightSlave1, m_rightSlave2;
+    private final WPI_TalonSRX m_leftMaster, m_leftSlave1, m_leftSlave2;
+    private final WPI_TalonSRX m_rightMaster, m_rightSlave1, m_rightSlave2;
+
+    private final int m_leftSensorIndex = 1;
+    private final int m_rightSensorIndex = 2;
 
     private final DoubleSolenoid m_shifter;
 
@@ -40,43 +44,40 @@ public class Drive extends Subsystem {
 
     private boolean m_brakeModeOn;
 
+    private double m_rightSensorOffset, m_leftSensorOffset;
+    private double m_rightSensorCumulativeOffset, m_leftSensorCumulativeOffset;
+
     public Drive() {
-	m_leftMaster = new CANTalon(RobotMap.kLeftMasterTalonID);
-	m_leftSlave1 = new CANTalon(RobotMap.kLeftSlaveTalon1ID);
-	m_leftSlave2 = new CANTalon(RobotMap.kLeftSlaveTalon2ID);
-	m_rightMaster = new CANTalon(RobotMap.kRightMasterTalonID);
-	m_rightSlave1 = new CANTalon(RobotMap.kRightSlaveTalon1ID);
-	m_rightSlave2 = new CANTalon(RobotMap.kRightSlaveTalon2ID);
+	m_leftMaster = new WPI_TalonSRX(RobotMap.kLeftMasterTalonID);
+	m_leftSlave1 = new WPI_TalonSRX(RobotMap.kLeftSlaveTalon1ID);
+	m_leftSlave2 = new WPI_TalonSRX(RobotMap.kLeftSlaveTalon2ID);
+	m_rightMaster = new WPI_TalonSRX(RobotMap.kRightMasterTalonID);
+	m_rightSlave1 = new WPI_TalonSRX(RobotMap.kRightSlaveTalon1ID);
+	m_rightSlave2 = new WPI_TalonSRX(RobotMap.kRightSlaveTalon2ID);
 
-	m_leftMaster.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-	CANTalon.FeedbackDeviceStatus leftSensorPresent = m_leftMaster
-		.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-	if (leftSensorPresent != CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent) {
-	    DriverStation.reportError("Could not detect left encoder: " + leftSensorPresent, false);
-	}
-	m_leftMaster.reverseSensor(false);
-	m_leftMaster.reverseOutput(false);
-	m_leftSlave1.reverseOutput(false);
-	m_leftSlave2.reverseOutput(false);
-	m_leftMaster.enableBrakeMode(true);
-	m_leftSlave1.enableBrakeMode(true);
-	m_leftSlave2.enableBrakeMode(true);
+	m_leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, m_leftSensorIndex, 0);
+	m_leftMaster.setInverted(false);
+	m_leftSlave1.setInverted(false);
+	m_leftSlave2.setInverted(false);
+	m_leftMaster.setSensorPhase(true); // check this on actual robot
+	m_leftMaster.setNeutralMode(NeutralMode.Brake);
+	m_leftSlave1.setNeutralMode(NeutralMode.Brake);
+	m_leftSlave2.setNeutralMode(NeutralMode.Brake);
 
-	m_rightMaster.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-	CANTalon.FeedbackDeviceStatus rightSensorPresent = m_rightMaster
-		.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-	if (rightSensorPresent != CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent) {
-	    DriverStation.reportError("Could not detect right encoder: " + rightSensorPresent, false);
-	}
-	m_rightMaster.reverseSensor(true);
-	m_rightMaster.reverseOutput(true);
-	m_rightSlave1.reverseOutput(true);
-	m_rightSlave2.reverseOutput(true);
-	m_rightMaster.enableBrakeMode(true);
-	m_rightSlave1.enableBrakeMode(true);
-	m_rightSlave2.enableBrakeMode(true);
+	m_rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, m_rightSensorIndex, 0);
+	m_rightMaster.setInverted(true);
+	m_rightSlave1.setInverted(true);
+	m_rightSlave2.setInverted(true);
+	m_rightMaster.setSensorPhase(true); // check this on actual robot
+	m_rightMaster.setNeutralMode(NeutralMode.Brake);
+	m_rightSlave1.setNeutralMode(NeutralMode.Brake);
+	m_rightSlave2.setNeutralMode(NeutralMode.Brake);
 
 	m_brakeModeOn = true;
+	m_rightSensorOffset = 0;
+	m_leftSensorOffset = 0;
+	m_rightSensorCumulativeOffset = 0;
+	m_leftSensorCumulativeOffset = 0;
 
 	m_shifter = new DoubleSolenoid(RobotMap.kShifterID1, RobotMap.kShifterID2);
 
@@ -97,12 +98,12 @@ public class Drive extends Subsystem {
      * @param rightPower
      */
     public void setPower(double leftPower, double rightPower) {
-	m_leftMaster.changeControlMode(TalonControlMode.PercentVbus);
-	m_leftSlave1.changeControlMode(TalonControlMode.PercentVbus);
-	m_leftSlave2.changeControlMode(TalonControlMode.PercentVbus);
-	m_rightMaster.changeControlMode(TalonControlMode.PercentVbus);
-	m_rightSlave1.changeControlMode(TalonControlMode.PercentVbus);
-	m_rightSlave2.changeControlMode(TalonControlMode.PercentVbus);
+	m_leftMaster.set(ControlMode.PercentOutput, RobotMap.kLeftMasterTalonID);
+	m_leftSlave1.set(ControlMode.PercentOutput, RobotMap.kLeftSlaveTalon1ID);
+	m_leftSlave2.set(ControlMode.PercentOutput, RobotMap.kLeftSlaveTalon2ID);
+	m_rightMaster.set(ControlMode.PercentOutput, RobotMap.kRightMasterTalonID);
+	m_rightSlave1.set(ControlMode.PercentOutput, RobotMap.kRightSlaveTalon1ID);
+	m_rightSlave2.set(ControlMode.PercentOutput, RobotMap.kRightSlaveTalon2ID);
 
 	m_leftMaster.set(leftPower);
 	m_leftSlave1.set(leftPower);
@@ -114,13 +115,23 @@ public class Drive extends Subsystem {
     }
 
     public void setBrakeMode(boolean enabled) {
-	m_leftMaster.enableBrakeMode(enabled);
-	m_leftSlave1.enableBrakeMode(enabled);
-	m_leftSlave2.enableBrakeMode(enabled);
+	if (enabled) {
+	    m_leftMaster.setNeutralMode(NeutralMode.Brake);
+	    m_leftSlave1.setNeutralMode(NeutralMode.Brake);
+	    m_leftSlave2.setNeutralMode(NeutralMode.Brake);
 
-	m_rightMaster.enableBrakeMode(enabled);
-	m_rightSlave1.enableBrakeMode(enabled);
-	m_rightSlave2.enableBrakeMode(enabled);
+	    m_rightMaster.setNeutralMode(NeutralMode.Brake);
+	    m_rightSlave1.setNeutralMode(NeutralMode.Brake);
+	    m_rightSlave2.setNeutralMode(NeutralMode.Brake);
+	} else {
+	    m_leftMaster.setNeutralMode(NeutralMode.Coast);
+	    m_leftSlave1.setNeutralMode(NeutralMode.Coast);
+	    m_leftSlave2.setNeutralMode(NeutralMode.Coast);
+
+	    m_rightMaster.setNeutralMode(NeutralMode.Coast);
+	    m_rightSlave1.setNeutralMode(NeutralMode.Coast);
+	    m_rightSlave2.setNeutralMode(NeutralMode.Coast);
+	}
 
 	m_brakeModeOn = enabled;
     }
@@ -228,11 +239,11 @@ public class Drive extends Subsystem {
     }
 
     public double getLeftPosition() {
-	return m_leftMaster.getPosition();
+	return m_leftMaster.getSelectedSensorPosition(m_leftSensorIndex) + m_leftSensorCumulativeOffset;
     }
 
     public double getRightPosition() {
-	return m_rightMaster.getPosition();
+	return m_rightMaster.getSelectedSensorPosition(m_rightSensorIndex) + m_rightSensorCumulativeOffset;
     }
 
     public double getDrivetrainPosition() {
@@ -240,124 +251,41 @@ public class Drive extends Subsystem {
     }
 
     public double getLeftSpeed() {
-	return m_leftMaster.getSpeed();
+	return m_leftMaster.getSelectedSensorVelocity(1);
     }
 
     public double getRightSpeed() {
-	return m_rightMaster.getSpeed();
+	return m_rightMaster.getSelectedSensorVelocity(2);
     }
 
     public void resetEncoders() {
 	// m_leftMaster.reset();
 	// m_rightMaster.reset();
 
-	m_leftMaster.setPosition(0);
-	m_rightMaster.setPosition(0);
+	m_leftSensorOffset = getLeftPosition();
+	m_rightSensorOffset = getRightPosition();
+
+	m_leftSensorCumulativeOffset += m_leftSensorOffset;
+	m_rightSensorOffset += m_rightSensorOffset;
 
 	// m_leftMaster.setEncPosition(0);
 	// m_rightMaster.setEncPosition(0);
     }
 
-    public void processMotionProfileBuffer() {
-	processLeftMotionProfileBuffer();
-	processRightMotionProfileBuffer();
-    }
-
-    public void processLeftMotionProfileBuffer() {
-	m_leftMaster.processMotionProfileBuffer();
-    }
-
-    public void processRightMotionProfileBuffer() {
-	m_rightMaster.processMotionProfileBuffer();
-    }
-
-    public void changeMotionControlFramePeriod(int time) {
-	m_leftMaster.changeMotionControlFramePeriod(time);
-	m_rightMaster.changeMotionControlFramePeriod(time);
-    }
-
-    public void pushTrajectoryPoint(CANTalon.TrajectoryPoint point) {
-	pushLeftTrajectoryPoint(point);
-	pushRightTrajectoryPoint(point);
-    }
-
-    public void pushLeftTrajectoryPoint(CANTalon.TrajectoryPoint point) {
-	m_leftMaster.pushMotionProfileTrajectory(point);
-    }
-
-    public void pushRightTrajectoryPoint(CANTalon.TrajectoryPoint point) {
-	m_rightMaster.pushMotionProfileTrajectory(point);
-    }
-
-    public void clearMotionProfileTrajectories() {
-	m_leftMaster.clearMotionProfileTrajectories();
-	m_rightMaster.clearMotionProfileTrajectories();
-    }
-
-    public void setValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
-	setLeftValueMotionProfileOutput(output);
-	setRightValueMotionProfileOutput(output);
-    }
-
-    public void setLeftValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
-	m_leftMaster.set(output.value);
-    }
-
-    public void setRightValueMotionProfileOutput(CANTalon.SetValueMotionProfile output) {
-	m_rightMaster.set(output.value);
-    }
-
-    public boolean isMotionProfileFinished() {
-	return isLeftMotionProfileFinished() && isRightMotionProfileFinished();
-    }
-
-    public boolean isLeftMotionProfileFinished() {
-	CANTalon.MotionProfileStatus status = new CANTalon.MotionProfileStatus();
-	m_leftMaster.getMotionProfileStatus(status);
-	return status.activePoint.isLastPoint;
-    }
-
-    public boolean isRightMotionProfileFinished() {
-	CANTalon.MotionProfileStatus status = new CANTalon.MotionProfileStatus();
-	m_rightMaster.getMotionProfileStatus(status);
-	return status.activePoint.isLastPoint;
-    }
-
     public void stopDrive() {
 	setPower(0.0, 0.0);
     }
-    
+
     public boolean testDriveSubsystem() {
 	boolean failed = false;
-	
+
 	double expectedSpeed = getRightSpeed();
 	if (Math.abs(getLeftSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
 	    failed = true;
 	    DriverStation.reportError("Left Master Speed != Right Master Speed (Drive subsystem test)", false);
 	    System.out.println("Left Master Speed != Right Master Speed (Drive subsystem test)");
 	}
-	
-	if (Math.abs(m_rightSlave1.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Right Slave 1 Speed != Right Master Speed (Drive subsystem test)", false);
-	    System.out.println("Right Slave 1 != Right Speed (Drive subsystem test)");
-	}
-	if (Math.abs(m_rightSlave2.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Right Slave 2 Speed != Right Master Speed (Drive subsystem test)", false);
-	    System.out.println("Right Slave 2 != Right Speed (Drive subsystem test)");
-	}
-	if (Math.abs(m_leftSlave1.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Left Slave 1 Speed != Right Master Speed (Drive subsystem test)", false);
-	    System.out.println("Left Slave 1 != Right Speed (Drive subsystem test)");
-	}
-	if (Math.abs(m_leftSlave2.getSpeed() - expectedSpeed) > Constants.rpmEpsilon) {
-	    failed = true;
-	    DriverStation.reportError("Left Slave 2 Speed != Right Master Speed (Drive subsystem test)", false);
-	    System.out.println("Left Slave 2 != Right Speed (Drive subsystem test)");
-	}
-	
+
 	return failed;
     }
 
@@ -370,12 +298,12 @@ public class Drive extends Subsystem {
 
 	SmartDashboard.putBoolean("Brake Mode On", m_brakeModeOn);
 
-	SmartDashboard.putNumber("Left Master PercentVbus", m_leftMaster.getOutputVoltage() / 12);
-	SmartDashboard.putNumber("Left Slave 1 PercentVbus", m_leftSlave1.getOutputVoltage() / 12);
-	SmartDashboard.putNumber("Left Slave 2 PercentVbus", m_leftSlave2.getOutputVoltage() / 12);
-	SmartDashboard.putNumber("Right Master PercentVbus", m_rightMaster.getOutputVoltage() / 12);
-	SmartDashboard.putNumber("Right Slave 1 PercentVbus", m_rightSlave1.getOutputVoltage() / 12);
-	SmartDashboard.putNumber("Right Slave 2 PercentVbus", m_rightSlave2.getOutputVoltage() / 12);
+	SmartDashboard.putNumber("Left Master PercentVbus", m_leftMaster.getMotorOutputVoltage());
+	SmartDashboard.putNumber("Left Slave 1 PercentVbus", m_leftSlave1.getMotorOutputVoltage());
+	SmartDashboard.putNumber("Left Slave 2 PercentVbus", m_leftSlave2.getMotorOutputVoltage());
+	SmartDashboard.putNumber("Right Master PercentVbus", m_rightMaster.getMotorOutputVoltage());
+	SmartDashboard.putNumber("Right Slave 1 PercentVbus", m_rightSlave1.getMotorOutputVoltage());
+	SmartDashboard.putNumber("Right Slave 2 PercentVbus", m_rightSlave2.getMotorOutputVoltage());
 
 	SmartDashboard.putNumber("Left Master Current", m_leftMaster.getOutputCurrent());
 	SmartDashboard.putNumber("Left Slave 1 Current", m_leftSlave1.getOutputCurrent());
